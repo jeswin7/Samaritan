@@ -1,4 +1,10 @@
 {
-  "name": "Samaritan",
-  "displayName": "Samaritan"
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "Samaritan",
+    "slug": "Samaritan"
+  }
 }

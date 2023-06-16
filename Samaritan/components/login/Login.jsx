@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -10,6 +10,10 @@ const Login = (props) => {
     console.log('Logging in...', email, password);
     props.isValid();
   };
+
+  const handleNewuser = () => {
+    props.isNewUser();
+  }
 
   return (
     <View style={styles.container}>
@@ -27,6 +31,14 @@ const Login = (props) => {
         onChangeText={setPassword}
       />
       <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity onPress={handleNewuser}
+      style={{
+            flex: 1,
+            marginVertical: 50,
+            alignItems: 'center',
+          }}>
+          <Text>New to Samaritan? Sign up now...</Text>
+        </TouchableOpacity>
     </View>
   );
 };

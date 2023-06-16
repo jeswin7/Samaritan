@@ -5,6 +5,7 @@ import Welcome from "./home/welcome/Welcome";
 import Nearbyjobs from "./home/nearby/Nearbyjobs";
 import Popularjobs from "./home/popular/Popularjobs";
 import Login from "./login/Login";
+import Signup from './register/Signup';
 
 // job details screen
 import Company from "./jobdetails/company/Company";
@@ -27,5 +28,6 @@ export {
   JobFooter,
   Specifics,
   NearbyJobCard,
-  Login
+  Login,
+  Signup
 };

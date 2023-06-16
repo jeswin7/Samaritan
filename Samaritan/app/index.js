@@ -3,17 +3,22 @@ import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { Stack, useRouter } from "expo-router";
 
 import { COLORS, icons, images, SIZES} from '../constants';
-import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login } from '../components';
+import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login, Signup } from '../components';
 import { ImageBackground } from "react-native-web";
 
 const Home = () => {
 
     const router = useRouter();
     const [isLoggedIn, setLoggedIn] = useState(false);
+    const [isNewUser, setIsNewUser] = useState(false);
 
-    redirectScreen = () => {
+    redirectToHomeScreen = () => {
         console.log("@parent")
         setLoggedIn(true);
+    }
+
+    redirectToRegisterScreen = () => {
+        setIsNewUser(true);
     }
 
     return (
@@ -42,9 +47,20 @@ const Home = () => {
                         isLoggedIn?
                         <Welcome />
                         :
-                        <Login
-                        isValid={redirectScreen}
-                       />
+                        <View>
+                            {
+                            isNewUser?
+                            <Signup
+                            />
+                            :
+                            <Login
+                            isValid={redirectToHomeScreen}
+                            isNewUser={redirectToRegisterScreen}
+                           />
+                        }
+                        </View>
+
+
                     }
 
 

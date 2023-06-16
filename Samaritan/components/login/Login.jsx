@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { COLORS } from '../../constants';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -30,7 +31,24 @@ const Login = (props) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity onPress={handleLogin} style={{
+            marginVertical: 50,
+            elevation: 8,
+            backgroundColor: COLORS.primary,
+            borderRadius: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 12
+          }}>
+    <Text style={{
+    fontSize: 18,
+    color: COLORS.white,
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  }}>Sign In</Text>
+  </TouchableOpacity>
+
+
       <TouchableOpacity onPress={handleNewuser}
       style={{
             flex: 1,

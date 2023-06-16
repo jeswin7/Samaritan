@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
+import { COLORS } from '../../constants';
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [userType, setUserType] = useState('seeker');
 
   const [firstName, setFirstName] = useState('');
@@ -36,6 +37,7 @@ const SignUp = () => {
         password,
       });
     }
+        props.registered();
   };
 
   return (
@@ -44,24 +46,24 @@ const SignUp = () => {
         <TouchableOpacity
           style={{
             flex: 1,
-            backgroundColor: userType === 'seeker' ? 'lightblue' : 'white',
+            backgroundColor: userType === 'seeker' ? COLORS.primary : 'white',
             paddingVertical: 10,
             alignItems: 'center',
           }}
           onPress={() => setUserType('seeker')}
         >
-          <Text>Seeker</Text>
+          <Text style={{color: userType === 'seeker' ? COLORS.white : COLORS.primary }}>Seeker</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
             flex: 1,
-            backgroundColor: userType === 'mentor' ? 'lightblue' : 'white',
+            backgroundColor: userType === 'mentor' ? COLORS.primary : COLORS.white,
             paddingVertical: 10,
             alignItems: 'center',
           }}
           onPress={() => setUserType('mentor')}
         >
-          <Text>Mentor</Text>
+          <Text style={{color: userType === 'mentor' ? COLORS.white : COLORS.primary }}>Mentor</Text>
         </TouchableOpacity>
       </View>
       <View style={{ paddingHorizontal: 20 }}>
@@ -111,7 +113,23 @@ const SignUp = () => {
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
         />
-        <Button title="Sign Up" onPress={handleSignUp} />
+
+        <TouchableOpacity onPress={handleSignUp} style={{
+            marginVertical: 50,
+            elevation: 8,
+            backgroundColor: COLORS.primary,
+            borderRadius: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 12
+          }}>
+    <Text style={{
+    fontSize: 18,
+    color: COLORS.white,
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  }}>Sign Up</Text>
+  </TouchableOpacity>
 
       </View>
     </View>

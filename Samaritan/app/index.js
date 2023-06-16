@@ -21,6 +21,10 @@ const Home = () => {
         setIsNewUser(true);
     }
 
+    redirectToLoginScreen = () => {
+        setIsNewUser(false);
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
             <Stack.Screen
@@ -51,6 +55,7 @@ const Home = () => {
                             {
                             isNewUser?
                             <Signup
+                            registered={redirectToLoginScreen}
                             />
                             :
                             <Login

@@ -251,7 +251,7 @@ setError('');
 
   <View style={{ flex: 1 }}>
   {/* Existing JSX code */}
-  <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+  <View style={{ paddingHorizontal: 20, paddingVertical: 20, alignItems: 'center' }}>
     {/* Existing TextInput fields */}
     {error !== '' && <Text style={{ color: 'red' }}>{error}</Text>}
     {emailError !== '' && <Text style={{ color: 'red' }}>{emailError}</Text>}

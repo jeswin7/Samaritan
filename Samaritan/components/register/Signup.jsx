@@ -26,16 +26,59 @@ const SignUp = (props) => {
         email,
         password,
       });
+
+
+          // POST API
+    fetch('http://10.211.55.3:3001/addseeker', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userType,
+            firstName,
+            lastName,
+            contactNumber,
+            address,
+            location,
+            email,
+            password,
+        })
+      })
+      .then(()=>setMessage("Seeker registered!!!!"));
+    
+      
+
+
     } else {
       // Perform sign up logic for mentor
       console.log('Sign up as mentor:', {
+        userType,
         firstName,
         lastName,
         contactNumber,
-        address,
-        email,
-        password,
+        email
       });
+
+
+
+          // POST API
+    fetch('http://10.211.55.3:3001/addmentor', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            firstName,
+            lastName,
+            contactNumber,
+            email
+        })
+      })
+      .then(()=>setMessage("Mentor registered!!!!"));
+          
     }
         props.registered();
   };
@@ -83,6 +126,7 @@ const SignUp = (props) => {
           placeholder="Contact Number"
           value={contactNumber}
           onChangeText={(text) => setContactNumber(text)}
+          style={{ paddingVertical: 10 }}
         />
         {userType === 'seeker' && (
           <TextInput
@@ -106,7 +150,8 @@ const SignUp = (props) => {
           onChangeText={(text) => setEmail(text)}
           style={{ paddingVertical: 10 }}
         />
-        <TextInput
+                {userType === 'seeker' && <>
+                <TextInput
           placeholder="Password"
           secureTextEntry
           value={password}
@@ -120,6 +165,8 @@ const SignUp = (props) => {
           onChangeText={(text) => setConfirmPassword(text)}
           style={{ paddingVertical: 10 }}
         />
+                </>}
+
 
         <TouchableOpacity onPress={handleSignUp} style={{
             marginVertical: 50,

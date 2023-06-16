@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
 import { COLORS } from '../../constants';
 
 const SignUp = (props) => {
@@ -13,29 +13,136 @@ const SignUp = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [contactNumberError, setContactNumberError] = useState('');
+
+  const nameRegex = /^[A-Za-z]+$/;
+  const numberRegex = /^[0-9]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  useEffect(() => {
+    if (email !== '' && !emailRegex.test(email)) {
+      setEmailError('Invalid email format');
+    } else {
+      setEmailError('');
+    }
+  }, [email]);
+  
 
   const handleSignUp = () => {
     if (userType === 'seeker') {
-      // Perform sign up logic for seeker
-      console.log('Sign up as seeker:', {
-        firstName,
-        lastName,
-        contactNumber,
-        address,
-        location,
-        email,
-        password,
-      });
+  // Perform form validations
+  if (!firstName || !lastName || !contactNumber || !email || !password || !confirmPassword) {
+    setError('Please fill in all the required fields');
+    return;
+  }
+
+  else if (password !== confirmPassword) {
+    setError('Passwords do not match');
+    return;
+  }
+
+
+  else if (!nameRegex.test(firstName)) {
+    setError('Invalid first name format');
+    return;
+  }
+
+  else if (!nameRegex.test(lastName)) {
+    setError('Invalid last name format');
+    return;
+  }
+
+  else if (!numberRegex.test(contactNumber)) {
+    setError('Contact number should contain numbers only');
+    return;
+  }
+
+  else if (emailError !== '') {
+    setError(emailError);
+    return;
+  }
+
+  else{
+
+    setError('');
+
+          // POST API
+          fetch('http://10.211.55.3:3001/addseeker', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userType,
+                firstName,
+                lastName,
+                contactNumber,
+                address,
+                location,
+                email,
+                password,
+            })
+          })
+          .then(() => setMessage("Seeker registered!!!!"));
+        
+  }
+
+
+      
+
+
     } else {
       // Perform sign up logic for mentor
-      console.log('Sign up as mentor:', {
-        firstName,
-        lastName,
-        contactNumber,
-        address,
-        email,
-        password,
-      });
+
+      if (!firstName || !lastName || !contactNumber || !email) {
+        setError('Please fill in all the required fields');
+        return;
+      }
+
+      else if (!nameRegex.test(firstName)) {
+        setError('Invalid first name format');
+        return;
+      }
+    
+      else if (!nameRegex.test(lastName)) {
+        setError('Invalid last name format');
+        return;
+      }
+    
+      else if (!numberRegex.test(contactNumber)) {
+        setError('Contact number should contain numbers only');
+        return;
+      }
+    
+      else if (emailError !== '') {
+        setError(emailError);
+        return;
+      }
+
+      else{
+setError('');
+          // POST API
+          fetch('http://10.211.55.3:3001/addmentor', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                contactNumber,
+                email
+            })
+          })
+          .then(() => setMessage("Mentor registered!!!!"));
+      }
+
+
+          
     }
         props.registered();
   };
@@ -83,6 +190,7 @@ const SignUp = (props) => {
           placeholder="Contact Number"
           value={contactNumber}
           onChangeText={(text) => setContactNumber(text)}
+          style={{ paddingVertical: 10 }}
         />
         {userType === 'seeker' && (
           <TextInput
@@ -106,6 +214,7 @@ const SignUp = (props) => {
           onChangeText={(text) => setEmail(text)}
           style={{ paddingVertical: 10 }}
         />
+        {userType === 'seeker' && <>
         <TextInput
           placeholder="Password"
           secureTextEntry
@@ -120,6 +229,8 @@ const SignUp = (props) => {
           onChangeText={(text) => setConfirmPassword(text)}
           style={{ paddingVertical: 10 }}
         />
+        </>}
+
 
         <TouchableOpacity onPress={handleSignUp} style={{
             marginVertical: 50,
@@ -138,6 +249,16 @@ const SignUp = (props) => {
   }}>Sign Up</Text>
   </TouchableOpacity>
 
+  <View style={{ flex: 1 }}>
+  {/* Existing JSX code */}
+  <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+    {/* Existing TextInput fields */}
+    {error !== '' && <Text style={{ color: 'red' }}>{error}</Text>}
+    {emailError !== '' && <Text style={{ color: 'red' }}>{emailError}</Text>}
+    {contactNumberError !== '' && <Text style={{ color: 'red' }}>{contactNumberError}</Text>}
+    {/* Existing TouchableOpacity */}
+  </View>
+</View>
       </View>
     </View>
   );

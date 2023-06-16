@@ -254,6 +254,8 @@ setError('');
   <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
     {/* Existing TextInput fields */}
     {error !== '' && <Text style={{ color: 'red' }}>{error}</Text>}
+    {emailError !== '' && <Text style={{ color: 'red' }}>{emailError}</Text>}
+    {contactNumberError !== '' && <Text style={{ color: 'red' }}>{contactNumberError}</Text>}
     {/* Existing TouchableOpacity */}
   </View>
 </View>

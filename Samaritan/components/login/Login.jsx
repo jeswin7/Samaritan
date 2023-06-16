@@ -6,10 +6,46 @@ const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+
+  const postAPI = async () => {
+
+
+
+
+  
+      const url = `http://10.211.55.3:3001/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+    
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+        });
+    
+        const data = await response.json();
+        console.log('Response data:', data.status);
+    
+        // Process the response data
+       if(data.status === 200)
+        props.isValid();
+      else
+        alert("Invalid user!!!")
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle error
+      }
+
+
+  }
+  
+
   const handleLogin = () => {
     // Perform login logic here
     console.log('Logging in...', email, password);
-    props.isValid();
+    postAPI();
   };
 
   const handleNewuser = () => {
@@ -17,15 +53,17 @@ const Login = (props) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
+      <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
       <TextInput
-        style={styles.input}
+                  style={{ paddingVertical: 10 }}
+
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
       />
       <TextInput
-        style={styles.input}
+        style={{ paddingVertical: 10 }}
         placeholder="Password"
         secureTextEntry
         value={password}
@@ -52,11 +90,13 @@ const Login = (props) => {
       <TouchableOpacity onPress={handleNewuser}
       style={{
             flex: 1,
-            marginVertical: 50,
+            marginVertical: 40,
             alignItems: 'center',
           }}>
-          <Text>New to Samaritan? Sign up now...</Text>
+          <Text style={{ color: COLORS.primary }}>New to Samaritan? Sign up now...</Text>
         </TouchableOpacity>
+      </View>
+ 
     </View>
   );
 };

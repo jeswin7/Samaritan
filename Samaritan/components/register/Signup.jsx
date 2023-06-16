@@ -66,16 +66,18 @@ const SignUp = (props) => {
           <Text style={{color: userType === 'mentor' ? COLORS.white : COLORS.primary }}>Mentor</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ paddingHorizontal: 20 }}>
+      <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
         <TextInput
           placeholder="First Name"
           value={firstName}
           onChangeText={(text) => setFirstName(text)}
+          style={{ paddingVertical: 10 }}
         />
         <TextInput
           placeholder="Last Name"
           value={lastName}
           onChangeText={(text) => setLastName(text)}
+          style={{ paddingVertical: 10 }}
         />
         <TextInput
           placeholder="Contact Number"
@@ -84,9 +86,10 @@ const SignUp = (props) => {
         />
         {userType === 'seeker' && (
           <TextInput
-            placeholder="Address (Country)"
+            placeholder="Address"
             value={address}
             onChangeText={(text) => setAddress(text)}
+            style={{ paddingVertical: 10 }}
           />
         )}
         {userType === 'seeker' && (
@@ -94,24 +97,28 @@ const SignUp = (props) => {
             placeholder="Location"
             value={location}
             onChangeText={(text) => setLocation(text)}
+            style={{ paddingVertical: 10 }}
           />
         )}
         <TextInput
           placeholder="Email"
           value={email}
           onChangeText={(text) => setEmail(text)}
+          style={{ paddingVertical: 10 }}
         />
         <TextInput
           placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
+          style={{ paddingVertical: 10 }}
         />
         <TextInput
           placeholder="Confirm Password"
           secureTextEntry
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
+          style={{ paddingVertical: 10 }}
         />
 
         <TouchableOpacity onPress={handleSignUp} style={{

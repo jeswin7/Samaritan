@@ -1,10 +1,23 @@
 {
   "expo": {
     "scheme": "acme",
+    "platforms": ["ios", "android", "web"], 
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#242948"
+    },
     "web": {
       "bundler": "metro"
     },
     "name": "Samaritan",
-    "slug": "Samaritan"
+    "slug": "Samaritan",
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    }
   }
 }

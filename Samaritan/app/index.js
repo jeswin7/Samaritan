@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { View, Text, ScrollView, SafeAreaView } from "react-native";
+import { View, Text, ScrollView, SafeAreaView, Image, StyleSheet } from "react-native";
 import { Stack, useRouter } from "expo-router";
 
-import { COLORS, icons, images, SIZES} from '../constants';
+import { COLORS, icons, images, SIZES, strings } from '../constants';
 import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login, Signup } from '../components';
-import { ImageBackground } from "react-native-web";
+
+
+console.log('text:',strings.appHeader)
+
 
 const Home = () => {
 
@@ -26,53 +29,69 @@ const Home = () => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+        <SafeAreaView style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerStyle: { backgroundColor: COLORS.lightWhite},
                     headerShadowVisible: false,
-                    // headerLeft: () => (
-                    //     <ScreenHeaderBtn iconUrl={icons.menu} dimension="60%" />
-                    // ),
-                    // headerRight: () => (
-                    //     <ScreenHeaderBtn iconUrl={icons.profile} dimension="100%"/>
-                    // ),
-                    headerTitle: "SAMARITAN"
-                 }}
+                    headerTitle: "",
+                }}
             />
+            <View style={styles.headerView}>
+                <Text style={styles.headerText}>{strings.appHeader}</Text>
+                <Image source={icons.logo} style={styles.logo}></Image>
+            </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View
                     style={{
                         flex: 1,
                         padding: SIZES.medium
                     }}
-                    >
+                >
                     {
-                        isLoggedIn?
-                        <Welcome />
-                        :
-                        <View>
-                            {
-                            isNewUser?
-                            <Signup
-                            registered={redirectToLoginScreen}
-                            />
+                        isLoggedIn ?
+                            <Welcome />
                             :
-                            <Login
-                            isValid={redirectToHomeScreen}
-                            isNewUser={redirectToRegisterScreen}
-                           />
-                        }
-                        </View>
-
-
+                            <View>
+                                {
+                                    isNewUser ?
+                                        <Signup
+                                            registered={redirectToLoginScreen}
+                                        />
+                                        :
+                                        <Login
+                                            isValid={redirectToHomeScreen}
+                                            isNewUser={redirectToRegisterScreen}
+                                        />
+                                }
+                            </View>
                     }
-
-
-                    </View>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.lightWhite,
+        headerShown: false
+    },
+    headerView: {
+        width: '100%',
+        height: '30%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    headerText:{
+        color: '#242948', 
+        fontSize: SIZES.xxxLarge,
+    },
+    logo:{
+        height: 150, 
+        width: 150
+    }
+});
 
 export default Home;

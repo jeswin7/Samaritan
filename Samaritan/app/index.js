@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     headerText:{
-        color: '#242948', 
+        color: COLORS.secondary, 
         fontSize: SIZES.xxxLarge,
     },
     logo:{

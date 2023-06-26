@@ -1,51 +1,69 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { COLORS } from '../../constants';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { COLORS, FONT, SIZES, strings } from '../../constants';
+import { color } from 'react-native-reanimated';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [checkValidEmail, setCheckValidEmail] = useState(false);
 
+  //email validation
+  const handleCheckEmail = text => {
+    let reg = /\S+@\S+\.\S+/;
+    let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+    setEmail(text);
+    if(reg.test(text) || regex.test(text)){
+      setCheckValidEmail(false);
+    }else{
+      setCheckValidEmail(true);
+    }
+  }
 
   const postAPI = async () => {
+    const url = `http://10.211.55.3:3001/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
 
+      const data = await response.json();
+      console.log('Response data:', data.status);
 
-
-  
-      const url = `http://10.211.55.3:3001/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-    
-      try {
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-        });
-    
-        const data = await response.json();
-        console.log('Response data:', data.status);
-    
-        // Process the response data
-       if(data.status === 200)
+      // Process the response data
+      if (data.status === 200)
         props.isValid();
       else
-        alert("Invalid user!!!")
-      } catch (error) {
-        console.error('Error:', error);
-        // Handle error
-      }
-
-
+        alert(strings.invalidUser);
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    }
   }
-  
 
   const handleLogin = () => {
     // Perform login logic here
     console.log('Logging in...', email, password);
-    postAPI();
+    if(!email && !password){
+      alert(strings.loginError);
+    }else if(!email){
+      alert(strings.emailError)
+    }else if(!password){
+      alert(strings.passwordError)
+    }else{
+      postAPI();
+    }
+  };
+
+  const handleForgotPassword = () => {
+    // Perform forotpassword logic here
+    console.log('Forgot Password...');
   };
 
   const handleNewuser = () => {
@@ -55,48 +73,36 @@ const Login = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
-      <TextInput
-                  style={{ paddingVertical: 10 }}
-
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={{ paddingVertical: 10 }}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity onPress={handleLogin} style={{
-            marginVertical: 50,
-            elevation: 8,
-            backgroundColor: COLORS.primary,
-            borderRadius: 10,
-            paddingVertical: 10,
-            paddingHorizontal: 12
-          }}>
-    <Text style={{
-    fontSize: 18,
-    color: COLORS.white,
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase"
-  }}>Sign In</Text>
-  </TouchableOpacity>
+        <TextInput
+          style={styles.emailTextField}
+          placeholder={strings.email}
+          value={email}
+          onChangeText={handleCheckEmail}
+        />
+        {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>): (<Text></Text>)}
+        <TextInput
+          style={styles.passwordTextField}
+          placeholder={strings.password}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <TouchableOpacity onPress={handleForgotPassword}
+          style={styles.forgotPasswordTextField}>
+          <Text style={styles.signUpText}>{strings.forgotPassword}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleLogin} style={styles.signInButton}>
+          <Text style={styles.signInText}>{strings.signIn}</Text>
+        </TouchableOpacity>
 
 
-      <TouchableOpacity onPress={handleNewuser}
-      style={{
-            flex: 1,
-            marginVertical: 40,
-            alignItems: 'center',
-          }}>
-          <Text style={{ color: COLORS.primary }}>New to Samaritan? Sign up now...</Text>
+        <TouchableOpacity onPress={handleNewuser}
+          style={styles.signUpTextField}>
+          <Text style={styles.newToText}>{strings.newTo}</Text>
+          <Text style={styles.signUpText}>{strings.signUp}</Text>
         </TouchableOpacity>
       </View>
- 
+
     </View>
   );
 };
@@ -107,13 +113,61 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
   },
-  input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'gray',
-    marginBottom: 12,
-    paddingHorizontal: 8,
+  emailTextField: {
+    paddingVertical: 12,
+    backgroundColor: COLORS.tertiary,
+    fontSize: SIZES.medium,
+    padding: SIZES.small,
+    borderRadius: SIZES.small
   },
+  passwordTextField: {
+    paddingVertical: 12,
+    backgroundColor: COLORS.tertiary,
+    fontSize: SIZES.medium,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    marginTop: SIZES.medium
+  },
+  forgotPasswordTextField: {
+    flex: 1,
+    marginVertical: 20,
+    justifyContent:'flex-end',
+    alignItems: 'flex-end',
+  },
+  signInButton: {
+    marginVertical: 40,
+    elevation: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12
+  },
+  signInText: {
+    fontSize: 18,
+    color: COLORS.white,
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
+  signUpTextField: {
+    flex: 1,
+    justifyContent:'center',
+    alignItems: 'center',
+    flexDirection:'row'
+  },
+  newToText: {
+    color: COLORS.secondary,
+    fontSize: SIZES.large,
+  },
+  signUpText: {
+    color: COLORS.primary,
+    fontSize: SIZES.large,
+    fontWeight: 'bold'
+  },
+  invalidText : {
+    color : COLORS.red,
+    paddingVertical: 5,
+    paddingLeft: 8
+  }
 });
 
 export default Login;

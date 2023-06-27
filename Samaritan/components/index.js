@@ -6,6 +6,7 @@ import Nearbyjobs from "./home/nearby/Nearbyjobs";
 import Popularjobs from "./home/popular/Popularjobs";
 import Login from "./login/Login";
 import Signup from './register/Signup';
+import ForgotPassword from "./forgotPassword/ForgotPassword";
 
 // job details screen
 import Company from "./jobdetails/company/Company";
@@ -29,5 +30,6 @@ export {
   Specifics,
   NearbyJobCard,
   Login,
-  Signup
+  Signup,
+  ForgotPassword
 };

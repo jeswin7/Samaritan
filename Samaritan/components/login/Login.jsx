@@ -62,8 +62,9 @@ const Login = (props) => {
   };
 
   const handleForgotPassword = () => {
-    // Perform forotpassword logic here
+    // Perform forgot password logic here
     console.log('Forgot Password...');
+    props.forgotPassword();
   };
 
   const handleNewuser = () => {
@@ -91,6 +92,7 @@ const Login = (props) => {
           style={styles.forgotPasswordTextField}>
           <Text style={styles.signUpText}>{strings.forgotPassword}</Text>
         </TouchableOpacity>
+
         <TouchableOpacity onPress={handleLogin} style={styles.signInButton}>
           <Text style={styles.signInText}>{strings.signIn}</Text>
         </TouchableOpacity>

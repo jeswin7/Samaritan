@@ -10,7 +10,8 @@ const strings = {
     passwordError: 'Password is required!',
     loginError: 'Email and Password are required!',
     invalidUser: 'User is invalid!',
-    invalidEmail: 'Please enter valid email'
+    invalidEmail: 'Please enter valid email',
+    continueBtn: 'Continue'
   };
 
   export default strings;

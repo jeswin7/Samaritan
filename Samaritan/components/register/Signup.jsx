@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
-import { COLORS } from '../../constants';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {SelectList} from 'react-native-dropdown-select-list';
+import {  COLORS, FONT, SIZES, strings  } from '../../constants';
+
 
 const SignUp = (props) => {
   const [userType, setUserType] = useState('seeker');
@@ -9,60 +11,154 @@ const SignUp = (props) => {
   const [lastName, setLastName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [address, setAddress] = useState('');
+  const [country, setCountry] = useState('');
   const [location, setLocation] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [contactNumberError, setContactNumberError] = useState('');
+  const [checkValidEmail, setCheckValidEmail] = useState(false);
+  const [checkValidFname, setCheckValidFname] = useState(false);
+  const [checkFnameFormat, setCheckFormatFname] = useState(false);
 
-  const nameRegex = /^[A-Za-z]+$/;
-  const numberRegex = /^[0-9]+$/;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const [checkValidLname, setCheckValidLname] = useState(false);
+  const [checkValidcontactNumber, setCheckcontactNUmber] = useState(false);
+  const [checkValidCountry, setCheckValidCountry] = useState(false);
+  const [checkValidLocation, setCheckValidLocation] = useState(false);
+  const [checkValidPassword, setCheckValidPassword] = useState(false);
+  const [checkValidconfirmPwd, setCheckValdconfirmPwd] = useState(false);
+  const [checkPasswordmatch, setcheckpasswordmatch] = useState(false);
+  const [checkContactformat, setCheckcontactformat] = useState(false);
 
-  useEffect(() => {
-    if (email !== '' && !emailRegex.test(email)) {
-      setEmailError('Invalid email format');
-    } else {
-      setEmailError('');
+  //fname validation
+  const handleCheckFname = text => {
+    let nameRegex = /^[A-Za-z]+$/;
+    setFirstName(text);
+    if(!firstName){
+      setCheckValidFname(false);
     }
-  }, [email]);
+    else if(!nameRegex.test(firstName)){
+      setCheckFormatFname(false);
+    }
+    else{
+      setCheckValidFname(true);
+      setCheckFormatFname(true);
+    }
+  }
+   //lname validation
+   const handleCheckLname = text => {
+    setLastName(text);
+    if(!lastName){
+      setCheckValidLname(false);  
+    }
+    else{
+      setCheckValidLname(true);
+    }
+   }
+
+   //contact number validation
+   const handleCheckContactnumber = text =>{
+    let numberRegex = /^[0-9]+$/;
+    setContactNumber(text);
+    if(!contactNumber){
+      setCheckcontactNUmber(false);
+    }
+    else if(!numberRegex.test(contactNumber)){
+       setCheckcontactformat(false);
+    }else{
+      setCheckcontactNUmber(true);
+      setCheckcontactformat(true);
+    }
+   }
+
+  //country validation
+  const handleCheckCountry = text => {
+    setCountry(text);
+    if(!country){
+      setCheckValidCountry(false);
+    }  
+    else{
+      setCheckValidCountry(true);
+    }  
+  }
+   //location validation
+   const handleCheckLocation= text => {
+    setLocation(text);
+    if(!location){
+      setCheckValidLocation(false);
+    }
+    else{
+      setCheckValidLocation(true);
+    }
+   }
+
+  //email validation
+  const handleCheckEmail = text => {
+    let reg = /\S+@\S+\.\S+/;
+    let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    setEmail(text);
+    if(reg.test(text) || regex.test(text)){
+      setCheckValidEmail(false);
+    }else{
+      setCheckValidEmail(true);
+    }
+  }
+
+  // password validation
+  const handleCheckPassword = text => {
+    setPassword(text);
+    if(!password){
+      setCheckValidPassword(false); 
+    }
+    else{
+      setCheckValidPassword(true);
+    }
+  }
   
+  //confirm password validation
+  const handleCheckConfirmpassword = text => {
+    setConfirmPassword(text);
+    if(!confirmPassword){
+      setCheckValdconfirmPwd(false);
+    }
+    else if(password !== confirmPassword){
+      setcheckpasswordmatch(false);
+    }else{
+      setCheckValdconfirmPwd(true);
+      setcheckpasswordmatch(true);
+    }
+  }
+ 
+  const countrylist = [
+    {key:'1', value:'India'},
+    {key:'2', value:'China'},
+    {key:'3', value:'UK'},
+   ]
 
   const handleSignUp = () => {
     if (userType === 'seeker') {
   // Perform form validations
   if (!firstName || !lastName || !contactNumber || !email || !password || !confirmPassword) {
-    setError('Please fill in all the required fields');
-    return;
+    alert(strings.emptyfieldError);
   }
 
-  else if (password !== confirmPassword) {
-    setError('Passwords do not match');
-    return;
-  }
+  // else if (password !== confirmPassword) {
+  //   alert(strings.pwdmatchError);
+  // }
+  // else if (!nameRegex.test(firstName)) {
+  //   setError('Invalid first name format');
+  //   return;
+  // }
 
+  // else if (!nameRegex.test(lastName)) {
+  //   setError('Invalid last name format');
+  //   return;
+  // }
 
-  else if (!nameRegex.test(firstName)) {
-    setError('Invalid first name format');
-    return;
-  }
-
-  else if (!nameRegex.test(lastName)) {
-    setError('Invalid last name format');
-    return;
-  }
-
-  else if (!numberRegex.test(contactNumber)) {
-    setError('Contact number should contain numbers only');
-    return;
-  }
-
-  else if (emailError !== '') {
-    setError(emailError);
-    return;
-  }
+  // else if (!numberRegex.test(contactNumber)) {
+  //   setError('Contact number should contain numbers only');
+  //   return;
+  // }
 
   else{
 
@@ -98,29 +194,29 @@ const SignUp = (props) => {
       // Perform sign up logic for mentor
 
       if (!firstName || !lastName || !contactNumber || !email) {
-        setError('Please fill in all the required fields');
+        alert(strings.emptyfieldError);
         return;
       }
 
-      else if (!nameRegex.test(firstName)) {
-        setError('Invalid first name format');
-        return;
-      }
+      // else if (!nameRegex.test(firstName)) {
+      //   setError('Invalid first name format');
+      //   return;
+      // }
     
-      else if (!nameRegex.test(lastName)) {
-        setError('Invalid last name format');
-        return;
-      }
+      // else if (!nameRegex.test(lastName)) {
+      //   setError('Invalid last name format');
+      //   return;
+      // }
     
-      else if (!numberRegex.test(contactNumber)) {
-        setError('Contact number should contain numbers only');
-        return;
-      }
+      // else if (!numberRegex.test(contactNumber)) {
+      //   setError('Contact number should contain numbers only');
+      //   return;
+      // }
     
-      else if (emailError !== '') {
-        setError(emailError);
-        return;
-      }
+      // else if (emailError !== '') {
+      //   setError(emailError);
+      //   return;
+      // }
 
       else{
 setError('');
@@ -159,7 +255,7 @@ setError('');
           }}
           onPress={() => setUserType('seeker')}
         >
-          <Text style={{color: userType === 'seeker' ? COLORS.white : COLORS.primary }}>Seeker</Text>
+          <Text style={{color: userType === 'seeker' ? COLORS.white : COLORS.primary,fontSize: SIZES.large }}>Seeker</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -170,98 +266,149 @@ setError('');
           }}
           onPress={() => setUserType('mentor')}
         >
-          <Text style={{color: userType === 'mentor' ? COLORS.white : COLORS.primary }}>Mentor</Text>
+          <Text style={{color: userType === 'mentor' ? COLORS.white : COLORS.primary,fontSize: SIZES.large }}>Mentor</Text>
         </TouchableOpacity>
       </View>
       <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
         <TextInput
-          placeholder="First Name"
+          placeholder={strings.firstName}
           value={firstName}
-          onChangeText={(text) => setFirstName(text)}
-          style={{ paddingVertical: 10 }}
+          onChangeText={handleCheckFname}
+          style={styles.TextField}
         />
+        {checkValidFname ? (<Text style={styles.invalidText}>{strings.fnameError}</Text>): (<Text></Text>)}
+        {checkFnameFormat ? (<Text style={styles.invalidText}>{strings.fnameformatError}</Text>): (<Text></Text>)}
         <TextInput
-          placeholder="Last Name"
+          placeholder={strings.lastName}
           value={lastName}
-          onChangeText={(text) => setLastName(text)}
-          style={{ paddingVertical: 10 }}
+          onChangeText={handleCheckLname}
+          style={styles.TextField}
         />
+        {checkValidLname ? (<Text style={styles.invalidText}>{strings.lnameError}</Text>): (<Text></Text>)}
         <TextInput
-          placeholder="Contact Number"
+          placeholder={strings.contactNumber}
           value={contactNumber}
-          onChangeText={(text) => setContactNumber(text)}
-          style={{ paddingVertical: 10 }}
+          onChangeText={handleCheckContactnumber}
+          style={styles.TextField}
         />
+        {checkValidcontactNumber ? (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>): (<Text></Text>)}
+        {checkContactformat ? (<Text style={styles.invalidText}>{strings.contactformatError}</Text>): (<Text></Text>)}
         {userType === 'seeker' && (
-          <TextInput
-            placeholder="Address"
-            value={address}
-            onChangeText={(text) => setAddress(text)}
-            style={{ paddingVertical: 10 }}
-          />
+         
+          <SelectList data = {countrylist} setCountry={setCountry} 
+          boxStyles={styles.TextField}
+          value={country}
+          onChangeText= {handleCheckCountry}
+          dropdownStyles={styles.dropdownbox}
+          placeholder= {strings.country}
+          dropdownTextStyles={styles.dropdowntext}/>
+          // <TextInput
+          //   placeholder = {strings.country}
+          //   value={address}
+          //   onChangeText={(text) => setAddress(text)}
+          //   style={styles.TextField}
+          // />
         )}
+        {checkValidCountry ? (<Text style={styles.invalidText}>{strings.countryError}</Text>): (<Text></Text>)}
         {userType === 'seeker' && (
           <TextInput
-            placeholder="Location"
+            placeholder={strings.location}
             value={location}
-            onChangeText={(text) => setLocation(text)}
-            style={{ paddingVertical: 10 }}
+            onChangeText={handleCheckLocation}
+            style={styles.TextField}
           />
         )}
+        {checkValidLocation ? (<Text style={styles.invalidText}>{strings.locationError}</Text>): (<Text></Text>)}
         <TextInput
-          placeholder="Email"
+          placeholder={strings.email}
           value={email}
-          onChangeText={(text) => setEmail(text)}
-          style={{ paddingVertical: 10 }}
+          onChangeText={handleCheckEmail}
+          style={styles.TextField}
         />
+        {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>): (<Text></Text>)}
+
         {userType === 'seeker' && <>
         <TextInput
-          placeholder="Password"
-          secureTextEntry
+          placeholder={strings.password}
+          secureTextEntry={true}
           value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={{ paddingVertical: 10 }}
+          onChangeText={handleCheckPassword}
+          style={styles.TextField}
         />
+        {checkValidPassword ? (<Text style={styles.invalidText}>{strings.passwordError}</Text>): (<Text></Text>)}
+
         <TextInput
-          placeholder="Confirm Password"
+          placeholder={strings.confirmPassword}
           secureTextEntry
           value={confirmPassword}
-          onChangeText={(text) => setConfirmPassword(text)}
-          style={{ paddingVertical: 10 }}
+          onChangeText={handleCheckConfirmpassword}
+          style={styles.TextField}
         />
+        {checkValidconfirmPwd ? (<Text style={styles.invalidText}>{strings.confirmPasswordError}</Text>): (<Text></Text>)}
+        {checkPasswordmatch ? (<Text style={styles.invalidText}>{strings.pwdmatchError}</Text>): (<Text></Text>)}
+
         </>}
 
 
-        <TouchableOpacity onPress={handleSignUp} style={{
-            marginVertical: 50,
-            elevation: 8,
-            backgroundColor: COLORS.primary,
-            borderRadius: 10,
-            paddingVertical: 10,
-            paddingHorizontal: 12
-          }}>
-    <Text style={{
+        <TouchableOpacity onPress={handleSignUp} style={styles.signUpButton}>
+          <Text style={styles.signUpText}>{strings.signUp}</Text>
+  </TouchableOpacity>
+
+  
+  </View>
+</View>
+  );
+};
+
+const styles = StyleSheet.create({
+  TextField: {
+    paddingVertical: 12,  
+    backgroundColor: COLORS.tertiary,
+    fontSize: SIZES.medium,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    marginTop: SIZES.medium,
+    borderColor: COLORS.tertiary,
+  },
+  signUpButton: {
+    marginVertical: 40,
+    elevation: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12
+  },
+  signUpText: {
     fontSize: 18,
     color: COLORS.white,
     fontWeight: "bold",
     alignSelf: "center",
-    textTransform: "uppercase"
-  }}>Sign Up</Text>
-  </TouchableOpacity>
+  },
+  
+  dropdown:{
+    paddingVertical: 12,  
+    backgroundColor: COLORS.tertiary,
+    fontSize: SIZES.medium,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    marginTop: SIZES.medium,
+    borderColor: COLORS.tertiary
+  },
 
-  <View style={{ flex: 1 }}>
-  {/* Existing JSX code */}
-  <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
-    {/* Existing TextInput fields */}
-    {error !== '' && <Text style={{ color: 'red' }}>{error}</Text>}
-    {emailError !== '' && <Text style={{ color: 'red' }}>{emailError}</Text>}
-    {contactNumberError !== '' && <Text style={{ color: 'red' }}>{contactNumberError}</Text>}
-    {/* Existing TouchableOpacity */}
-  </View>
-</View>
-      </View>
-    </View>
-  );
-};
+  dropdownbox:{
+    backgroundColor: COLORS.tertiary,
+    borderColor: COLORS.tertiary,
+    maxHeight:200,
+  },
+  dropdowntext: {
+    color: COLORS.gray, 
+  },
+
+  invalidText : {
+    color : COLORS.red,
+    paddingVertical: 5,
+    paddingLeft: 8
+},
+});
 
 export default SignUp;

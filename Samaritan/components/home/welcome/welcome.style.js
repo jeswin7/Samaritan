@@ -4,18 +4,37 @@ import { COLORS, FONT, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  userName: {
-    fontFamily: FONT.regular,
-    fontSize: SIZES.large,
+  dashboardHeading: {
     color: COLORS.secondary,
-  },
-  welcomeMessage: {
-    fontFamily: FONT.bold,
     fontSize: SIZES.xLarge,
-    color: COLORS.primary,
-    marginTop: 2,
+    fontWeight: 'bold',
+  },
+  menuIcon: {
+    height: 20,
+    width: 25,
+    marginLeft: 20
+  },
+  buttonBellStyle: {
+    height: 30,
+    width: 30,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonStyle: {
+    height: 30,
+    width: 30,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  profileIcon: {
+    height: 20,
+    width: 20,
   },
   searchContainer: {
     justifyContent: "center",
@@ -26,7 +45,7 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.tertiary,
     marginRight: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
@@ -34,7 +53,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   searchInput: {
-    fontFamily: FONT.regular,
     width: "100%",
     height: "100%",
     paddingHorizontal: SIZES.medium,
@@ -42,7 +60,6 @@ const styles = StyleSheet.create({
   searchBtn: {
     width: 50,
     height: "100%",
-    backgroundColor: COLORS.primary,
     borderRadius: SIZES.medium,
     justifyContent: "center",
     alignItems: "center",
@@ -50,23 +67,67 @@ const styles = StyleSheet.create({
   searchBtnImage: {
     width: "50%",
     height: "50%",
-    tintColor: COLORS.white,
+  },
+  filterBtn: {
+    width: 50,
+    height: "100%",
+    marginLeft: 5,
+    marginRight: -18,
+    justifyContent: "center",
+    alignItems: "center",
   },
   tabsContainer: {
-    width: "100%",
+    height: '80%',
     marginTop: SIZES.medium,
   },
-  tab: (activeJobType, item) => ({
-    paddingVertical: SIZES.small / 2,
-    paddingHorizontal: SIZES.small,
+  listView: {
+    backgroundColor: COLORS.tertiary,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     borderRadius: SIZES.medium,
-    borderWidth: 1,
-    borderColor: activeJobType === item ? COLORS.secondary : COLORS.gray2,
-  }),
-  tabText: (activeJobType, item) => ({
-    fontFamily: FONT.medium,
-    color: activeJobType === item ? COLORS.secondary : COLORS.gray2,
-  }),
+  },
+  item: {
+    flex: 1,
+    flexDirection: 'column',
+    padding: 5,
+    marginVertical: 8,
+    marginHorizontal: 8
+  },
+  cheveronView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20
+  },
+  cheveronIcon: {
+    height: 25,
+    width: 15,
+  },
+  title: {
+    fontSize: SIZES.large,
+    color: COLORS.secondary,
+    paddingVertical: 5
+  },
+  seperatorStyle: {
+    height: 30, 
+    width: '100%' 
+  },
+  homeContainer: {
+    backgroundColor: '#fff', 
+    height: '100%', 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+  homeSubContainer: { 
+    backgroundColor: '#fff', 
+    width: '90%', 
+    margin: -40 
+  },
+  profileView: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    backgroundColor:'#fff' 
+  }
 });
 
 export default styles;

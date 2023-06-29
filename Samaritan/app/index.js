@@ -44,52 +44,42 @@ const Home = () => {
         <SafeAreaView style={styles.container}>
             <Stack.Screen
                 options={{
-                    headerShadowVisible: false,
-                    headerTitle: "",
+                    headerShown: false,
                 }}
             />
-            <View style={styles.headerView}>
+            {!isLoggedIn ? (<View style={styles.headerView}>
                 <View style={styles.headerButtonView}>
-                    <TouchableOpacity  style={styles.buttonStyle} onPress={() => redirectToLoginScreen()}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => redirectToLoginScreen()}>
                         {backButtonVisible ? (<Image source={icons.backIcon} style={styles.backIcon}></Image>) : ''}
                     </TouchableOpacity >
                     <Text style={styles.headerText}>{strings.appHeader}</Text>
                 </View>
                 <Image source={icons.logo} style={styles.logo}></Image>
-            </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View
-                    style={{
-                        flex: 1,
-                        padding: SIZES.medium
-                    }}
-                >
-                    {
-                        isLoggedIn ?
-                            <Welcome />
-                            :
-                            <View>
-                                {
-                                    isNewUser ?
-                                        <Signup
-                                            registered={redirectToLoginScreen}
-                                        />
-                                        :
-                                        !forgotPassword ? 
-                                        <Login
-                                            isValid={redirectToHomeScreen}
-                                            isNewUser={redirectToRegisterScreen}
-                                            forgotPassword={redirectToForgotPassword}
-                                        />
-                                        :
-                                        <ForgotPassword
-                                            registered={redirectToLoginScreen}
-                                        />
-                                }
-                            </View>
-                    }
-                </View>
-            </ScrollView>
+            </View>) : ''}
+            {
+                isLoggedIn ?
+                    <Welcome />
+                    :
+                    <View>
+                        {
+                            isNewUser ?
+                                <Signup
+                                    registered={redirectToLoginScreen}
+                                />
+                                :
+                                !forgotPassword ?
+                                    <Login
+                                        isValid={redirectToHomeScreen}
+                                        isNewUser={redirectToRegisterScreen}
+                                        forgotPassword={redirectToForgotPassword}
+                                    />
+                                    :
+                                    <ForgotPassword
+                                        registered={redirectToLoginScreen}
+                                    />
+                        }
+                    </View>
+            }
         </SafeAreaView>
     )
 }
@@ -101,6 +91,7 @@ const styles = StyleSheet.create({
         headerShown: false
     },
     headerView: {
+        marginTop: 50,
         width: '100%',
         height: '30%',
         flexDirection: 'column',

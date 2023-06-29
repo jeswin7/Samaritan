@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import {SelectList} from 'react-native-dropdown-select-list';
-import {  COLORS, FONT, SIZES, strings  } from '../../constants';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { COLORS, FONT, SIZES, strings } from '../../constants';
 
 
 const SignUp = (props) => {
@@ -18,176 +18,146 @@ const SignUp = (props) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [checkValidEmail, setCheckValidEmail] = useState(false);
   const [checkValidFname, setCheckValidFname] = useState(false);
-  const [checkFnameFormat, setCheckFormatFname] = useState(false);
 
   const [checkValidLname, setCheckValidLname] = useState(false);
-  const [checkValidcontactNumber, setCheckcontactNUmber] = useState(false);
+  const [checkValidContactNumber, setCheckContactNumber] = useState(false);
   const [checkValidCountry, setCheckValidCountry] = useState(false);
   const [checkValidLocation, setCheckValidLocation] = useState(false);
   const [checkValidPassword, setCheckValidPassword] = useState(false);
-  const [checkValidconfirmPwd, setCheckValdconfirmPwd] = useState(false);
-  const [checkPasswordmatch, setcheckpasswordmatch] = useState(false);
-  const [checkContactformat, setCheckcontactformat] = useState(false);
+  const [checkPasswordMatch, setCheckPasswordMatch] = useState(false);
 
   //fname validation
   const handleCheckFname = text => {
-    let nameRegex = /^[A-Za-z]+$/;
-    setFirstName(text);
-    if(!firstName){
+    let nameRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
+    if (nameRegex.test(text)) {
       setCheckValidFname(false);
+      setFirstName(text);
     }
-    else if(!nameRegex.test(firstName)){
-      setCheckFormatFname(false);
-    }
-    else{
+    else {
       setCheckValidFname(true);
-      setCheckFormatFname(true);
     }
   }
-   //lname validation
-   const handleCheckLname = text => {
-    setLastName(text);
-    if(!lastName){
-      setCheckValidLname(false);  
+  //lname validation
+  const handleCheckLname = text => {
+    let nameRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
+    if (nameRegex.test(text)) {
+      setCheckValidLname(false);
+      setLastName(text);
     }
-    else{
+    else {
       setCheckValidLname(true);
     }
-   }
+  }
 
-   //contact number validation
-   const handleCheckContactnumber = text =>{
-    let numberRegex = /^[0-9]+$/;
-    setContactNumber(text);
-    if(!contactNumber){
-      setCheckcontactNUmber(false);
+  //contact number validation
+  const handleCheckContactnumber = text => {
+    let numberRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{3}$/;
+    if (numberRegex.test(text)) {
+      setCheckContactNumber(false);
+      setContactNumber(text);
+    } else {
+      setCheckContactNumber(true);
     }
-    else if(!numberRegex.test(contactNumber)){
-       setCheckcontactformat(false);
-    }else{
-      setCheckcontactNUmber(true);
-      setCheckcontactformat(true);
-    }
-   }
+  }
 
   //country validation
   const handleCheckCountry = text => {
-    setCountry(text);
-    if(!country){
+    if (text) {
       setCheckValidCountry(false);
-    }  
-    else{
-      setCheckValidCountry(true);
-    }  
-  }
-   //location validation
-   const handleCheckLocation= text => {
-    setLocation(text);
-    if(!location){
-      setCheckValidLocation(false);
+      setCountry(text);
     }
-    else{
+    else {
+      setCheckValidCountry(true);
+    }
+  }
+  //location validation
+  const handleCheckLocation = text => {
+    let locationRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
+    if (locationRegex.test(text)) {
+      setCheckValidLocation(false);
+      setLocation(text);
+    }
+    else {
       setCheckValidLocation(true);
     }
-   }
+  }
 
   //email validation
   const handleCheckEmail = text => {
     let reg = /\S+@\S+\.\S+/;
     let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    setEmail(text);
-    if(reg.test(text) || regex.test(text)){
+    if (reg.test(text) || regex.test(text)) {
       setCheckValidEmail(false);
-    }else{
+      setEmail(text);
+    } else {
       setCheckValidEmail(true);
     }
   }
 
   // password validation
   const handleCheckPassword = text => {
-    setPassword(text);
-    if(!password){
-      setCheckValidPassword(false); 
+    let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,20}$/;
+    if (passwordRegex.test(text)) {
+      setCheckValidPassword(false);
+      setPassword(text);
     }
-    else{
+    else {
       setCheckValidPassword(true);
     }
   }
-  
+
   //confirm password validation
-  const handleCheckConfirmpassword = text => {
-    setConfirmPassword(text);
-    if(!confirmPassword){
-      setCheckValdconfirmPwd(false);
-    }
-    else if(password !== confirmPassword){
-      setcheckpasswordmatch(false);
-    }else{
-      setCheckValdconfirmPwd(true);
-      setcheckpasswordmatch(true);
+  const handleCheckConfirmpassword = conf => {
+    if (password === conf) {
+      setCheckPasswordMatch(false);
+      setConfirmPassword(conf);
+    } else {
+      setCheckPasswordMatch(true);
     }
   }
- 
+
   const countrylist = [
-    {key:'1', value:'India'},
-    {key:'2', value:'China'},
-    {key:'3', value:'UK'},
-   ]
+    { key: '1', value: 'India' },
+    { key: '2', value: 'China' },
+    { key: '3', value: 'UK' },
+  ]
 
   const handleSignUp = () => {
     if (userType === 'seeker') {
-  // Perform form validations
-  if (!firstName || !lastName || !contactNumber || !email || !password || !confirmPassword) {
-    alert(strings.emptyfieldError);
-  }
+      // Perform form validations
+      if (!firstName || !lastName || !contactNumber || !email || !password || !confirmPassword) {
+        alert(strings.emptyfieldError);
+      }
 
-  // else if (password !== confirmPassword) {
-  //   alert(strings.pwdmatchError);
-  // }
-  // else if (!nameRegex.test(firstName)) {
-  //   setError('Invalid first name format');
-  //   return;
-  // }
+      else {
 
-  // else if (!nameRegex.test(lastName)) {
-  //   setError('Invalid last name format');
-  //   return;
-  // }
+        setError('');
 
-  // else if (!numberRegex.test(contactNumber)) {
-  //   setError('Contact number should contain numbers only');
-  //   return;
-  // }
-
-  else{
-
-    setError('');
-
-          // POST API
-          fetch('http://10.211.55.3:3001/addseeker', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userType,
-                firstName,
-                lastName,
-                contactNumber,
-                address,
-                location,
-                email,
-                password,
-            })
+        // POST API
+        fetch('http://10.211.55.3:3001/addseeker', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userType,
+            firstName,
+            lastName,
+            contactNumber,
+            address,
+            location,
+            email,
+            password,
           })
+        })
           .then(() => setMessage("Seeker registered!!!!"));
-        
-  }
+
+      }
 
 
-      
+
 
 
     } else {
@@ -198,49 +168,29 @@ const SignUp = (props) => {
         return;
       }
 
-      // else if (!nameRegex.test(firstName)) {
-      //   setError('Invalid first name format');
-      //   return;
-      // }
-    
-      // else if (!nameRegex.test(lastName)) {
-      //   setError('Invalid last name format');
-      //   return;
-      // }
-    
-      // else if (!numberRegex.test(contactNumber)) {
-      //   setError('Contact number should contain numbers only');
-      //   return;
-      // }
-    
-      // else if (emailError !== '') {
-      //   setError(emailError);
-      //   return;
-      // }
-
-      else{
-setError('');
-          // POST API
-          fetch('http://10.211.55.3:3001/addmentor', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                firstName,
-                lastName,
-                contactNumber,
-                email
-            })
+      else {
+        setError('');
+        // POST API
+        fetch('http://10.211.55.3:3001/addmentor', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            contactNumber,
+            email
           })
+        })
           .then(() => setMessage("Mentor registered!!!!"));
       }
 
 
-          
+
     }
-        props.registered();
+    props.registered();
   };
 
   return (
@@ -255,7 +205,7 @@ setError('');
           }}
           onPress={() => setUserType('seeker')}
         >
-          <Text style={{color: userType === 'seeker' ? COLORS.white : COLORS.primary,fontSize: SIZES.large }}>Seeker</Text>
+          <Text style={{ color: userType === 'seeker' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Seeker</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -266,7 +216,7 @@ setError('');
           }}
           onPress={() => setUserType('mentor')}
         >
-          <Text style={{color: userType === 'mentor' ? COLORS.white : COLORS.primary,fontSize: SIZES.large }}>Mentor</Text>
+          <Text style={{ color: userType === 'mentor' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Mentor</Text>
         </TouchableOpacity>
       </View>
       <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
@@ -276,40 +226,32 @@ setError('');
           onChangeText={handleCheckFname}
           style={styles.TextField}
         />
-        {checkValidFname ? (<Text style={styles.invalidText}>{strings.fnameError}</Text>): (<Text></Text>)}
-        {checkFnameFormat ? (<Text style={styles.invalidText}>{strings.fnameformatError}</Text>): (<Text></Text>)}
+        {checkValidFname ? (<Text style={styles.invalidText}>{strings.fnameError}</Text>) : (<Text></Text>)}
         <TextInput
           placeholder={strings.lastName}
           value={lastName}
           onChangeText={handleCheckLname}
           style={styles.TextField}
         />
-        {checkValidLname ? (<Text style={styles.invalidText}>{strings.lnameError}</Text>): (<Text></Text>)}
+        {checkValidLname ? (<Text style={styles.invalidText}>{strings.lnameError}</Text>) : (<Text></Text>)}
         <TextInput
           placeholder={strings.contactNumber}
           value={contactNumber}
           onChangeText={handleCheckContactnumber}
           style={styles.TextField}
         />
-        {checkValidcontactNumber ? (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>): (<Text></Text>)}
-        {checkContactformat ? (<Text style={styles.invalidText}>{strings.contactformatError}</Text>): (<Text></Text>)}
+        {checkValidContactNumber ? (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>) : (<Text></Text>)}
         {userType === 'seeker' && (
-         
-          <SelectList data = {countrylist} setCountry={setCountry} 
-          boxStyles={styles.TextField}
-          value={country}
-          onChangeText= {handleCheckCountry}
-          dropdownStyles={styles.dropdownbox}
-          placeholder= {strings.country}
-          dropdownTextStyles={styles.dropdowntext}/>
-          // <TextInput
-          //   placeholder = {strings.country}
-          //   value={address}
-          //   onChangeText={(text) => setAddress(text)}
-          //   style={styles.TextField}
-          // />
+
+          <SelectList data={countrylist} setCountry={setCountry}
+            boxStyles={styles.TextField}
+            value={country}
+            onChangeText={handleCheckCountry}
+            dropdownStyles={styles.dropdownbox}
+            placeholder={strings.country}
+            dropdownTextStyles={styles.dropdowntext} />
         )}
-        {checkValidCountry ? (<Text style={styles.invalidText}>{strings.countryError}</Text>): (<Text></Text>)}
+        {checkValidCountry ? (<Text style={styles.invalidText}>{strings.countryError}</Text>) : (<Text></Text>)}
         {userType === 'seeker' && (
           <TextInput
             placeholder={strings.location}
@@ -318,51 +260,50 @@ setError('');
             style={styles.TextField}
           />
         )}
-        {checkValidLocation ? (<Text style={styles.invalidText}>{strings.locationError}</Text>): (<Text></Text>)}
+        {checkValidLocation ? (<Text style={styles.invalidText}>{strings.locationError}</Text>) : (<Text></Text>)}
         <TextInput
           placeholder={strings.email}
           value={email}
           onChangeText={handleCheckEmail}
           style={styles.TextField}
         />
-        {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>): (<Text></Text>)}
+        {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
 
         {userType === 'seeker' && <>
-        <TextInput
-          placeholder={strings.password}
-          secureTextEntry={true}
-          value={password}
-          onChangeText={handleCheckPassword}
-          style={styles.TextField}
-        />
-        {checkValidPassword ? (<Text style={styles.invalidText}>{strings.passwordError}</Text>): (<Text></Text>)}
+          <TextInput
+            placeholder={strings.password}
+            secureTextEntry={true}
+            value={password}
+            onChangeText={handleCheckPassword}
+            style={styles.TextField}
+          />
+          {checkValidPassword ? (<Text style={styles.invalidText}>{strings.passwordError}</Text>) : (<Text></Text>)}
 
-        <TextInput
-          placeholder={strings.confirmPassword}
-          secureTextEntry
-          value={confirmPassword}
-          onChangeText={handleCheckConfirmpassword}
-          style={styles.TextField}
-        />
-        {checkValidconfirmPwd ? (<Text style={styles.invalidText}>{strings.confirmPasswordError}</Text>): (<Text></Text>)}
-        {checkPasswordmatch ? (<Text style={styles.invalidText}>{strings.pwdmatchError}</Text>): (<Text></Text>)}
+          <TextInput
+            placeholder={strings.confirmPassword}
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={handleCheckConfirmpassword}
+            style={styles.TextField}
+          />
+          {checkPasswordMatch ? (<Text style={styles.invalidText}>{strings.pwdmatchError}</Text>) : (<Text></Text>)}
 
         </>}
 
 
         <TouchableOpacity onPress={handleSignUp} style={styles.signUpButton}>
           <Text style={styles.signUpText}>{strings.signUp}</Text>
-  </TouchableOpacity>
+        </TouchableOpacity>
 
-  
-  </View>
-</View>
+
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   TextField: {
-    paddingVertical: 12,  
+    paddingVertical: 12,
     backgroundColor: COLORS.tertiary,
     fontSize: SIZES.medium,
     padding: SIZES.small,
@@ -384,9 +325,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
   },
-  
-  dropdown:{
-    paddingVertical: 12,  
+
+  dropdown: {
+    paddingVertical: 12,
     backgroundColor: COLORS.tertiary,
     fontSize: SIZES.medium,
     padding: SIZES.small,
@@ -395,20 +336,20 @@ const styles = StyleSheet.create({
     borderColor: COLORS.tertiary
   },
 
-  dropdownbox:{
+  dropdownbox: {
     backgroundColor: COLORS.tertiary,
     borderColor: COLORS.tertiary,
-    maxHeight:200,
+    maxHeight: 200,
   },
   dropdowntext: {
-    color: COLORS.gray, 
+    color: COLORS.gray,
   },
 
-  invalidText : {
-    color : COLORS.red,
+  invalidText: {
+    color: COLORS.red,
     paddingVertical: 5,
     paddingLeft: 8
-},
+  },
 });
 
 export default SignUp;

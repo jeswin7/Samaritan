@@ -29,6 +29,8 @@ const strings = {
     emptyfieldError: 'All fields are required',
     contactformatError: 'Contact number should contain numbers only',
     pwdmatchError: 'passwords do not match',
+    country: 'Country',
+    searchHintText: 'What are you looking for?'
   };
 
   export default strings;

@@ -60,9 +60,9 @@ const Home = () => {
             </View>) : ''}
             {
                 isLoggedIn ?
-                    // userRole == 'seeker'?
-                    //     <Welcome />
-                    //     :
+                    userRole == 'seeker'?
+                        <Welcome />
+                        :
                         <Dashboard />
                     :
                     <View>

@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: SIZES.large,
-    color: COLORS.secondary,
+    color: COLORS.primary,
     paddingVertical: 5
   },
   seperatorStyle: {
@@ -127,7 +127,20 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center', 
     backgroundColor:'#fff' 
-  }
+  },
+
+  ratingText: {
+    marginRight: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  starContainer: {
+    flexDirection: 'row',
+  },
+  star: {
+    fontSize: 30,
+    color: 'gold'
+  },
 });
 
 export default styles;

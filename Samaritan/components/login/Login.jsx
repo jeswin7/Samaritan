@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { COLORS, FONT, SIZES, strings } from '../../constants';
 import { color } from 'react-native-reanimated';

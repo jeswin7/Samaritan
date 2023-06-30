@@ -3,7 +3,7 @@ import { View, Text, ScrollView, SafeAreaView, Image, StyleSheet, TouchableOpaci
 import { Stack, useRouter } from "expo-router";
 
 import { COLORS, icons, images, SIZES, strings } from '../constants';
-import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login, Signup, ForgotPassword } from '../components';
+import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login, Signup, ForgotPassword, Dashboard } from '../components';
 
 
 console.log('text:', strings.appHeader)
@@ -16,10 +16,12 @@ const Home = () => {
     const [isNewUser, setIsNewUser] = useState(false);
     const [backButtonVisible, setBackButtonVisible] = useState(false);
     const [forgotPassword, setForgotPassword] = useState(false);
+    const [userRole, setRole] = useState('seeker');
 
-    redirectToHomeScreen = () => {
-        console.log("@parent")
+    redirectToHomeScreen = (role) => {
+        console.log("@parent | ", role, typeof(role))
         setLoggedIn(true);
+        setRole(String(role));
     }
 
     redirectToRegisterScreen = () => {
@@ -58,7 +60,10 @@ const Home = () => {
             </View>) : ''}
             {
                 isLoggedIn ?
-                    <Welcome />
+                    userRole == 'seeker'?
+                        <Welcome />
+                        :
+                        <Dashboard />
                     :
                     <View>
                         {

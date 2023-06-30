@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Button, Alert, StyleSheet, ScrollView } from 'react-native';
 import { COLORS, FONT, SIZES, strings } from '../../constants';
 
 const ForgotPassword = (props) => {
@@ -25,27 +25,29 @@ const ForgotPassword = (props) => {
         if (!email) {
             alert(strings.emailError)
         } else {
-           // props.isValid();
+            // props.isValid();
         }
     };
 
 
     return (
-        <View style={{ flex: 1 }}>
-            <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
-                <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
-                <TextInput
-                    style={styles.emailTextField}
-                    placeholder={strings.email}
-                    value={email}
-                    onChangeText={handleCheckEmail}
-                />
-                {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
-                <TouchableOpacity onPress={handleContinue} style={styles.forgotPasswordButton}>
-                    <Text style={styles.forgotPasswordButtonText}>{strings.continueBtn}</Text>
-                </TouchableOpacity>
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{ flex: 1 }}>
+                <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+                    <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+                    <TextInput
+                        style={styles.emailTextField}
+                        placeholder={strings.email}
+                        value={email}
+                        onChangeText={handleCheckEmail}
+                    />
+                    {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
+                    <TouchableOpacity onPress={handleContinue} style={styles.forgotPasswordButton}>
+                        <Text style={styles.forgotPasswordButtonText}>{strings.continueBtn}</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 

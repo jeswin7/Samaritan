@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { COLORS, FONT, SIZES, strings } from '../../constants';
 import { color } from 'react-native-reanimated';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -14,9 +15,9 @@ const Login = (props) => {
     let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
     setEmail(text);
-    if(reg.test(text) || regex.test(text)){
+    if (reg.test(text) || regex.test(text)) {
       setCheckValidEmail(false);
-    }else{
+    } else {
       setCheckValidEmail(true);
     }
   }
@@ -48,15 +49,16 @@ const Login = (props) => {
   }
 
   const handleLogin = () => {
+    props.isValid();
     // Perform login logic here
     console.log('Logging in...', email, password);
-    if(!email && !password){
+    if (!email && !password) {
       alert(strings.loginError);
-    }else if(!email){
+    } else if (!email) {
       alert(strings.emailError)
-    }else if(!password){
+    } else if (!password) {
       alert(strings.passwordError)
-    }else{
+    } else {
       postAPI();
     }
   };
@@ -72,40 +74,42 @@ const Login = (props) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
-        <TextInput
-          style={styles.emailTextField}
-          placeholder={strings.email}
-          value={email}
-          onChangeText={handleCheckEmail}
-        />
-        {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>): (<Text></Text>)}
-        <TextInput
-          style={styles.passwordTextField}
-          placeholder={strings.password}
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <TouchableOpacity onPress={handleForgotPassword}
-          style={styles.forgotPasswordTextField}>
-          <Text style={styles.signUpText}>{strings.forgotPassword}</Text>
-        </TouchableOpacity>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={{ flex: 1 }}>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+          <TextInput
+            style={styles.emailTextField}
+            placeholder={strings.email}
+            value={email}
+            onChangeText={handleCheckEmail}
+          />
+          {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
+          <TextInput
+            style={styles.passwordTextField}
+            placeholder={strings.password}
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity onPress={handleForgotPassword}
+            style={styles.forgotPasswordTextField}>
+            <Text style={styles.signUpText}>{strings.forgotPassword}</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleLogin} style={styles.signInButton}>
-          <Text style={styles.signInText}>{strings.signIn}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleLogin} style={styles.signInButton}>
+            <Text style={styles.signInText}>{strings.signIn}</Text>
+          </TouchableOpacity>
 
 
-        <TouchableOpacity onPress={handleNewuser}
-          style={styles.signUpTextField}>
-          <Text style={styles.newToText}>{strings.newTo}</Text>
-          <Text style={styles.signUpText}>{strings.signUp}</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={handleNewuser}
+            style={styles.signUpTextField}>
+            <Text style={styles.newToText}>{strings.newTo}</Text>
+            <Text style={styles.signUpText}>{strings.signUp}</Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
-
-    </View>
+    </ScrollView>
   );
 };
 
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
   forgotPasswordTextField: {
     flex: 1,
     marginVertical: 20,
-    justifyContent:'flex-end',
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
   signInButton: {
@@ -152,9 +156,9 @@ const styles = StyleSheet.create({
   },
   signUpTextField: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
-    flexDirection:'row'
+    flexDirection: 'row'
   },
   newToText: {
     color: COLORS.secondary,
@@ -165,8 +169,8 @@ const styles = StyleSheet.create({
     fontSize: SIZES.large,
     fontWeight: 'bold'
   },
-  invalidText : {
-    color : COLORS.red,
+  invalidText: {
+    color: COLORS.red,
     paddingVertical: 5,
     paddingLeft: 8
   }

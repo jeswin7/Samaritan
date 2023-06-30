@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { COLORS, FONT, SIZES, strings } from '../../constants';
 
@@ -29,9 +29,9 @@ const SignUp = (props) => {
   //fname validation
   const handleCheckFname = text => {
     let nameRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
-    if (nameRegex.test(text)) {
+    setFirstName(text);
+    if (nameRegex.test(firstName)) {
       setCheckValidFname(false);
-      setFirstName(text);
     }
     else {
       setCheckValidFname(true);
@@ -40,9 +40,9 @@ const SignUp = (props) => {
   //lname validation
   const handleCheckLname = text => {
     let nameRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
-    if (nameRegex.test(text)) {
+    setLastName(text);
+    if (nameRegex.test(lastName)) {
       setCheckValidLname(false);
-      setLastName(text);
     }
     else {
       setCheckValidLname(true);
@@ -52,9 +52,9 @@ const SignUp = (props) => {
   //contact number validation
   const handleCheckContactnumber = text => {
     let numberRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{3}$/;
-    if (numberRegex.test(text)) {
+    setContactNumber(text);
+    if (numberRegex.test(contactNumber)) {
       setCheckContactNumber(false);
-      setContactNumber(text);
     } else {
       setCheckContactNumber(true);
     }
@@ -62,9 +62,9 @@ const SignUp = (props) => {
 
   //country validation
   const handleCheckCountry = text => {
+    setCountry(text);
     if (text) {
       setCheckValidCountry(false);
-      setCountry(text);
     }
     else {
       setCheckValidCountry(true);
@@ -73,9 +73,9 @@ const SignUp = (props) => {
   //location validation
   const handleCheckLocation = text => {
     let locationRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
+    setLocation(text);
     if (locationRegex.test(text)) {
       setCheckValidLocation(false);
-      setLocation(text);
     }
     else {
       setCheckValidLocation(true);
@@ -87,9 +87,9 @@ const SignUp = (props) => {
     let reg = /\S+@\S+\.\S+/;
     let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+    setEmail(text);
     if (reg.test(text) || regex.test(text)) {
       setCheckValidEmail(false);
-      setEmail(text);
     } else {
       setCheckValidEmail(true);
     }
@@ -98,9 +98,9 @@ const SignUp = (props) => {
   // password validation
   const handleCheckPassword = text => {
     let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,20}$/;
+    setPassword(text);
     if (passwordRegex.test(text)) {
       setCheckValidPassword(false);
-      setPassword(text);
     }
     else {
       setCheckValidPassword(true);
@@ -109,9 +109,9 @@ const SignUp = (props) => {
 
   //confirm password validation
   const handleCheckConfirmpassword = conf => {
+    setConfirmPassword(conf);
     if (password === conf) {
       setCheckPasswordMatch(false);
-      setConfirmPassword(conf);
     } else {
       setCheckPasswordMatch(true);
     }
@@ -131,9 +131,6 @@ const SignUp = (props) => {
       }
 
       else {
-
-        setError('');
-
         // POST API
         fetch('http://10.211.55.3:3001/addseeker', {
           method: 'POST',
@@ -169,7 +166,6 @@ const SignUp = (props) => {
       }
 
       else {
-        setError('');
         // POST API
         fetch('http://10.211.55.3:3001/addmentor', {
           method: 'POST',
@@ -194,109 +190,113 @@ const SignUp = (props) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity
-          style={{
-            flex: 1,
-            backgroundColor: userType === 'seeker' ? COLORS.primary : 'white',
-            paddingVertical: 10,
-            alignItems: 'center',
-          }}
-          onPress={() => setUserType('seeker')}
-        >
-          <Text style={{ color: userType === 'seeker' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Seeker</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            flex: 1,
-            backgroundColor: userType === 'mentor' ? COLORS.primary : COLORS.white,
-            paddingVertical: 10,
-            alignItems: 'center',
-          }}
-          onPress={() => setUserType('mentor')}
-        >
-          <Text style={{ color: userType === 'mentor' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Mentor</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
-        <TextInput
-          placeholder={strings.firstName}
-          value={firstName}
-          onChangeText={handleCheckFname}
-          style={styles.TextField}
-        />
-        {checkValidFname ? (<Text style={styles.invalidText}>{strings.fnameError}</Text>) : (<Text></Text>)}
-        <TextInput
-          placeholder={strings.lastName}
-          value={lastName}
-          onChangeText={handleCheckLname}
-          style={styles.TextField}
-        />
-        {checkValidLname ? (<Text style={styles.invalidText}>{strings.lnameError}</Text>) : (<Text></Text>)}
-        <TextInput
-          placeholder={strings.contactNumber}
-          value={contactNumber}
-          onChangeText={handleCheckContactnumber}
-          style={styles.TextField}
-        />
-        {checkValidContactNumber ? (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>) : (<Text></Text>)}
-        {userType === 'seeker' && (
+    <View style={{ height: '80%', justifyContent: 'center', alignItems: 'center' }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ width: '90%' }}>
+        <View style={{ flex: 1 }}>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                backgroundColor: userType === 'seeker' ? COLORS.primary : 'white',
+                paddingVertical: 10,
+                alignItems: 'center',
+              }}
+              onPress={() => setUserType('seeker')}
+            >
+              <Text style={{ color: userType === 'seeker' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Seeker</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                backgroundColor: userType === 'mentor' ? COLORS.primary : COLORS.white,
+                paddingVertical: 10,
+                alignItems: 'center',
+              }}
+              onPress={() => setUserType('mentor')}
+            >
+              <Text style={{ color: userType === 'mentor' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Mentor</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+            <TextInput
+              placeholder={strings.firstName}
+              value={firstName}
+              onChangeText={handleCheckFname}
+              style={styles.TextField}
+            />
+            {checkValidFname ? (<Text style={styles.invalidText}>{strings.fnameError}</Text>) : (<Text></Text>)}
+            <TextInput
+              placeholder={strings.lastName}
+              value={lastName}
+              onChangeText={handleCheckLname}
+              style={styles.TextField}
+            />
+            {checkValidLname ? (<Text style={styles.invalidText}>{strings.lnameError}</Text>) : (<Text></Text>)}
+            <TextInput
+              placeholder={strings.contactNumber}
+              value={contactNumber}
+              onChangeText={handleCheckContactnumber}
+              style={styles.TextField}
+            />
+            {checkValidContactNumber ? (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>) : (<Text></Text>)}
+            {userType === 'seeker' && (
 
-          <SelectList data={countrylist} setCountry={setCountry}
-            boxStyles={styles.TextField}
-            value={country}
-            onChangeText={handleCheckCountry}
-            dropdownStyles={styles.dropdownbox}
-            placeholder={strings.country}
-            dropdownTextStyles={styles.dropdowntext} />
-        )}
-        {checkValidCountry ? (<Text style={styles.invalidText}>{strings.countryError}</Text>) : (<Text></Text>)}
-        {userType === 'seeker' && (
-          <TextInput
-            placeholder={strings.location}
-            value={location}
-            onChangeText={handleCheckLocation}
-            style={styles.TextField}
-          />
-        )}
-        {checkValidLocation ? (<Text style={styles.invalidText}>{strings.locationError}</Text>) : (<Text></Text>)}
-        <TextInput
-          placeholder={strings.email}
-          value={email}
-          onChangeText={handleCheckEmail}
-          style={styles.TextField}
-        />
-        {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
+              <SelectList data={countrylist} setCountry={setCountry}
+                boxStyles={styles.TextField}
+                value={country}
+                onChangeText={handleCheckCountry}
+                dropdownStyles={styles.dropdownbox}
+                placeholder={strings.country}
+                dropdownTextStyles={styles.dropdowntext} />
+            )}
+            {checkValidCountry ? (<Text style={styles.invalidText}>{strings.countryError}</Text>) : (<Text></Text>)}
+            {userType === 'seeker' && (
+              <TextInput
+                placeholder={strings.location}
+                value={location}
+                onChangeText={handleCheckLocation}
+                style={styles.TextField}
+              />
+            )}
+            {checkValidLocation ? (<Text style={styles.invalidText}>{strings.locationError}</Text>) : (<Text></Text>)}
+            <TextInput
+              placeholder={strings.email}
+              value={email}
+              onChangeText={handleCheckEmail}
+              style={styles.TextField}
+            />
+            {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
 
-        {userType === 'seeker' && <>
-          <TextInput
-            placeholder={strings.password}
-            secureTextEntry={true}
-            value={password}
-            onChangeText={handleCheckPassword}
-            style={styles.TextField}
-          />
-          {checkValidPassword ? (<Text style={styles.invalidText}>{strings.passwordError}</Text>) : (<Text></Text>)}
+            {userType === 'seeker' && <>
+              <TextInput
+                placeholder={strings.password}
+                secureTextEntry={true}
+                value={password}
+                onChangeText={handleCheckPassword}
+                style={styles.TextField}
+              />
+              {checkValidPassword ? (<Text style={styles.invalidText}>{strings.passwordError}</Text>) : (<Text></Text>)}
 
-          <TextInput
-            placeholder={strings.confirmPassword}
-            secureTextEntry
-            value={confirmPassword}
-            onChangeText={handleCheckConfirmpassword}
-            style={styles.TextField}
-          />
-          {checkPasswordMatch ? (<Text style={styles.invalidText}>{strings.pwdmatchError}</Text>) : (<Text></Text>)}
+              <TextInput
+                placeholder={strings.confirmPassword}
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={handleCheckConfirmpassword}
+                style={styles.TextField}
+              />
+              {checkPasswordMatch ? (<Text style={styles.invalidText}>{strings.pwdmatchError}</Text>) : (<Text></Text>)}
 
-        </>}
-
-
-        <TouchableOpacity onPress={handleSignUp} style={styles.signUpButton}>
-          <Text style={styles.signUpText}>{strings.signUp}</Text>
-        </TouchableOpacity>
+            </>}
 
 
-      </View>
+            <TouchableOpacity onPress={handleSignUp} style={styles.signUpButton}>
+              <Text style={styles.signUpText}>{strings.signUp}</Text>
+            </TouchableOpacity>
+
+
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };

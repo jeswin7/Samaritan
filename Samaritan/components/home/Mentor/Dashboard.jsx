@@ -95,57 +95,84 @@ const PAYMENT_API = [
 
 
 
-
-const onPress = (item, navigation) => {
-    console.log('click', item);
-}
-
-const Item = ({ item, navigation }) => (
-    <TouchableOpacity onPress={() => onPress(item, navigation)}>
-        <View style={styles.listView}>
-            <View style={styles.item}>
-                <Text style={styles.title}>{item.name}</Text>
-                <Text style={styles.title}>{item.location}</Text>
-                <Text style={styles.title}>{item.service}</Text>
-                <Text style={styles.title}>{item.rating}</Text>
-            </View>
-
-        </View>
-    </TouchableOpacity>
-
-);
-
-const renderItem = ({ item }) => {
-    return (
-        <View style={{ margin: 20 }}>
-            <Item item={item} />
-        </View>
-    );
-}
-
-
-
-const ItemSeparatorView = () => {
-    return (
-        //Item Separator
-        <View
-            style={styles.seperatorStyle}
-        />
-    );
-};
-
-//search handle
-const handleSearchClick = () => {
-    // Perform search button click here
-    console.log('Search button click...');
-};
-const Separator = () => {
-    return <View style={styles.separator} />;
-};
 //Home Component
-function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
+function HomeScreen() {
+
+    const navigation = useNavigation();
+
+
+    const PaymentItem = ({ item }) => {
+
+
+        return (
+            <TouchableOpacity onPress={() => navigation.navigate("Payment", { item })}>
+                <View style={styles.listView}>
+                    <View style={styles.item}>
+                        <Text style={styles.title}>{item.name}</Text>
+                        <Text style={styles.title}>{item.location}</Text>
+                        <Text style={styles.title}>{item.service}</Text>
+                        <Text style={styles.title}>{item.rating}</Text>
+                    </View>
+
+                </View>
+            </TouchableOpacity>
+
+        );
+
+    }
+
+    const renderPaymentItem = ({ item }) => {
+        return (
+            <View style={{ margin: 20 }}>
+                <PaymentItem item={item} />
+            </View>
+        );
+    }
+
+
+
+
+    // ________________________________________________________________________________
+
+
+    const ServiceItem = ({ item }) => {
+
+
+        return (
+            <TouchableOpacity onPress={() => navigation.navigate("Service", { item })}>
+                <View style={styles.listView}>
+                    <View style={styles.item}>
+                        <Text style={styles.title}>{item.name}</Text>
+                        <Text style={styles.title}>{item.location}</Text>
+                        <Text style={styles.title}>{item.service}</Text>
+                        <Text style={styles.title}>{item.rating}</Text>
+                    </View>
+
+                </View>
+            </TouchableOpacity>
+
+        );
+
+    }
+
+    const renderServiceItem = ({ item }) => {
+        return (
+            <View style={{ margin: 20 }}>
+                <ServiceItem item={item} />
+            </View>
+        );
+    }
+
+
+
+    const Separator = () => {
+        return <View style={styles.separator} />;
+    };
+
+
     return (
         <View style={styles.homeContainer}>
+
             <View style={styles.homeSubContainer}>
 
 
@@ -159,7 +186,7 @@ function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }
                 <View style={styles.rowContainer}>
                     <FlatList
                         data={SERVICES_API}
-                        renderItem={renderItem}
+                        renderItem={renderServiceItem}
                         keyExtractor={(item, index) => index.toString()}
                         ItemSeparatorComponent={Separator}
                         horizontal
@@ -176,7 +203,7 @@ function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }
                 <View style={styles.rowContainer}>
                     <FlatList
                         data={PAYMENT_API}
-                        renderItem={renderItem}
+                        renderItem={renderPaymentItem}
                         keyExtractor={(item, index) => index.toString()}
                         ItemSeparatorComponent={Separator}
                         horizontal
@@ -198,22 +225,104 @@ function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }
                 </View>
 
             </View>
+
         </View>
     );
 }
 
-//Notification component
-function ProfileScreen({ navigation }) {
+
+//Profile component
+function ProfileScreen() {
     return (
         <View style={styles.profileView}>
-            <Button onPress={() => navigation.goBack()} title="Go back home" />
+            <Button onPress={() => navigation.navigate("Home")} title="Go back home" />
         </View>
     );
 }
+
+//Profile component
+function ServiceScreen({route , navigation}) {
+    const { item } = route.params;
+    return (
+        <View style={styles.homeContainer}>
+
+            <View style={styles.homeSubContainer}>
+
+
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View>
+                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
+                    </View>
+                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View>
+                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
+                    </View>
+                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                </View>
+
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View>
+                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Rating</Text>
+                    </View>
+                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                </View>
+
+
+            </View>
+
+        </View>
+    );
+}
+
+
+//Profile component
+function PaymentScreen({ route, navigation }) {
+
+    const { item } = route.params;
+    return (
+        <View style={styles.homeContainer}>
+
+            <View style={styles.homeSubContainer}>
+
+
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View>
+                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
+                    </View>
+                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View>
+                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
+                    </View>
+                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                </View>
+
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View>
+                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Rating</Text>
+                    </View>
+                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                </View>
+
+
+            </View>
+
+        </View>
+    );
+}
+
 
 const Dashboard = () => {
     const router = useRouter();
-    const navigation = useNavigation();
 
     return (
         <NavigationContainer independent={true}>
@@ -240,6 +349,31 @@ const Dashboard = () => {
                         </TouchableOpacity >
                     ),
                 }} />
+
+                <Drawer.Screen name="Service" component={ServiceScreen} options={{
+                    title: 'SERVICES',
+                    headerTitleAlign: 'center',
+                    headerTintColor: COLORS.secondary,
+                    headerTitleStyle: styles.dashboardHeading,
+                    headerRight: () => (
+                        <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+                            <Image source={icons.bell_icon}></Image>
+                        </TouchableOpacity >
+                    ),
+                }} />
+
+                <Drawer.Screen name="Payment" component={PaymentScreen} options={{
+                    title: 'PAYMENTS',
+                    headerTitleAlign: 'center',
+                    headerTintColor: COLORS.secondary,
+                    headerTitleStyle: styles.dashboardHeading,
+                    headerRight: () => (
+                        <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+                            <Image source={icons.bell_icon}></Image>
+                        </TouchableOpacity >
+                    ),
+                }} />
+
             </Drawer.Navigator>
         </NavigationContainer>
     );

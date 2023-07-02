@@ -113,16 +113,18 @@ function HomeScreen() {
     const navigation = useNavigation();
 
 
-    const PaymentItem = ({ item }) => {
+    const PaymentItem = ({ payment }) => {
 
+        const paymentsList = []
+        paymentsList.push(payment)
 
         return (
-            <TouchableOpacity onPress={() => navigation.navigate("Payment", { item })}>
+            <TouchableOpacity onPress={() => navigation.navigate("Payment", { paymentsList })}>
                 <View style={styles.listView}>
                     <View style={styles.item}>
-                        <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.title}>{item.service}</Text>
-                        <Text style={item.status == "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                        <Text style={styles.title}>{payment.name}</Text>
+                        <Text style={styles.title}>{payment.service}</Text>
+                        <Text style={payment.status == "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{payment.status}</Text>
                     </View>
 
                 </View>
@@ -135,7 +137,7 @@ function HomeScreen() {
     const renderPaymentItem = ({ item }) => {
         return (
             <View style={{ margin: 20 }}>
-                <PaymentItem item={item} />
+                <PaymentItem payment={item} />
             </View>
         );
     }
@@ -146,16 +148,17 @@ function HomeScreen() {
     // ________________________________________________________________________________
 
 
-    const ServiceItem = ({ item }) => {
-
+    const ServiceItem = ({ service }) => {
+        const servicesList = []
+        servicesList.push(service)
 
         return (
-            <TouchableOpacity onPress={() => navigation.navigate("Service", { item })}>
+            <TouchableOpacity onPress={() => navigation.navigate("Service", { servicesList })}>
                 <View style={styles.listView}>
                     <View style={styles.item}>
-                        <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.title}>{item.service}</Text>
-                        <Text style={item.status == "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                        <Text style={styles.title}>{service.name}</Text>
+                        <Text style={styles.title}>{service.service}</Text>
+                        <Text style={service.status == "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{service.status}</Text>
                     </View>
 
                 </View>
@@ -168,7 +171,7 @@ function HomeScreen() {
     const renderServiceItem = ({ item }) => {
         return (
             <View style={{ margin: 20 }}>
-                <ServiceItem item={item} />
+                <ServiceItem service={item} />
             </View>
         );
     }
@@ -251,36 +254,51 @@ function ProfileScreen() {
 }
 
 //Profile component
-function ServiceScreen({route , navigation}) {
-    const { item } = route.params;
+function ServiceScreen({ route, navigation }) {
+    const { servicesList } = route.params;
+
     return (
         <View style={styles.homeContainer}>
 
             <View style={styles.homeSubContainer}>
 
+                {
+                    servicesList.map((item) => {
 
+                       return <View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            </View>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.name}</Text>
+                            </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View>
-                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
-                    </View>
-                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            </View>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.service}</Text>
+                            </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View>
-                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
-                    </View>
-                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            </View>
+                            <View>
+                                <Text style={item.status === "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                            </View>
+                        </View>
+                    })
+                }
 
-
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View>
-                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Rating</Text>
-                    </View>
-                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                </View>
 
 
             </View>
@@ -293,35 +311,49 @@ function ServiceScreen({route , navigation}) {
 //Profile component
 function PaymentScreen({ route, navigation }) {
 
-    const { item } = route.params;
+    const { paymentsList } = route.params;
+
     return (
         <View style={styles.homeContainer}>
 
             <View style={styles.homeSubContainer}>
 
+                {
+                    paymentsList.map(item => {
+                        return <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View>
+                            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.name}</Text>
+                        </View>
 
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View>
+                            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.service}</Text>
+                        </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View>
-                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View>
+                            <Text style={item.status === "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                        </View>
                     </View>
-                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                </View>
+                    })
+                }
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View>
-                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
-                    </View>
-                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                </View>
-
-
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <View>
-                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Rating</Text>
-                    </View>
-                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                </View>
 
 
             </View>

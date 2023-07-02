@@ -107,6 +107,20 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     paddingVertical: 5
   },
+  statusDoneStyle: {
+    fontSize: SIZES.large,
+    fontWeight: 'bold',
+    color: 'green',
+    paddingVertical: 5,
+    border: '1px solid red'
+  },  
+  statusPendingStyle: {
+    fontSize: SIZES.large,
+    fontWeight: 'bold',
+    color: 'orange',
+    paddingVertical: 5,
+    border: '1px solid red'
+  },
   seperatorStyle: {
     height: 30, 
     width: '100%' 

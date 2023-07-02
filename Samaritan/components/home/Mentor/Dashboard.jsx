@@ -29,33 +29,39 @@ const SERVICES_API = [
     {
         id: '1',
         name: 'Than John',
-        service: 'Accomodation'
+        service: 'Accomodation',
+        status: 'Completed'
     },
     {
         id: '2',
         name: 'Mary Brown',
-        service: 'Job'
+        service: 'Job',
+        status: 'In Progress'
     },
 
     {
         id: '3',
         name: 'Ed John',
-        service: 'Accomodation'
+        service: 'Accomodation',
+        status: 'Completed'
     },
     {
         id: '4',
         name: 'Tej John',
-        service: 'Job'
+        service: 'Job',
+        status: 'In Progress'
     },
     {
         id: '5',
         name: 'Jake Brown',
-        service: 'Accomodation'
+        service: 'Accomodation',
+        status: 'Completed'
     },
     {
         id: '6',
         name: 'Joel Cullen',
-        service: 'Job'
+        service: 'Job',
+        status: 'In Progress'
     }
 ];
 
@@ -63,33 +69,39 @@ const PAYMENT_API = [
     {
         id: '1',
         name: 'Jes John',
-        service: 'Accomodation'
+        service: 'Accomodation',
+        status: 'In Progress'
     },
     {
         id: '2',
         name: 'Mary Brown',
-        service: 'Job'
+        service: 'Job',
+        status: 'Completed'
     },
 
     {
         id: '3',
         name: 'Ed John',
-        service: 'Accomodation'
+        service: 'Accomodation',
+        status: 'In Progress'
     },
     {
         id: '4',
         name: 'Tej John',
-        service: 'Job'
+        service: 'Job',
+        status: 'In Progress'
     },
     {
         id: '5',
         name: 'Jake Brown',
-        service: 'Accomodation'
+        service: 'Accomodation',
+        status: 'In Progress'
     },
     {
         id: '6',
         name: 'Joel Cullen',
-        service: 'Job'
+        service: 'Job',
+        status: 'Completed'
     }
 ];
 
@@ -109,9 +121,8 @@ function HomeScreen() {
                 <View style={styles.listView}>
                     <View style={styles.item}>
                         <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.title}>{item.location}</Text>
                         <Text style={styles.title}>{item.service}</Text>
-                        <Text style={styles.title}>{item.rating}</Text>
+                        <Text style={item.status == "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
                     </View>
 
                 </View>
@@ -143,9 +154,8 @@ function HomeScreen() {
                 <View style={styles.listView}>
                     <View style={styles.item}>
                         <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.title}>{item.location}</Text>
                         <Text style={styles.title}>{item.service}</Text>
-                        <Text style={styles.title}>{item.rating}</Text>
+                        <Text style={item.status == "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
                     </View>
 
                 </View>

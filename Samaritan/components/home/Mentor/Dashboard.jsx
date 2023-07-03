@@ -9,7 +9,7 @@ import {
     Button
 } from "react-native";
 import { useRouter } from "expo-router";
-
+import { Picker } from '@react-native-picker/picker';
 import styles from "./dashboard.style";
 import { icons, SIZES, COLORS, strings } from "../../../constants";
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -265,15 +265,15 @@ function ServiceScreen({ route, navigation }) {
                 {
                     servicesList.map((item) => {
 
-                       return <View>
+                        return <View>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <View>
                                     <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
                                 </View>
                                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                             </View>
-                            <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.name}</Text>
+                            <View style={{ marginBottom : 30 }}>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -282,8 +282,8 @@ function ServiceScreen({ route, navigation }) {
                                 </View>
                                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                             </View>
-                            <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.service}</Text>
+                            <View style={{ marginBottom : 30 }}>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -292,9 +292,20 @@ function ServiceScreen({ route, navigation }) {
                                 </View>
                                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                             </View>
-                            <View>
-                                <Text style={item.status === "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                            <View style={{ marginBottom : 30 }}>
+                                <Text style={item.status === "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
                             </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Update Service Status</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            </View>
+                            <Picker>
+                                <Picker.Item label="Completed" value="java" />
+                                <Picker.Item label="In Progress" value="js" />
+                            </Picker>
+                            <Button title="Update Status" color={COLORS.primary} />
                         </View>
                     })
                 }
@@ -321,36 +332,37 @@ function PaymentScreen({ route, navigation }) {
                 {
                     paymentsList.map(item => {
                         return <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                             </View>
-                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                        </View>
-                        <View>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.name}</Text>
-                        </View>
+                            <View style={{ marginBottom : 30 }}>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.name}</Text>
+                            </View>
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                             </View>
-                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                        </View>
-                        <View>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.service}</Text>
-                        </View>
+                            <View style={{ marginBottom : 30 }}>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.service}</Text>
+                            </View>
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
+                                </View>
+                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                             </View>
-                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            <View style={{ marginBottom : 30 }}>
+                                <Text style={item.status === "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                            </View>
+
                         </View>
-                        <View>
-                            <Text style={item.status === "Completed"? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
-                        </View>
-                    </View>
                     })
                 }
 

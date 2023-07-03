@@ -12,14 +12,14 @@ import { useRouter } from "expo-router";
 
 import styles from "./welcome.style";
 import { icons, SIZES, COLORS, strings } from "../../../constants";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
+import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 
 
 const Drawer = createDrawerNavigator();
 
-const DATA = [
+const DATAHome = [
   {
     id: '1',
     name: 'First Name',
@@ -50,14 +50,39 @@ const DATA = [
   },
 ];
 
+const DATARequest = [
+  {
+    id: '1',
+    name: 'First Name',
+    service: 'Accomodation',
+    status: 'Requested'
+  },
+  {
+    id: '2',
+    name: 'Second Name',
+    service: 'Accomodation',
+    status: 'Accepted'
+  },
+  {
+    id: '3',
+    name: 'Third Name',
+    service: 'Accomodation',
+    status: 'Declined'
+  },
+  {
+    id: '4',
+    name: 'Fourth Name',
+    service: 'Accomodation',
+    status: 'Declined'
+  }
+];
 
-
-const onPress = (item, navigation) => {
+const onHomeItemPress = (item, navigation) => {
   console.log('click',item);
 }
 
-const Item = ({ item, navigation }) => (
-  <TouchableOpacity onPress={() => onPress(item,navigation)}>
+const HomeItem = ({ item, navigation }) => (
+  <TouchableOpacity onPress={() => onHomeItemPress(item,navigation)}>
     <View style={styles.listView}>
       <View style={styles.item}>
         <Text style={styles.title}>{item.name}</Text>
@@ -73,9 +98,9 @@ const Item = ({ item, navigation }) => (
 
 );
 
-const renderItem = ({ item }) => {
+const renderHomeItem = ({ item }) => {
  return   (
- <Item  item={item} />);
+ <HomeItem  item={item} />);
 }
 
 
@@ -127,8 +152,49 @@ function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }
 
         <View style={styles.tabsContainer}>
           <FlatList
-            data={DATA}
-            renderItem={renderItem}
+            data={DATAHome}
+            renderItem={renderHomeItem}
+            ItemSeparatorComponent={ItemSeparatorView}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const RequestItem = ({ item, navigation }) => (
+  <TouchableOpacity onPress={() => onHomeItemPress(item,navigation)}>
+    <View style={styles.listView}>
+      <View style={styles.item}>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.title}>{item.service}</Text>
+        <View style={styles.statusView}>
+        <View style={[styles.statusIcon, {backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
+        <Text style={styles.statusTitle}>{item.status}</Text>
+        </View>
+        
+      </View>
+    </View>
+  </TouchableOpacity>
+
+);
+
+const renderRequestItem = ({ item }) => {
+ return   (
+ <RequestItem  item={item} />);
+}
+
+//Request Component
+function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
+  return (
+    <View style={styles.homeContainer}>
+      <View style={styles.homeSubContainer}>
+        <View style={styles.requestContainer}>
+          <FlatList
+            data={DATARequest}
+            renderItem={renderRequestItem}
             ItemSeparatorComponent={ItemSeparatorView}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
@@ -148,15 +214,46 @@ function ProfileScreen({ navigation }) {
   );
 }
 
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem label="LOG OUT" labelStyle={{color:COLORS.white}} onPress={() => alert('Logout')} />
+    </DrawerContentScrollView>
+  );
+}
+
 const Welcome = () => {
   const router = useRouter();
   const navigation = useNavigation();
 
   return (
     <NavigationContainer independent={true}>
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator initialRouteName="Home" 
+      screenOptions={{
+        drawerStyle: {
+          backgroundColor: COLORS.secondary,
+        },
+        drawerActiveBackgroundColor: COLORS.primary,
+        drawerLabelStyle : {
+          color: '#fff'
+        }
+      }}
+      drawerContent={props => <CustomDrawerContent {...props} />}
+      >
         <Drawer.Screen name="Home" component={HomeScreen} options={{
           title: 'SAMARITAN',
+          headerTitleAlign: 'center',
+          headerTintColor: COLORS.secondary,
+          headerTitleStyle: styles.dashboardHeading,
+          headerRight: () => (
+            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+              <Image source={icons.bell_icon}></Image>
+            </TouchableOpacity >
+          ),
+        }} />
+        <Drawer.Screen name="Requests" component={RequestComponent} options={{
+          title: 'REQUESTS',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,

@@ -256,6 +256,11 @@ function ProfileScreen() {
 //Profile component
 function ServiceScreen({ route, navigation }) {
     const { servicesList } = route.params;
+    const [status, setServiceStatus] = useState(servicesList[0].status);
+    const STATUS_MAP = {
+        'done': 'Completed',
+        'pending': 'In Progress'
+    }
 
     return (
         <View style={styles.homeContainer}>
@@ -263,9 +268,9 @@ function ServiceScreen({ route, navigation }) {
             <View style={styles.homeSubContainer}>
 
                 {
-                    servicesList.map((item) => {
+                    servicesList.map((item, index) => {
 
-                        return <View>
+                        return <View key={index}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <View>
                                     <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
@@ -301,9 +306,10 @@ function ServiceScreen({ route, navigation }) {
                                 </View>
                                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                             </View>
-                            <Picker>
-                                <Picker.Item label="Completed" value="java" />
-                                <Picker.Item label="In Progress" value="js" />
+                            <Picker onValueChange={(value) => setServiceStatus(value)}  selectedValue={status}>
+
+                                <Picker.Item label="Completed" value="done" />
+                                <Picker.Item label="In Progress" value="pending" />
                             </Picker>
                             <Button title="Update Status" color={COLORS.primary} />
                         </View>
@@ -330,8 +336,8 @@ function PaymentScreen({ route, navigation }) {
             <View style={styles.homeSubContainer}>
 
                 {
-                    paymentsList.map(item => {
-                        return <View>
+                    paymentsList.map((item, index) => {
+                        return <View key={index}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <View>
                                     <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
@@ -404,11 +410,13 @@ const Dashboard = () => {
                     ),
                 }} />
 
-                <Drawer.Screen name="Service" component={ServiceScreen} options={{
+                <Drawer.Screen name="Service" component={ServiceScreen} 
+                options={{
                     title: 'SERVICES',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
+                    drawerItemStyle: { height: 0 },
                     headerRight: () => (
                         <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
                             <Image source={icons.bell_icon}></Image>
@@ -421,6 +429,7 @@ const Dashboard = () => {
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
+                    drawerItemStyle: { height: 0 },
                     headerRight: () => (
                         <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
                             <Image source={icons.bell_icon}></Image>

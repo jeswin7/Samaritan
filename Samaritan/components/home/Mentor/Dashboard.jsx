@@ -15,6 +15,7 @@ import { icons, SIZES, COLORS, strings } from "../../../constants";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from "react-native-gesture-handler";
 
 
 const Drawer = createDrawerNavigator();
@@ -106,6 +107,45 @@ const PAYMENT_API = [
 ];
 
 
+const CONNECTION_REQUESTS_API = [
+    {
+        id: '1',
+        name: 'Jes John',
+        service: 'Accomodation',
+        status: 'In Progress'
+    },
+    {
+        id: '2',
+        name: 'Mary Brown',
+        service: 'Job',
+        status: 'Completed'
+    },
+
+    {
+        id: '3',
+        name: 'Ed John',
+        service: 'Accomodation',
+        status: 'In Progress'
+    },
+    {
+        id: '4',
+        name: 'Tej John',
+        service: 'Job',
+        status: 'In Progress'
+    },
+    {
+        id: '5',
+        name: 'Jake Brown',
+        service: 'Accomodation',
+        status: 'In Progress'
+    },
+    {
+        id: '6',
+        name: 'Joel Cullen',
+        service: 'Job',
+        status: 'Completed'
+    }
+];
 
 //Home Component
 function HomeScreen() {
@@ -250,6 +290,53 @@ function ProfileScreen() {
         <View style={styles.profileView}>
             <Button onPress={() => navigation.navigate("Home")} title="Go back home" />
         </View>
+    );
+}
+
+
+//Connection requests component
+function ConnectionRequestsScreen() {
+    const [connStatus, setConnStatus] = useState("");
+    return (
+        <ScrollView>
+                {
+                    CONNECTION_REQUESTS_API.map((item, index) => {
+                        return <View key={index} style={{ margin: 15,
+                            backgroundColor: COLORS.tertiary,
+                            padding: 15
+                        }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View style={{ marginBottom : 30 }}>
+                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View style={{ marginBottom : 30 }}>
+                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
+                        </View>
+
+                        <View style={{            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between' }}>
+                            <Button title="Accept" color={COLORS.primary} />
+                            <Button title="Decline" color={COLORS.red} />
+                        </View>
+
+                    </View>
+                    })
+                }
+            </ScrollView>
+
     );
 }
 
@@ -410,6 +497,18 @@ const Dashboard = () => {
                     ),
                 }} />
 
+                <Drawer.Screen name="ConnRequests" component={ConnectionRequestsScreen} options={{
+                    title: 'REQUESTS',
+                    headerTitleAlign: 'center',
+                    headerTintColor: COLORS.secondary,
+                    headerTitleStyle: styles.dashboardHeading,
+                    headerRight: () => (
+                        <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+                            <Image source={icons.bell_icon}></Image>
+                        </TouchableOpacity >
+                    ),
+                }} />
+
                 <Drawer.Screen name="Service" component={ServiceScreen} 
                 options={{
                     title: 'SERVICES',
@@ -436,6 +535,7 @@ const Dashboard = () => {
                         </TouchableOpacity >
                     ),
                 }} />
+
 
             </Drawer.Navigator>
         </NavigationContainer>

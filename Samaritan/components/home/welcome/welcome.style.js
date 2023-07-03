@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
   },
+  //Home Component Style
   searchContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -127,6 +128,27 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center', 
     backgroundColor:'#fff' 
+  },
+  // Request Component style
+  requestContainer: {
+    height: '90%',
+    marginTop: SIZES.medium,
+  },
+  statusView: {
+    flexDirection:'row', 
+    flex:1,
+    alignItems:'center',
+  },
+  statusIcon: {
+    height:15,
+    width:15,
+    backgroundColor:COLORS.green, 
+    borderRadius:30, 
+  },
+  statusTitle : {
+    fontSize: SIZES.large,
+    color: COLORS.secondary,
+    marginLeft: 10
   }
 });
 

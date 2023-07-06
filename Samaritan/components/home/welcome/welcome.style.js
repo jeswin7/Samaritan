@@ -149,6 +149,13 @@ const styles = StyleSheet.create({
     fontSize: SIZES.large,
     color: COLORS.secondary,
     marginLeft: 10
+  },
+  starContainer: {
+    flexDirection: 'row',
+  },
+  star: {
+    fontSize: 30,
+    color: 'gold'
   }
 });
 

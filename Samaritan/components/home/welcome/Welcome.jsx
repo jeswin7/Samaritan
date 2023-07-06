@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,23 @@ const Welcome = () => {
   const router = useRouter();
   const navigation = useNavigation();
 
+  const [mentorsList, setMentorsList] = useState([]);
+
+  useEffect(() => {
+    fetchMentors()
+  }, [])
+
+
+  const fetchMentors = async () => {
+    try {
+        // Make API requests here
+        const response = await fetch(`http://10.211.55.3:3001/mentors`);
+        const data = await response.json();
+        setMentorsList(data);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 
 const Drawer = createDrawerNavigator();
@@ -84,6 +101,23 @@ const DATARequest = [
   }
 ];
 
+const ONTARIO_CITIES_MAP = {
+  2: 'Waterloo',
+  3: 'Kitchener',
+  4: 'Toronto',
+  5: 'Ottawa',
+  6: 'Hamilton',
+  7: 'London',
+  8: 'Mississauga',
+  9: 'Brampton',
+  10: 'Markham',
+};
+
+const SERVICE_MAP = {
+  1: 'Accommodation',
+  2: 'Part-Time Job'
+}
+
 const onHomeItemPress = (item, navigation) => {
   console.log('click',item);
 }
@@ -92,10 +126,14 @@ const HomeItem = ({ item, navigation }) => (
   <TouchableOpacity onPress={() => onHomeItemPress(item,navigation)}>
     <View style={styles.listView}>
       <View style={styles.item}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.title}>{item.location}</Text>
-        <Text style={styles.title}>{item.service}</Text>
-        <Text style={styles.title}>{item.rating}</Text>
+        <Text style={styles.title}>{item.fname} {item.lname}</Text>
+        <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+        <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
+        <Text style={styles.title}>{[...Array(5)].map((_, index) => (
+                            <Text key={index} style={styles.star}>
+                                {index < Math.floor(item.rating) ? '★' : '☆'}
+                            </Text>
+                        ))}</Text>
       </View>
       <View style={styles.cheveronView}>
         <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image>
@@ -105,7 +143,7 @@ const HomeItem = ({ item, navigation }) => (
 
 );
 
-const renderHomeItem = ({ item }) => <HomeItem  item={item} />;
+const renderHomeItem = ({ item }) => <HomeItem item={item} />;
 
 const ItemSeparatorView = () => <View style={styles.seperatorStyle}/>
 
@@ -145,15 +183,21 @@ function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }
           </TouchableOpacity>
         </View>
 
-        <View style={styles.tabsContainer}>
-          <FlatList
-            data={DATAHome}
-            renderItem={renderHomeItem}
-            ItemSeparatorComponent={ItemSeparatorView}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
+{
+  mentorsList.length>0? 
+  <View style={styles.tabsContainer}>
+  <FlatList
+    data={mentorsList}
+    renderItem={renderHomeItem}
+    ItemSeparatorComponent={ItemSeparatorView}
+    keyExtractor={item => item.id}
+    showsVerticalScrollIndicator={false}
+  />
+</View>
+:
+<Text>Loading...</Text>
+}
+
       </View>
     </View>
   );
@@ -176,7 +220,7 @@ const RequestItem = ({ item, navigation }) => (
 
 );
 
-const renderRequestItem = ({ item }) => <RequestItem  item={item} />;
+const renderRequestItem = ({ item }) => <RequestItem item={item} />;
 
 //Request Component
 function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {

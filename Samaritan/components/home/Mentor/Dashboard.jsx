@@ -21,7 +21,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     const router = useRouter();
 
 
@@ -169,7 +169,8 @@ const Dashboard = () => {
     const fetchMentorDetail = async () => {
         try {
             // Make API requests here
-            const response = await fetch(`http://10.211.55.3:3001/mentorDetail?user_id=8`);
+            console.log("-------props-----", props)
+            const response = await fetch(`http://10.211.55.3:3001/mentorDetail?user_id=${props.userId}`);
             const data = await response.json();
             setDetail(data[0]);
 
@@ -194,9 +195,8 @@ const Dashboard = () => {
     const fetchMentorConnRequests = async () => {
         try {
             // Make API requests here
-            const response = await fetch(`http://10.211.55.3:3001/mentor/connectionRequests?user_id=8`);
+            const response = await fetch(`http://10.211.55.3:3001/mentor/connectionRequests?user_id=${props.userId}`);
             const data = await response.json();
-            console.log("-------------", data)
             setConnReqs(data);
 
             // Handle the API response and update component state
@@ -223,12 +223,16 @@ const Dashboard = () => {
         }
     };
 
-
-
     useEffect(() => {
         // Fetch API data here
-        fetchData();
+ return <View><Text>Loading...</Text></View>
     }, []);
+    useEffect(() => {
+        // Fetch API data here
+        console.log("********NEWWWW**********", props)
+        fetchData();
+    }, [props]);
+
 
 
     const fetchData = () => {

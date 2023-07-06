@@ -36,11 +36,11 @@ const Login = (props) => {
       });
 
       const data = await response.json();
-      console.log('Response data:', data);
+      console.log('Response data::::::::::::::::::::::::::::::::::', data);
 
       // Process the response data
-      if (data.status === 200)
-        props.isValid(data.role);
+      if (data.status === 200 && data.userId)
+        props.isValid(data.role, data.userId);
         
       else
         alert(strings.invalidUser);

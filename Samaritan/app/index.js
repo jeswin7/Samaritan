@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, ScrollView, SafeAreaView, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Stack, useRouter } from "expo-router";
 
@@ -17,11 +17,13 @@ const Home = () => {
     const [backButtonVisible, setBackButtonVisible] = useState(false);
     const [forgotPassword, setForgotPassword] = useState(false);
     const [userRole, setRole] = useState('seeker');
+    const [userId, setUserId] = useState(null);
 
-    redirectToHomeScreen = (role) => {
-        console.log("@parent | ", role, typeof(role))
+    redirectToHomeScreen = (role, user_id) => {
+        console.log("@parent | ", role, typeof(role), user_id, typeof(user_id))
         setLoggedIn(true);
         setRole(String(role));
+        setUserId(user_id);
     }
 
     redirectToRegisterScreen = () => {
@@ -59,11 +61,14 @@ const Home = () => {
                 <Image source={icons.logo} style={styles.logo}></Image>
             </View>) : ''}
             {
-                isLoggedIn ?
+                isLoggedIn?
                     userRole == 'seeker'?
                         <Welcome />
                         :
-                        <Dashboard />
+                            userId?
+                                <Dashboard userId={userId} />
+                            :
+                                <Text>Loading...</Text>
                     :
                     <View>
                         {

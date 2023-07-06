@@ -109,46 +109,19 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   seperatorStyle: {
-    height: 30, 
-    width: '100%' 
+    height: 30,
+    width: '100%'
   },
   homeContainer: {
-    backgroundColor: '#fff', 
-    height: '100%', 
-    justifyContent: 'center', 
-    alignItems: 'center' 
+    backgroundColor: '#fff',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  homeSubContainer: { 
-    backgroundColor: '#fff', 
-    width: '90%', 
-    margin: -40 
-  },
-  profileView: { 
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    backgroundColor:'#fff' 
-  },
-  // Request Component style
-  requestContainer: {
-    height: '90%',
-    marginTop: SIZES.medium,
-  },
-  statusView: {
-    flexDirection:'row', 
-    flex:1,
-    alignItems:'center',
-  },
-  statusIcon: {
-    height:15,
-    width:15,
-    backgroundColor:COLORS.green, 
-    borderRadius:30, 
-  },
-  statusTitle : {
-    fontSize: SIZES.large,
-    color: COLORS.secondary,
-    marginLeft: 10
+  homeSubContainer: {
+    backgroundColor: '#fff',
+    width: '90%',
+    margin: -40
   },
   starContainer: {
     flexDirection: 'row',
@@ -156,7 +129,57 @@ const styles = StyleSheet.create({
   star: {
     fontSize: 30,
     color: 'gold'
-  }
+  },
+  profileView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
+  // Request Component style
+  requestContainer: {
+    height: '90%',
+    marginTop: SIZES.medium,
+  },
+  statusView: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+  },
+  statusIcon: {
+    height: 15,
+    width: 15,
+    backgroundColor: COLORS.green,
+    borderRadius: 30,
+  },
+  statusTitle: {
+    fontSize: SIZES.large,
+    color: COLORS.secondary,
+    marginLeft: 10
+  },
+  //mentorDetails
+  mentorDetailsContainer: {
+    backgroundColor: '#fff',
+    height: '100%'
+  },
+  mentorDetailsSubContainer: {
+    margin: 20
+  },
+  sendConnectionButton: {
+    marginVertical: 40,
+    elevation: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    margin:20
+  },
+  sendConnectionText: {
+    fontSize: 18,
+    color: COLORS.white,
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
 });
 
 export default styles;

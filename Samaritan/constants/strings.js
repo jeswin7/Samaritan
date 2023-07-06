@@ -30,7 +30,8 @@ const strings = {
     contactformatError: 'Contact number should contain numbers only',
     pwdmatchError: 'passwords do not match',
     country: 'Country',
-    searchHintText: 'What are you looking for?'
+    searchHintText: 'What are you looking for?',
+    dendConnectionRequest: 'Send Connection Request'
   };
 
   export default strings;

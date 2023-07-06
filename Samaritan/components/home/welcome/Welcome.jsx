@@ -77,42 +77,11 @@ const DATARequest = [
   }
 ];
 
-const onHomeItemPress = (item, navigation) => {
-  console.log('click',item);
+const onHomeItemPress = (item) => {
+  console.log('click', item);
+  const navigation = useNavigation();
+  navigation.navigate("ProfileScreen");
 }
-
-const HomeItem = ({ item, navigation }) => (
-  <TouchableOpacity onPress={() => onHomeItemPress(item,navigation)}>
-    <View style={styles.listView}>
-      <View style={styles.item}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.title}>{item.location}</Text>
-        <Text style={styles.title}>{item.service}</Text>
-        <Text style={styles.title}>{item.rating}</Text>
-      </View>
-      <View style={styles.cheveronView}>
-        <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image>
-      </View>
-    </View>
-  </TouchableOpacity>
-
-);
-
-const renderHomeItem = ({ item }) => {
- return   (
- <HomeItem  item={item} />);
-}
-
-
-
-const ItemSeparatorView = () => {
-  return (
-    //Item Separator
-    <View
-      style={styles.seperatorStyle}
-    />
-  );
-};
 
 //search handle
 const handleSearchClick = () => {
@@ -121,7 +90,42 @@ const handleSearchClick = () => {
 };
 
 //Home Component
-function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
+function HomeScreen({ searchTerm, setSearchTerm, handleSearchClick }) {
+  const navigation = useNavigation();
+
+  const HomeItem = ({ item }) => (
+    <TouchableOpacity onPress={() => navigation.navigate("Details", { item })}>
+      <View style={styles.listView}>
+        <View style={styles.item}>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.title}>{item.location}</Text>
+          <Text style={styles.title}>{item.service}</Text>
+          <Text style={styles.title}>{item.rating}</Text>
+        </View>
+        <View style={styles.cheveronView}>
+          <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image>
+        </View>
+      </View>
+    </TouchableOpacity>
+
+  );
+
+  const renderHomeItem = ({ item }) => {
+    return (
+      <HomeItem item={item} />);
+  }
+
+
+
+  const ItemSeparatorView = () => {
+    return (
+      //Item Separator
+      <View
+        style={styles.seperatorStyle}
+      />
+    );
+  };
+
   return (
     <View style={styles.homeContainer}>
       <View style={styles.homeSubContainer}>
@@ -165,16 +169,16 @@ function HomeScreen({ navigation, searchTerm, setSearchTerm, handleSearchClick }
 }
 
 const RequestItem = ({ item, navigation }) => (
-  <TouchableOpacity onPress={() => onHomeItemPress(item,navigation)}>
+  <TouchableOpacity onPress={() => onHomeItemPress(item, navigation)}>
     <View style={styles.listView}>
       <View style={styles.item}>
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.title}>{item.service}</Text>
         <View style={styles.statusView}>
-        <View style={[styles.statusIcon, {backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
-        <Text style={styles.statusTitle}>{item.status}</Text>
+          <View style={[styles.statusIcon, { backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
+          <Text style={styles.statusTitle}>{item.status}</Text>
         </View>
-        
+
       </View>
     </View>
   </TouchableOpacity>
@@ -182,8 +186,8 @@ const RequestItem = ({ item, navigation }) => (
 );
 
 const renderRequestItem = ({ item }) => {
- return   (
- <RequestItem  item={item} />);
+  return (
+    <RequestItem item={item} />);
 }
 
 //Request Component
@@ -214,11 +218,46 @@ function ProfileScreen({ navigation }) {
   );
 }
 
+//
+function handleSendConnectionRequest() {
+
+}
+
+//Mentor Details Screen
+function MentorDetailsScreen({ route }) {
+  const { item } = route.params;
+  console.log('metor list', item);
+  return (
+    <View style={styles.mentorDetailsContainer}>
+      <View style={styles.mentorDetailsSubContainer}>
+        <View style={styles.listView}>
+          <View style={styles.item}>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.title}>{item.location}</Text>
+            <Text style={styles.title}>{item.service}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {[...Array(5)].map((_, index) => (
+                <Text key={index} style={styles.star}>
+                  {index < Math.floor(item.rating) ? '★' : '☆'}
+                </Text>
+              ))}
+            </View>
+
+          </View>
+        </View>
+      </View>
+      <TouchableOpacity onPress={handleSendConnectionRequest} style={styles.sendConnectionButton}>
+        <Text style={styles.sendConnectionText}>{strings.dendConnectionRequest}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem label="LOG OUT" labelStyle={{color:COLORS.white}} onPress={() => alert('Logout')} />
+      <DrawerItem label="LOG OUT" labelStyle={{ color: COLORS.white }} onPress={() => alert('Logout')} />
     </DrawerContentScrollView>
   );
 }
@@ -229,17 +268,17 @@ const Welcome = () => {
 
   return (
     <NavigationContainer independent={true}>
-      <Drawer.Navigator initialRouteName="Home" 
-      screenOptions={{
-        drawerStyle: {
-          backgroundColor: COLORS.secondary,
-        },
-        drawerActiveBackgroundColor: COLORS.primary,
-        drawerLabelStyle : {
-          color: '#fff'
-        }
-      }}
-      drawerContent={props => <CustomDrawerContent {...props} />}
+      <Drawer.Navigator initialRouteName="Home"
+        screenOptions={{
+          drawerStyle: {
+            backgroundColor: COLORS.secondary,
+          },
+          drawerActiveBackgroundColor: COLORS.primary,
+          drawerLabelStyle: {
+            color: '#fff'
+          }
+        }}
+        drawerContent={props => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen name="Home" component={HomeScreen} options={{
           title: 'SAMARITAN',
@@ -274,9 +313,21 @@ const Welcome = () => {
             </TouchableOpacity >
           ),
         }} />
+        <Drawer.Screen name="Details" component={MentorDetailsScreen} options={{
+          title: 'DETAILS',
+          headerTitleAlign: 'center',
+          headerTintColor: COLORS.secondary,
+          headerTitleStyle: styles.dashboardHeading,
+          drawerItemStyle: { height: 0 },
+          headerRight: () => (
+            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+              <Image source={icons.bell_icon}></Image>
+            </TouchableOpacity >
+          ),
+        }} />
       </Drawer.Navigator>
     </NavigationContainer>
- );
+  );
 };
 
 export default Welcome;

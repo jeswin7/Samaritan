@@ -2,7 +2,7 @@
   "expo": {
     "scheme": "acme",
     "platforms": ["ios", "android", "web"], 
-    "icon": "./assets/icon.png",
+    "icon": "./assets/adaptive-icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

@@ -23,6 +23,7 @@ const Login = (props) => {
   }
 
   const postAPI = async () => {
+    console.log("@postAPI")
     const url = `http://10.211.55.3:3001/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
     try {
@@ -35,11 +36,12 @@ const Login = (props) => {
       });
 
       const data = await response.json();
-      console.log('Response data:', data.status);
+      console.log('Response data::::::::::::::::::::::::::::::::::', data);
 
       // Process the response data
-      if (data.status === 200)
-        props.isValid();
+      if (data.status === 200 && data.userId)
+        props.isValid(data.role, data.userId);
+        
       else
         alert(strings.invalidUser);
     } catch (error) {

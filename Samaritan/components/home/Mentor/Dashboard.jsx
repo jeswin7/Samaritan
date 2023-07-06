@@ -27,7 +27,12 @@ const Dashboard = () => {
 
     const Drawer = createDrawerNavigator();
     const [mentorDetail, setDetail] = useState({});
+    const [connReqs, setConnReqs] = useState(null);
 
+    const SERVICE_MAP = {
+        1: 'Accommodation',
+        2: 'Part-Time Job'
+    }
 
     // Static APIs for testing purpose
     DETAILS_API = {
@@ -186,9 +191,50 @@ const Dashboard = () => {
 
 
     // 5. Fetch Connection Requests
+    const fetchMentorConnRequests = async () => {
+        try {
+            // Make API requests here
+            const response = await fetch(`http://10.211.55.3:3001/mentor/connectionRequests?user_id=8`);
+            const data = await response.json();
+            console.log("-------------", data)
+            setConnReqs(data);
+
+            // Handle the API response and update component state
+            // ...
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    // 5. Fetch Connection Requests
+    const updateMentorConnRequestStatus = async (id, status) => {
+        try {
+            // Make API requests here
+            const response = await fetch(`http://10.211.55.3:3001/updateConnection?id=${id}&status=${status}`);
+            const data = await response.json();
+            console.log("Conn Status Upd:", data)
+            fetchMentorConnRequests()
+            // Handle the API response and update component state
+            // ...
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 
 
+    useEffect(() => {
+        // Fetch API data here
+        fetchData();
+    }, []);
+
+
+    const fetchData = () => {
+        fetchMentorDetail()
+        fetchMentorConnRequests()
+    }
 
 
     //Home Component
@@ -352,47 +398,74 @@ const Dashboard = () => {
 
     //Connection requests component
     function ConnectionRequestsScreen() {
-        const [connStatus, setConnStatus] = useState("");
+
+        const updateStatus = (id, status) => {
+            updateMentorConnRequestStatus(id, status)
+        }
+
         return (
             <ScrollView>
                 {
-                    CONNECTION_REQUESTS_API.map((item, index) => {
-                        return <View key={index} style={{
-                            margin: 15,
-                            backgroundColor: COLORS.tertiary,
-                            padding: 15
-                        }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
-                                </View>
-                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                            </View>
-                            <View style={{ marginBottom: 30 }}>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
-                            </View>
-
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
-                                </View>
-                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                            </View>
-                            <View style={{ marginBottom: 30 }}>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
-                            </View>
-
-                            <View style={{
-                                flexDirection: 'row',
-                                flexWrap: 'wrap',
-                                justifyContent: 'space-between'
+                    connReqs ?
+                        connReqs.map((item, index) => {
+                            return <View key={index} style={{
+                                margin: 15,
+                                backgroundColor: COLORS.tertiary,
+                                padding: 15
                             }}>
-                                <Button title="Accept" color={COLORS.primary}  />
-                                <Button title="Decline" color={COLORS.red} />
-                            </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View>
+                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                                    </View>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                                </View>
+                                <View style={{ marginBottom: 30 }}>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.seekerName}</Text>
+                                </View>
 
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View>
+                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                                    </View>
+                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                                </View>
+                                <View style={{ marginBottom: 30 }}>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{SERVICE_MAP[item.serviceId]}</Text>
+                                </View>
+
+                                {
+                                    item.status === 'PENDING' ?
+                                        <View style={{
+                                            flexDirection: 'row',
+                                            flexWrap: 'wrap',
+                                            justifyContent: 'space-between'
+                                        }}>
+                                            <Button title="Accept" color={COLORS.primary} onPress={() => updateStatus(item.id, 'ACCEPTED')} />
+                                            <Button title="Decline" color={COLORS.red} onPress={() => updateStatus(item.id, 'DECLINED')} />
+                                        </View>
+                                        :
+                                        <View>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <View>
+                                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Connection Status</Text>
+                                                </View>
+                                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                                            </View>
+                                            <View style={{ marginBottom: 30 }}>
+                                                <Text style={{ fontSize: 20, color: item.status === 'ACCEPTED'? 'green' : 'red', marginRight: 5, fontWeight: 5 }}>{item.status}</Text>
+                                            </View>
+                                        </View>
+
+                                }
+
+
+
+                            </View>
+                        })
+                        :
+                        <View>
+                            <Text>No Connection Requests!!</Text>
                         </View>
-                    })
                 }
             </ScrollView>
 
@@ -529,15 +602,7 @@ const Dashboard = () => {
 
 
 
-    useEffect(() => {
-        // Fetch API data here
-        fetchData();
-    }, []);
 
-
-    const fetchData = () => {
-        fetchMentorDetail()
-    }
 
     return (
         <NavigationContainer independent={true}>

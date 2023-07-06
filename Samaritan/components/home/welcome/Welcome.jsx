@@ -17,6 +17,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 
 
+
+const Welcome = () => {
+  const router = useRouter();
+  const navigation = useNavigation();
+
+
+
 const Drawer = createDrawerNavigator();
 
 const DATAHome = [
@@ -98,21 +105,9 @@ const HomeItem = ({ item, navigation }) => (
 
 );
 
-const renderHomeItem = ({ item }) => {
- return   (
- <HomeItem  item={item} />);
-}
+const renderHomeItem = ({ item }) => <HomeItem  item={item} />;
 
-
-
-const ItemSeparatorView = () => {
-  return (
-    //Item Separator
-    <View
-      style={styles.seperatorStyle}
-    />
-  );
-};
+const ItemSeparatorView = () => <View style={styles.seperatorStyle}/>
 
 //search handle
 const handleSearchClick = () => {
@@ -181,10 +176,7 @@ const RequestItem = ({ item, navigation }) => (
 
 );
 
-const renderRequestItem = ({ item }) => {
- return   (
- <RequestItem  item={item} />);
-}
+const renderRequestItem = ({ item }) => <RequestItem  item={item} />;
 
 //Request Component
 function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
@@ -222,10 +214,6 @@ function CustomDrawerContent(props) {
     </DrawerContentScrollView>
   );
 }
-
-const Welcome = () => {
-  const router = useRouter();
-  const navigation = useNavigation();
 
   return (
     <NavigationContainer independent={true}>

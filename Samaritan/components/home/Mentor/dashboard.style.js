@@ -4,7 +4,7 @@ import { COLORS, FONT, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: SIZES.large,
     color: COLORS.primary,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   statusDoneStyle: {
     fontSize: SIZES.large,

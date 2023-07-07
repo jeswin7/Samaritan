@@ -369,6 +369,7 @@ const Dashboard = (props) => {
                         />
                     </View>
 
+                     {/* Rating */}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View>
                             <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Rating</Text>
@@ -381,6 +382,17 @@ const Dashboard = (props) => {
                                 {index < Math.floor(mentorDetail.rating) ? '★' : '☆'}
                             </Text>
                         ))}
+                    </View>
+
+                    {/* Strike Count */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
+                        <View>
+                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Strike Count</Text>
+                        </View>
+                        <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{mentorDetail.strikeCount}/5</Text>
                     </View>
 
                 </View>
@@ -610,7 +622,18 @@ const Dashboard = (props) => {
 
     return (
         <NavigationContainer independent={true}>
-            <Drawer.Navigator initialRouteName="Home">
+            <Drawer.Navigator 
+                initialRouteName="Home"
+                screenOptions={{
+                    drawerStyle: {
+                      backgroundColor: COLORS.secondary,
+                    },
+                    drawerActiveBackgroundColor: COLORS.primary,
+                    drawerLabelStyle: {
+                      color: '#fff'
+                    }
+                  }}
+            >
                 <Drawer.Screen name="Home" component={HomeScreen} options={{
                     title: 'SAMARITAN',
                     headerTitleAlign: 'center',

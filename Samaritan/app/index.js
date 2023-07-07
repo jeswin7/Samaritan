@@ -62,13 +62,13 @@ const Home = () => {
             </View>) : ''}
             {
                 isLoggedIn?
-                    // userRole == 'seeker'?
-                        <Welcome />
-                        // :
-                        //     userId?
-                        //         <Dashboard userId={userId} />
-                        //     :
-                        //         <Text>Loading...</Text>
+                        userId?
+                            userRole == 'seeker'?
+                                <Welcome userId={userId} />  
+                            :
+                                <Dashboard userId={userId} />
+                        :
+                            <Text>Loading...</Text>
                     :
                     <View>
                         {

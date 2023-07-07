@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-const Welcome = () => {
+const Welcome = (props) => {
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -118,15 +118,23 @@ const Welcome = () => {
     2: 'Part-Time Job'
   }
 
+
   //search handle
   const handleSearchClick = () => {
     // Perform search button click here
     console.log('Search button click...');
   };
 
+
+
   //Home Component
   function HomeScreen({ searchTerm, setSearchTerm, handleSearchClick }) {
     const navigation = useNavigation();
+
+
+    const renderHomeItem = ({ item }) => <HomeItem item={item} />
+
+    const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
     const HomeItem = ({ item }) => (
       <TouchableOpacity onPress={() => navigation.navigate("Details", { item })}>
@@ -146,12 +154,8 @@ const Welcome = () => {
           </View>
         </View>
       </TouchableOpacity>
-
+  
     );
-
-    const renderHomeItem = ({ item }) => <HomeItem item={item} />
-
-    const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
 
     return (
@@ -202,28 +206,34 @@ const Welcome = () => {
     );
   }
 
-  const RequestItem = ({ item, navigation }) => (
-    <TouchableOpacity onPress={() => onHomeItemPress(item, navigation)}>
-      <View style={styles.listView}>
-        <View style={styles.item}>
-          <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.title}>{item.service}</Text>
-          <View style={styles.statusView}>
-            <View style={[styles.statusIcon, { backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
-            <Text style={styles.statusTitle}>{item.status}</Text>
-          </View>
 
-        </View>
-      </View>
-    </TouchableOpacity>
-
-  );
-
-  const renderRequestItem = ({ item }) => <RequestItem item={item} />;
 
 
   //Request Component
   function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
+
+    const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
+
+    const RequestItem = ({ item, navigation }) => (
+      <TouchableOpacity onPress={() => onHomeItemPress(item, navigation)}>
+        <View style={styles.listView}>
+          <View style={styles.item}>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.title}>{item.service}</Text>
+            <View style={styles.statusView}>
+              <View style={[styles.statusIcon, { backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
+              <Text style={styles.statusTitle}>{item.status}</Text>
+            </View>
+  
+          </View>
+        </View>
+      </TouchableOpacity>
+  
+    );
+  
+    const renderRequestItem = ({ item }) => <RequestItem item={item} />;
+
+
     return (
       <View style={styles.homeContainer}>
         <View style={styles.homeSubContainer}>
@@ -251,8 +261,22 @@ const Welcome = () => {
   }
 
   // Send Connection request API initiate
-  function handleSendConnectionRequest() {
-
+  const handleSendConnectionRequest = async (item) => {
+        // POST API
+        fetch('http://10.211.55.3:3001/addConnection', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            seekerId: props.userId,
+            mentorId: item.id,
+            status: 'PENDING',
+            serviceId: item.serviceOffered
+          })
+        })
+          .then(() => alert('Your Connection Request Sent Successfully!'));
   }
 
   //Mentor Details Screen
@@ -275,7 +299,7 @@ const Welcome = () => {
           </View>
         </View>
         </View>
-        <TouchableOpacity onPress={handleSendConnectionRequest} style={styles.sendConnectionButton}>
+        <TouchableOpacity onPress={() => handleSendConnectionRequest(item)} style={styles.sendConnectionButton}>
           <Text style={styles.sendConnectionText}>{strings.dendConnectionRequest}</Text>
         </TouchableOpacity>
       </View>

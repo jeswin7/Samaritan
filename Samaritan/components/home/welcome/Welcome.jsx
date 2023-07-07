@@ -25,10 +25,11 @@ const Welcome = (props) => {
 
   const [mentorsList, setMentorsList] = useState([]);
   const [focussedMentor, setFocussedMentor] = useState(null);
-
+  const [connReqs, setConnReqs] = useState([]);
 
   useEffect(() => {
     fetchMentors()
+    fetchSeekerConnRequests()
   }, [])
 
 
@@ -209,29 +210,42 @@ const Welcome = (props) => {
   }
 
 
+  // Fetch Connection requests of logged in seeker
+  const fetchSeekerConnRequests = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(`http://10.211.55.3:3001/seeker/connectionRequests?user_id=${props.userId}`);
+      const data = await response.json();
+      setConnReqs(data);
 
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //Request Component
   function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
 
+
+
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
-    const RequestItem = ({ item, navigation }) => (
-      <TouchableOpacity onPress={() => onHomeItemPress(item, navigation)}>
+    const RequestItem = ({ item }) => (
+        <TouchableOpacity>
         <View style={styles.listView}>
           <View style={styles.item}>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.title}>{item.service}</Text>
+            <Text style={styles.title}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
+            <Text style={styles.title}>{SERVICE_MAP[item.connection.serviceId]}</Text>
             <View style={styles.statusView}>
-              <View style={[styles.statusIcon, { backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
-              <Text style={styles.statusTitle}>{item.status}</Text>
+              <View style={[styles.statusIcon, { backgroundColor: item.connection.status === 'DECLINED' ? COLORS.red : item.connection.status === 'ACCEPTED' ? COLORS.green : COLORS.yellow }]}></View>
+              <Text style={styles.statusTitle}>{item.connection.status}</Text>
             </View>
 
           </View>
         </View>
       </TouchableOpacity>
-
-    );
+      )
+     
 
     const renderRequestItem = ({ item }) => <RequestItem item={item} />;
 
@@ -241,10 +255,10 @@ const Welcome = (props) => {
         <View style={styles.homeSubContainer}>
           <View style={styles.requestContainer}>
             <FlatList
-              data={DATARequest}
+              data={connReqs}
               renderItem={renderRequestItem}
               ItemSeparatorComponent={ItemSeparatorView}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.connection.id}
               showsVerticalScrollIndicator={false}
             />
           </View>

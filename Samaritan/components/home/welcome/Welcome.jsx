@@ -16,6 +16,7 @@ import { icons, SIZES, COLORS, strings } from "../../../constants";
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from "react-native-gesture-handler";
 
 
 
@@ -140,7 +141,11 @@ const Welcome = (props) => {
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
     const HomeItem = ({ item }) => (
-      <TouchableOpacity onPress={() => navigation.navigate("Details", { item })}>
+      <TouchableOpacity onPress={() => { 
+        setFocussedMentor(item); 
+        navigation.navigate("Details", { item }); 
+        }
+        }>
         <View style={styles.listView}>
           <View style={styles.item}>
             <Text style={styles.title}>{item.fname} {item.lname}</Text>
@@ -203,7 +208,7 @@ const Welcome = (props) => {
               :
               <Text>Loading...</Text>
           }
-
+      
         </View>
       </View>
     );
@@ -309,7 +314,7 @@ const Welcome = (props) => {
           );
         });
     }
-    setFocussedMentor(item);
+    
     return (
       <View style={styles.mentorDetailsContainer}>
         <View style={styles.mentorDetailsSubContainer}>

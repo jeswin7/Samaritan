@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Button
+  Button,
+  Alert
 } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -23,6 +24,8 @@ const Welcome = (props) => {
   const navigation = useNavigation();
 
   const [mentorsList, setMentorsList] = useState([]);
+  const [focussedMentor, setFocussedMentor] = useState(null);
+
 
   useEffect(() => {
     fetchMentors()
@@ -131,7 +134,6 @@ const Welcome = (props) => {
   function HomeScreen({ searchTerm, setSearchTerm, handleSearchClick }) {
     const navigation = useNavigation();
 
-
     const renderHomeItem = ({ item }) => <HomeItem item={item} />
 
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
@@ -154,7 +156,7 @@ const Welcome = (props) => {
           </View>
         </View>
       </TouchableOpacity>
-  
+
     );
 
 
@@ -224,13 +226,13 @@ const Welcome = (props) => {
               <View style={[styles.statusIcon, { backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
               <Text style={styles.statusTitle}>{item.status}</Text>
             </View>
-  
+
           </View>
         </View>
       </TouchableOpacity>
-  
+
     );
-  
+
     const renderRequestItem = ({ item }) => <RequestItem item={item} />;
 
 
@@ -260,48 +262,62 @@ const Welcome = (props) => {
     );
   }
 
-  // Send Connection request API initiate
-  const handleSendConnectionRequest = async (item) => {
-        // POST API
-        fetch('http://10.211.55.3:3001/addConnection', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            seekerId: props.userId,
-            mentorId: item.id,
-            status: 'PENDING',
-            serviceId: item.serviceOffered
-          })
-        })
-          .then(() => alert('Your Connection Request Sent Successfully!'));
-  }
+
 
   //Mentor Details Screen
   function MentorDetailsScreen({ route }) {
     const { item } = route.params;
     console.log('metor list', item);
+    const [requestSent, setrequestSent] = useState(false);
+
+    // Send Connection request API initiate
+    const handleSendConnectionRequest = async (item) => {
+      // POST API
+      fetch('http://10.211.55.3:3001/addConnection', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          seekerId: props.userId,
+          mentorId: item.id,
+          serviceId: item.serviceOffered
+        })
+      })
+        .then(() => {
+          Alert.alert(
+            'Request Sent!', // Specify the desired title here
+            `Your Connection Request to ${item.fname} ${item.lname} Sent Successfully!`,
+            [
+              { text: 'Done', onPress: () => setrequestSent(true) }
+            ]
+          );
+        });
+    }
+    setFocussedMentor(item);
     return (
       <View style={styles.mentorDetailsContainer}>
         <View style={styles.mentorDetailsSubContainer}>
-        <View style={styles.listView}>
-          <View style={styles.item}>
-            <Text style={styles.title}>{item.fname} {item.lname}</Text>
-            <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
-            <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
-            <Text style={styles.title}> {[...Array(5)].map((_, index) => (
-              <Text key={index} style={styles.star}>
-                {index < Math.floor(item.rating) ? '★' : '☆'}
-              </Text>
-            ))}</Text>
+          <View style={styles.detailView}>
+            <View style={styles.item}>
+              <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+              <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
+              <Text style={styles.title}>{[...Array(5)].map((_, index) => (
+                <Text key={index} style={styles.star}>
+                  {index < Math.floor(item.rating) ? '★' : '☆'}
+                </Text>
+              ))}</Text>
+            </View>
           </View>
         </View>
-        </View>
-        <TouchableOpacity onPress={() => handleSendConnectionRequest(item)} style={styles.sendConnectionButton}>
-          <Text style={styles.sendConnectionText}>{strings.dendConnectionRequest}</Text>
-        </TouchableOpacity>
+        {
+          !requestSent &&
+          <TouchableOpacity onPress={() => handleSendConnectionRequest(item)} style={styles.sendConnectionButton}>
+            <Text style={styles.sendConnectionText}>{strings.dendConnectionRequest}</Text>
+          </TouchableOpacity>
+        }
+
       </View>
     );
   }
@@ -363,7 +379,7 @@ const Welcome = (props) => {
           ),
         }} />
         <Drawer.Screen name="Details" component={MentorDetailsScreen} options={{
-          title: 'DETAILS',
+          title: focussedMentor ? `${focussedMentor.fname} ${focussedMentor.lname}` : 'DETAILS',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,

@@ -86,6 +86,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     borderRadius: SIZES.medium,
+  }, 
+  detailView: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    borderRadius: SIZES.medium,
   },
   item: {
     flex: 1,
@@ -164,6 +169,15 @@ const styles = StyleSheet.create({
   },
   mentorDetailsSubContainer: {
     margin: 20
+  },
+  sendConnectionButton: {
+    marginVertical: 40,
+    elevation: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    margin:20
   },
   sendConnectionButton: {
     marginVertical: 40,

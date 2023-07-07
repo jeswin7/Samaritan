@@ -226,7 +226,7 @@ const Welcome = (props) => {
   //Request Component
   function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
 
-
+    fetchSeekerConnRequests()
 
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 

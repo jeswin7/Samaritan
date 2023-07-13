@@ -11,7 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { Picker } from '@react-native-picker/picker';
 import styles from "./dashboard.style";
-import { icons, SIZES, COLORS, strings } from "../../../constants";
+import { icons, SIZES, COLORS, strings, api } from "../../../constants";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -170,7 +170,7 @@ const Dashboard = (props) => {
         try {
             // Make API requests here
             console.log("-------props-----", props)
-            const response = await fetch(`http://10.211.55.3:3001/mentorDetail?user_id=${props.userId}`);
+            const response = await fetch(api.apiUrl+`/mentorDetail?user_id=${props.userId}`);
             const data = await response.json();
             setDetail(data[0]);
 
@@ -195,7 +195,7 @@ const Dashboard = (props) => {
     const fetchMentorConnRequests = async () => {
         try {
             // Make API requests here
-            const response = await fetch(`http://10.211.55.3:3001/mentor/connectionRequests?user_id=${props.userId}`);
+            const response = await fetch(api.apiUrl+`/mentor/connectionRequests?user_id=${props.userId}`);
             const data = await response.json();
             setConnReqs(data);
 
@@ -211,7 +211,7 @@ const Dashboard = (props) => {
     const updateMentorConnRequestStatus = async (id, status) => {
         try {
             // Make API requests here
-            const response = await fetch(`http://10.211.55.3:3001/updateConnection?id=${id}&status=${status}`);
+            const response = await fetch(api.apiUrl+`/updateConnection?id=${id}&status=${status}`);
             const data = await response.json();
             console.log("Conn Status Upd:", data)
             fetchMentorConnRequests()

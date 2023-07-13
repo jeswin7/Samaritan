@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Button
+  Button,
+  Alert
 } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -15,256 +16,339 @@ import { icons, SIZES, COLORS, strings } from "../../../constants";
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from "react-native-gesture-handler";
 
 
-const Drawer = createDrawerNavigator();
 
-const DATAHome = [
-  {
-    id: '1',
-    name: 'First Name',
-    location: 'Waterloo',
-    service: 'Accomodation',
-    rating: '3'
-  },
-  {
-    id: '2',
-    name: 'Second Name',
-    location: 'Waterloo',
-    service: 'Accomodation',
-    rating: '4'
-  },
-  {
-    id: '3',
-    name: 'Third Name',
-    location: 'Waterloo',
-    service: 'Accomodation',
-    rating: '4'
-  },
-  {
-    id: '4',
-    name: 'Fourth Name',
-    location: 'Waterloo',
-    service: 'Accomodation',
-    rating: '4'
-  },
-];
-
-const DATARequest = [
-  {
-    id: '1',
-    name: 'First Name',
-    service: 'Accomodation',
-    status: 'Requested'
-  },
-  {
-    id: '2',
-    name: 'Second Name',
-    service: 'Accomodation',
-    status: 'Accepted'
-  },
-  {
-    id: '3',
-    name: 'Third Name',
-    service: 'Accomodation',
-    status: 'Declined'
-  },
-  {
-    id: '4',
-    name: 'Fourth Name',
-    service: 'Accomodation',
-    status: 'Declined'
-  }
-];
-
-const onHomeItemPress = (item) => {
-  console.log('click', item);
-  const navigation = useNavigation();
-  navigation.navigate("ProfileScreen");
-}
-
-//search handle
-const handleSearchClick = () => {
-  // Perform search button click here
-  console.log('Search button click...');
-};
-
-//Home Component
-function HomeScreen({ searchTerm, setSearchTerm, handleSearchClick }) {
+const Welcome = (props) => {
+  const router = useRouter();
   const navigation = useNavigation();
 
-  const HomeItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate("Details", { item })}>
-      <View style={styles.listView}>
-        <View style={styles.item}>
-          <Text style={styles.title}>{item.name}</Text>
-          <Text style={styles.title}>{item.location}</Text>
-          <Text style={styles.title}>{item.service}</Text>
-          <Text style={styles.title}>{item.rating}</Text>
-        </View>
-        <View style={styles.cheveronView}>
-          <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image>
-        </View>
-      </View>
-    </TouchableOpacity>
+  const [mentorsList, setMentorsList] = useState([]);
+  const [focussedMentor, setFocussedMentor] = useState(null);
+  const [connReqs, setConnReqs] = useState([]);
 
-  );
-
-  const renderHomeItem = ({ item }) => {
-    return (
-      <HomeItem item={item} />);
-  }
+  useEffect(() => {
+    fetchMentors()
+    fetchSeekerConnRequests()
+  }, [])
 
 
-
-  const ItemSeparatorView = () => {
-    return (
-      //Item Separator
-      <View
-        style={styles.seperatorStyle}
-      />
-    );
+  const fetchMentors = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(`http://10.211.55.3:3001/mentors`);
+      const data = await response.json();
+      setMentorsList(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  return (
-    <View style={styles.homeContainer}>
-      <View style={styles.homeSubContainer}>
-        <View style={styles.searchContainer}>
-          <View style={styles.searchWrapper}>
-            <TextInput
-              style={styles.searchInput}
-              value={searchTerm}
-              onChangeText={(text) => setSearchTerm(text)}
-              placeholder={strings.searchHintText}
-            />
-          </View>
 
-          <TouchableOpacity style={styles.searchBtn} onPress={handleSearchClick}>
-            <Image
-              source={icons.search_icon}
-              style={styles.searchBtnImage}
-            />
-          </TouchableOpacity>
+  const Drawer = createDrawerNavigator();
 
-          <TouchableOpacity style={styles.filterBtn} onPress={handleSearchClick}>
-            <Image
-              source={icons.filter_icon}
-              style={styles.searchBtnImage}
-            />
-          </TouchableOpacity>
-        </View>
+  const DATAHome = [
+    {
+      id: '1',
+      name: 'First Name',
+      location: 'Waterloo',
+      service: 'Accomodation',
+      rating: '3'
+    },
+    {
+      id: '2',
+      name: 'Second Name',
+      location: 'Waterloo',
+      service: 'Accomodation',
+      rating: '4'
+    },
+    {
+      id: '3',
+      name: 'Third Name',
+      location: 'Waterloo',
+      service: 'Accomodation',
+      rating: '4'
+    },
+    {
+      id: '4',
+      name: 'Fourth Name',
+      location: 'Waterloo',
+      service: 'Accomodation',
+      rating: '4'
+    },
+  ];
 
-        <View style={styles.tabsContainer}>
-          <FlatList
-            data={DATAHome}
-            renderItem={renderHomeItem}
-            ItemSeparatorComponent={ItemSeparatorView}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
-      </View>
-    </View>
-  );
-}
+  const DATARequest = [
+    {
+      id: '1',
+      name: 'First Name',
+      service: 'Accomodation',
+      status: 'Requested'
+    },
+    {
+      id: '2',
+      name: 'Second Name',
+      service: 'Accomodation',
+      status: 'Accepted'
+    },
+    {
+      id: '3',
+      name: 'Third Name',
+      service: 'Accomodation',
+      status: 'Declined'
+    },
+    {
+      id: '4',
+      name: 'Fourth Name',
+      service: 'Accomodation',
+      status: 'Declined'
+    }
+  ];
 
-const RequestItem = ({ item, navigation }) => (
-  <TouchableOpacity onPress={() => onHomeItemPress(item, navigation)}>
-    <View style={styles.listView}>
-      <View style={styles.item}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.title}>{item.service}</Text>
-        <View style={styles.statusView}>
-          <View style={[styles.statusIcon, { backgroundColor: item.status === 'Declined' ? COLORS.red : item.status === 'Accepted' ? COLORS.green : COLORS.yellow }]}></View>
-          <Text style={styles.statusTitle}>{item.status}</Text>
-        </View>
+  const ONTARIO_CITIES_MAP = {
+    2: 'Waterloo',
+    3: 'Kitchener',
+    4: 'Toronto',
+    5: 'Ottawa',
+    6: 'Hamilton',
+    7: 'London',
+    8: 'Mississauga',
+    9: 'Brampton',
+    10: 'Markham',
+  };
 
-      </View>
-    </View>
-  </TouchableOpacity>
+  const SERVICE_MAP = {
+    1: 'Accommodation',
+    2: 'Part-Time Job'
+  }
 
-);
 
-const renderRequestItem = ({ item }) => {
-  return (
-    <RequestItem item={item} />);
-}
+  //search handle
+  const handleSearchClick = () => {
+    // Perform search button click here
+    console.log('Search button click...');
+  };
 
-//Request Component
-function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
-  return (
-    <View style={styles.homeContainer}>
-      <View style={styles.homeSubContainer}>
-        <View style={styles.requestContainer}>
-          <FlatList
-            data={DATARequest}
-            renderItem={renderRequestItem}
-            ItemSeparatorComponent={ItemSeparatorView}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
-      </View>
-    </View>
-  );
-}
 
-//Notification component
-function ProfileScreen({ navigation }) {
-  return (
-    <View style={styles.profileView}>
-      <Button onPress={() => navigation.goBack()} title="Go back home" />
-    </View>
-  );
-}
 
-//
-function handleSendConnectionRequest() {
+  //Home Component
+  function HomeScreen({ searchTerm, setSearchTerm, handleSearchClick }) {
+    const navigation = useNavigation();
 
-}
+    const renderHomeItem = ({ item }) => <HomeItem item={item} />
 
-//Mentor Details Screen
-function MentorDetailsScreen({ route }) {
-  const { item } = route.params;
-  console.log('metor list', item);
-  return (
-    <View style={styles.mentorDetailsContainer}>
-      <View style={styles.mentorDetailsSubContainer}>
+    const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
+
+    const HomeItem = ({ item }) => (
+      <TouchableOpacity onPress={() => { 
+        setFocussedMentor(item); 
+        navigation.navigate("Details", { item }); 
+        }
+        }>
         <View style={styles.listView}>
           <View style={styles.item}>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.title}>{item.location}</Text>
-            <Text style={styles.title}>{item.service}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {[...Array(5)].map((_, index) => (
-                <Text key={index} style={styles.star}>
-                  {index < Math.floor(item.rating) ? '★' : '☆'}
-                </Text>
-              ))}
+            <Text style={styles.title}>{item.fname} {item.lname}</Text>
+            <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+            <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
+            <Text style={styles.title}> {[...Array(5)].map((_, index) => (
+              <Text key={index} style={styles.star}>
+                {index < Math.floor(item.rating) ? '★' : '☆'}
+              </Text>
+            ))}</Text>
+          </View>
+          <View style={styles.cheveronView}>
+            <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image>
+          </View>
+        </View>
+      </TouchableOpacity>
+
+    );
+
+
+    return (
+      <View style={styles.homeContainer}>
+        <View style={styles.homeSubContainer}>
+          <View style={styles.searchContainer}>
+            <View style={styles.searchWrapper}>
+              <TextInput
+                style={styles.searchInput}
+                value={searchTerm}
+                onChangeText={(text) => setSearchTerm(text)}
+                placeholder={strings.searchHintText}
+              />
+            </View>
+
+            <TouchableOpacity style={styles.searchBtn} onPress={handleSearchClick}>
+              <Image
+                source={icons.search_icon}
+                style={styles.searchBtnImage}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.filterBtn} onPress={handleSearchClick}>
+              <Image
+                source={icons.filter_icon}
+                style={styles.searchBtnImage}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {
+            mentorsList.length > 0 ?
+              <View style={styles.tabsContainer}>
+                <FlatList
+                  data={mentorsList}
+                  renderItem={renderHomeItem}
+                  ItemSeparatorComponent={ItemSeparatorView}
+                  keyExtractor={item => item.id}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+              :
+              <Text>Loading...</Text>
+          }
+      
+        </View>
+      </View>
+    );
+  }
+
+
+  // Fetch Connection requests of logged in seeker
+  const fetchSeekerConnRequests = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(`http://10.211.55.3:3001/seeker/connectionRequests?user_id=${props.userId}`);
+      const data = await response.json();
+      setConnReqs(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Request Component
+  function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
+
+    fetchSeekerConnRequests()
+
+    const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
+
+    const RequestItem = ({ item }) => (
+        <TouchableOpacity>
+        <View style={styles.listView}>
+          <View style={styles.item}>
+            <Text style={styles.title}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
+            <Text style={styles.title}>{SERVICE_MAP[item.connection.serviceId]}</Text>
+            <View style={styles.statusView}>
+              <View style={[styles.statusIcon, { backgroundColor: item.connection.status === 'DECLINED' ? COLORS.red : item.connection.status === 'ACCEPTED' ? COLORS.green : COLORS.yellow }]}></View>
+              <Text style={styles.statusTitle}>{item.connection.status}</Text>
             </View>
 
           </View>
         </View>
-      </View>
-      <TouchableOpacity onPress={handleSendConnectionRequest} style={styles.sendConnectionButton}>
-        <Text style={styles.sendConnectionText}>{strings.dendConnectionRequest}</Text>
       </TouchableOpacity>
-    </View>
-  );
-}
+      )
+     
 
-function CustomDrawerContent(props) {
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem label="LOG OUT" labelStyle={{ color: COLORS.white }} onPress={() => alert('Logout')} />
-    </DrawerContentScrollView>
-  );
-}
+    const renderRequestItem = ({ item }) => <RequestItem item={item} />;
 
-const Welcome = () => {
-  const router = useRouter();
-  const navigation = useNavigation();
+
+    return (
+      <View style={styles.homeContainer}>
+        <View style={styles.homeSubContainer}>
+          <View style={styles.requestContainer}>
+            <FlatList
+              data={connReqs}
+              renderItem={renderRequestItem}
+              ItemSeparatorComponent={ItemSeparatorView}
+              keyExtractor={item => item.connection.id}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  //Notification component
+  function ProfileScreen({ navigation }) {
+    return (
+      <View style={styles.profileView}>
+        <Button onPress={() => navigation.goBack()} title="Go back home" />
+      </View>
+    );
+  }
+
+
+
+  //Mentor Details Screen
+  function MentorDetailsScreen({ route }) {
+    const { item } = route.params;
+    console.log('metor list', item);
+    const [requestSent, setrequestSent] = useState(false);
+
+    // Send Connection request API initiate
+    const handleSendConnectionRequest = async (item) => {
+      // POST API
+      fetch('http://10.211.55.3:3001/addConnection', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          seekerId: props.userId,
+          mentorId: item.id,
+          serviceId: item.serviceOffered
+        })
+      })
+        .then(() => {
+          Alert.alert(
+            'Request Sent!', // Specify the desired title here
+            `Your Connection Request to ${item.fname} ${item.lname} Sent Successfully!`,
+            [
+              { text: 'Done', onPress: () => setrequestSent(true) }
+            ]
+          );
+        });
+    }
+    
+    return (
+      <View style={styles.mentorDetailsContainer}>
+        <View style={styles.mentorDetailsSubContainer}>
+          <View style={styles.detailView}>
+            <View style={styles.item}>
+              <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+              <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
+              <Text style={styles.title}>{[...Array(5)].map((_, index) => (
+                <Text key={index} style={styles.star}>
+                  {index < Math.floor(item.rating) ? '★' : '☆'}
+                </Text>
+              ))}</Text>
+            </View>
+          </View>
+        </View>
+        {
+          !requestSent &&
+          <TouchableOpacity onPress={() => handleSendConnectionRequest(item)} style={styles.sendConnectionButton}>
+            <Text style={styles.sendConnectionText}>{strings.dendConnectionRequest}</Text>
+          </TouchableOpacity>
+        }
+
+      </View>
+    );
+  }
+
+  function CustomDrawerContent(props) {
+    return (
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem label="LOG OUT" labelStyle={{ color: COLORS.white }} onPress={() => alert('Logout')} />
+      </DrawerContentScrollView>
+    );
+  }
 
   return (
     <NavigationContainer independent={true}>
@@ -314,7 +398,7 @@ const Welcome = () => {
           ),
         }} />
         <Drawer.Screen name="Details" component={MentorDetailsScreen} options={{
-          title: 'DETAILS',
+          title: focussedMentor ? `${focussedMentor.fname} ${focussedMentor.lname}` : 'DETAILS',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,

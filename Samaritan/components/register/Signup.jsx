@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { COLORS, FONT, SIZES, strings } from '../../constants';
+import { COLORS, FONT, SIZES, strings, api } from '../../constants';
 
 
 const SignUp = (props) => {
@@ -132,7 +132,7 @@ const SignUp = (props) => {
 
       else {
         // POST API
-        fetch('http://10.211.55.3:3001/addseeker', {
+        fetch(api.apiUrl+'/addseeker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -167,7 +167,7 @@ const SignUp = (props) => {
 
       else {
         // POST API
-        fetch('http://10.211.55.3:3001/addmentor', {
+        fetch(api.apiUrl+'/addmentor', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

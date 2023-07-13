@@ -12,7 +12,7 @@ import {
 import { useRouter } from "expo-router";
 
 import styles from "./welcome.style";
-import { icons, SIZES, COLORS, strings } from "../../../constants";
+import { icons, SIZES, COLORS, strings, api } from "../../../constants";
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -37,7 +37,7 @@ const Welcome = (props) => {
   const fetchMentors = async () => {
     try {
       // Make API requests here
-      const response = await fetch(`http://10.211.55.3:3001/mentors`);
+      const response = await fetch(`${api.apiUrl}/mentors`);
       const data = await response.json();
       setMentorsList(data);
     } catch (error) {
@@ -219,7 +219,7 @@ const Welcome = (props) => {
   const fetchSeekerConnRequests = async () => {
     try {
       // Make API requests here
-      const response = await fetch(`http://10.211.55.3:3001/seeker/connectionRequests?user_id=${props.userId}`);
+      const response = await fetch(`${api.apiUrl}/seeker/connectionRequests?user_id=${props.userId}`);
       const data = await response.json();
       setConnReqs(data);
 
@@ -292,7 +292,7 @@ const Welcome = (props) => {
     // Send Connection request API initiate
     const handleSendConnectionRequest = async (item) => {
       // POST API
-      fetch('http://10.211.55.3:3001/addConnection', {
+      fetch(`${api.apiUrl}/addConnection`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',

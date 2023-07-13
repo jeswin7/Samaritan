@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { COLORS, FONT, SIZES, strings } from '../../constants';
+import { COLORS, FONT, SIZES, strings, api } from '../../constants';
 import { color } from 'react-native-reanimated';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -24,7 +24,7 @@ const Login = (props) => {
 
   const postAPI = async () => {
     console.log("@postAPI")
-    const url = `http://10.211.55.3:3001/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+    const url = api.apiUrl+`/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
     try {
       const response = await fetch(url, {

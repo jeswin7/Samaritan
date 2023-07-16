@@ -124,11 +124,34 @@ const Welcome = (props) => {
   }
 
 
-  //search handle
+  // search handle
   const handleSearchClick = () => {
     // Perform search button click here
     console.log('Search button click...');
   };
+
+// Fetch Connection requests of logged in seeker
+const fetchMentorsFiltered = async (filterName, filterValue) => {
+  try {
+    // Make API requests here
+    const response = await fetch(`${api.apiUrl}/mentors/filter?filterName=${encodeURIComponent(filterName)}&filterValue=${encodeURIComponent(filterValue)}`);
+    const data = await response.json();
+    console.log('Fetched data:', data);
+    setMentorsList(data);
+
+  } catch (error) {
+    console.log('Error fetching data:', error);
+  }
+};
+
+
+
+  // filter handle
+  const handleFilterClick = () => {
+    console.log('@ handle filter----')
+    fetchMentorsFiltered('serviceOffered', 1)
+  };
+
 
 
 
@@ -141,11 +164,11 @@ const Welcome = (props) => {
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
     const HomeItem = ({ item }) => (
-      <TouchableOpacity onPress={() => { 
-        setFocussedMentor(item); 
-        navigation.navigate("Details", { item }); 
-        }
-        }>
+      <TouchableOpacity onPress={() => {
+        setFocussedMentor(item);
+        navigation.navigate("Details", { item });
+      }
+      }>
         <View style={styles.listView}>
           <View style={styles.item}>
             <Text style={styles.title}>{item.fname} {item.lname}</Text>
@@ -186,7 +209,7 @@ const Welcome = (props) => {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.filterBtn} onPress={handleSearchClick}>
+            <TouchableOpacity style={styles.filterBtn} onPress={handleFilterClick}>
               <Image
                 source={icons.filter_icon}
                 style={styles.searchBtnImage}
@@ -208,7 +231,7 @@ const Welcome = (props) => {
               :
               <Text>Loading...</Text>
           }
-      
+
         </View>
       </View>
     );
@@ -236,7 +259,7 @@ const Welcome = (props) => {
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
     const RequestItem = ({ item }) => (
-        <TouchableOpacity>
+      <TouchableOpacity>
         <View style={styles.listView}>
           <View style={styles.item}>
             <Text style={styles.title}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
@@ -249,8 +272,8 @@ const Welcome = (props) => {
           </View>
         </View>
       </TouchableOpacity>
-      )
-     
+    )
+
 
     const renderRequestItem = ({ item }) => <RequestItem item={item} />;
 
@@ -314,7 +337,7 @@ const Welcome = (props) => {
           );
         });
     }
-    
+
     return (
       <View style={styles.mentorDetailsContainer}>
         <View style={styles.mentorDetailsSubContainer}>

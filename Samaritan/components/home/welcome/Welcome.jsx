@@ -10,6 +10,7 @@ import {
   Alert
 } from "react-native";
 import { useRouter } from "expo-router";
+import { Picker } from '@react-native-picker/picker';
 
 import styles from "./welcome.style";
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
@@ -27,6 +28,10 @@ const Welcome = (props) => {
   const [mentorsList, setMentorsList] = useState([]);
   const [focussedMentor, setFocussedMentor] = useState(null);
   const [connReqs, setConnReqs] = useState([]);
+
+  const [filterName, setFilterName] = useState('');
+  const [filterValue, setFilterValue] = useState(1);
+
 
   useEffect(() => {
     fetchMentors()
@@ -130,26 +135,26 @@ const Welcome = (props) => {
     console.log('Search button click...');
   };
 
-// Fetch Connection requests of logged in seeker
-const fetchMentorsFiltered = async (filterName, filterValue) => {
-  try {
-    // Make API requests here
-    const response = await fetch(`${api.apiUrl}/mentors/filter?filterName=${encodeURIComponent(filterName)}&filterValue=${encodeURIComponent(filterValue)}`);
-    const data = await response.json();
-    console.log('Fetched data:', data);
-    setMentorsList(data);
+  // Fetch Connection requests of logged in seeker
+  const fetchMentorsFiltered = async (filterName, filterValue) => {
+    try {
+      // Make API requests here
+      const response = await fetch(`${api.apiUrl}/mentors/filter?filterName=${encodeURIComponent(filterName)}&filterValue=${encodeURIComponent(filterValue)}`);
+      const data = await response.json();
+      console.log('Fetched data:', data);
+      setMentorsList(data);
 
-  } catch (error) {
-    console.log('Error fetching data:', error);
-  }
-};
+    } catch (error) {
+      console.log('Error fetching data:', error);
+    }
+  };
 
 
 
   // filter handle
   const handleFilterClick = () => {
     console.log('@ handle filter----')
-    fetchMentorsFiltered('serviceOffered', 1)
+    fetchMentorsFiltered('serviceOffered', filterValue)
   };
 
 
@@ -190,6 +195,13 @@ const fetchMentorsFiltered = async (filterName, filterValue) => {
 
 
     return (
+
+
+
+
+      
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={{ flex: 1 }}>
       <View style={styles.homeContainer}>
         <View style={styles.homeSubContainer}>
           <View style={styles.searchContainer}>
@@ -216,6 +228,37 @@ const fetchMentorsFiltered = async (filterName, filterValue) => {
               />
             </TouchableOpacity>
           </View>
+          <View>
+
+      <Picker onValueChange={(value) => {
+        setFilterName('serviceOffered')
+        setFilterValue(value)
+      }} selectedValue={filterValue}>
+
+        <Picker.Item label="Accommodation" value="1" />
+        <Picker.Item label="Part-Time Job" value="2" />
+      </Picker>
+
+
+      <Picker onValueChange={(value) => {
+        setFilterName('currentLocation')
+        setFilterValue(value)
+      }} selectedValue={filterValue}>
+
+        <Picker.Item label="Waterloo" value="2" />
+        <Picker.Item label="Kitchener" value="3" />
+
+        <Picker.Item label="Toronto" value="4" />
+        <Picker.Item label="Ottawa" value="5" />
+        <Picker.Item label="Hamilton" value="6" />
+        <Picker.Item label="London" value="7" />
+        <Picker.Item label="Mississauga" value="8" />
+        <Picker.Item label="Brampton" value="9" />
+        <Picker.Item label="Markham" value="10" />
+      </Picker>
+    </View>
+
+
 
           {
             mentorsList.length > 0 ?
@@ -234,6 +277,9 @@ const fetchMentorsFiltered = async (filterName, filterValue) => {
 
         </View>
       </View>
+      </View>
+      </ScrollView>
+
     );
   }
 

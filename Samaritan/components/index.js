@@ -8,6 +8,7 @@ import Login from "./login/Login";
 import Signup from './register/Signup';
 import ForgotPassword from "./forgotPassword/ForgotPassword";
 import Dashboard from "./home/Mentor/Dashboard";
+import AdminDashboard from "./home/Admin/Dashboard";
 
 // job details screen
 import Company from "./jobdetails/company/Company";
@@ -33,5 +34,6 @@ export {
   Login,
   Signup,
   ForgotPassword,
-  Dashboard
+  Dashboard,
+  AdminDashboard
 };

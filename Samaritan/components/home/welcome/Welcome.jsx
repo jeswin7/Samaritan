@@ -276,10 +276,60 @@ const Welcome = (props) => {
   function ProfileScreen({ navigation }) {
     return (
       <View style={styles.profileView}>
+        <View style={styles.headerView}>
+         <Image source={icons.profileLogo} style={styles.profileLogo}></Image>
+      </View>
+       <ScrollView showsVerticalScrollIndicator={false} style={{width:"90%"}}>
+       
+       <View style={{paddingHorizontal:1, paddingVertical: 20}}>
+       <View style={styles.searchContainer}>
+          <View style={styles.textWrapper}>
+            <Text style={styles.Text}>Personal Details</Text>
+            <View style= {{height:3, width:'140%',backgroundColor:COLORS.primary, margin:8}}></View>
+          </View>
+          <TouchableOpacity style={styles.editBtn} onPress={handleSearchClick}>
+            <Image
+              source={icons.editIcon}
+              style={styles.editBtnImage}
+            />
+          </TouchableOpacity>
+        </View>
+    
+          <Text style={styles.TextField}  editable = {false}>First Name</Text>
+          <Text style={styles.TextField}  editable = {false}>Last Name</Text>
+          <Text style={styles.TextField}  editable = {false}>Phone Number</Text>
+          <Text style={styles.TextField}  editable = {false}>Country</Text>
+          <Text style={styles.TextField}  editable = {false}>Preferred Location</Text>
+          
+          <View style={styles.searchContainer}>
+          <View style={styles.textWrapper}>
+            <Text style={styles.Text}>Change Password</Text>
+            <View style= {{height:3, width:'140%',backgroundColor:COLORS.primary, margin:8}}></View>
+          </View>
+          <TouchableOpacity style={styles.editBtn} onPress={handleSearchClick}>
+            <Image
+              source={icons.editIcon}
+              style={styles.editBtnImage}
+            />
+          </TouchableOpacity>
+        </View>
+          <Text style={styles.TextField}  editable = {false}>Password</Text>
+          <Text style={styles.TextField}  editable = {false}>Confirm Password</Text>
+
+         <TouchableOpacity  style={styles.saveButton}>
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity  style={styles.cancelButton}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+        
         <Button onPress={() => navigation.goBack()} title="Go back home" />
       </View>
+      </ScrollView>
+      </View>
     );
-  }
+  }  
+  
 
 
 

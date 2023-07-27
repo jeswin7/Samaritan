@@ -16,7 +16,8 @@ import bell_icon from '../assets/icons/bell_icon.png'
 import filter_icon from '../assets/icons/filter_icon.png'
 import cheveron_icon from '../assets/icons/cheveron_icon.png'
 import search_icon from '../assets/icons/search_icon.png'
-
+import editIcon from '../assets/icons/editIcon.png'
+import profileLogo from '../assets/icons/profileLogo.png'
 export default {
   heart,
   menu,
@@ -31,6 +32,8 @@ export default {
   logo,
   backIcon,
   menu_icon,
+  editIcon,
+  profileLogo,
   profile_icon,
   bell_icon,
   filter_icon,

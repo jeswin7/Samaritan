@@ -20,9 +20,9 @@ const Home = () => {
     const [userId, setUserId] = useState(null);
 
     const CONSOLE_MAP = {
-        'seeker' : <Welcome userId={userId} />,
-        'admin'  : <AdminDashboard userId={userId} logout={() => redirectToLoginScreen()}/>,
-        'mentor' : <Dashboard userId={userId} />,
+        'seeker': <Welcome userId={userId} />,
+        'admin': <AdminDashboard userId={userId} logout={() => redirectToLoginScreen()} />,
+        'mentor': <Dashboard userId={userId} />,
 
     }
 
@@ -34,7 +34,7 @@ const Home = () => {
 
 
     redirectToHomeScreen = (role, user_id) => {
-        console.log("@parent | ", role, typeof(role), user_id, typeof(user_id))
+        console.log("@parent | ", role, typeof (role), user_id, typeof (user_id))
         setLoggedIn(true);
         setRole(String(role));
         setUserId(user_id);
@@ -76,12 +76,20 @@ const Home = () => {
                 <Image source={icons.logo} style={styles.logo}></Image>
             </View>) : ''}
             {
-                isLoggedIn?
-                        userId?
-                            getConsole(userRole)
-                                
+                isLoggedIn ?
+                    userId ?
+                        getConsole(userRole)
+
                         :
-                            <Text>Loading...</Text>
+                        <View style={styles.headerView}>
+                            <Image source={icons.logo} style={styles.logo}></Image>
+                            <View style={styles.headerButtonView}>
+                                <TouchableOpacity style={styles.buttonStyle} onPress={() => redirectToLoginScreen()}>
+                                    {backButtonVisible ? (<Image source={icons.backIcon} style={styles.backIcon}></Image>) : ''}
+                                </TouchableOpacity >
+                                <Text>Unable to fetch request! Server must be down!!</Text>
+                            </View>
+                        </View>
                     :
                     <View>
                         {

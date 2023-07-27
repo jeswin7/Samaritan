@@ -13,14 +13,9 @@ import { Picker } from '@react-native-picker/picker';
 import styles from "./dashboard.style";
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
+import { NavigationContainer, ThemeProvider, DrawerItem } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
-
-import { DrawerContentScrollView } from '@react-navigation/drawer';
-
-
-
 
 const AdminDashboard = (props) => {
     const router = useRouter();
@@ -351,7 +346,14 @@ const AdminDashboard = (props) => {
             </View>
         );
     }
-    
+
+
+    const handleSignOut = () => {
+        // Call the props.logout function here
+        props.logout();
+        navigation.closeDrawer();
+      };
+
 
 
     return (
@@ -393,7 +395,7 @@ const AdminDashboard = (props) => {
                 }} />
 
                 <Drawer.Screen name="ConnRequests" component={ConnectionRequestsScreen} options={{
-                    title: 'REQUESTS',
+                    title: 'CONNECTIONS',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
@@ -404,13 +406,12 @@ const AdminDashboard = (props) => {
                     ),
                 }} />
 
-                <Drawer.Screen name="Service" component={ServiceScreen}
+                <Drawer.Screen name="seekers" component={ConnectionRequestsScreen}
                     options={{
-                        title: 'SERVICES',
+                        title: 'SEEKERS',
                         headerTitleAlign: 'center',
                         headerTintColor: COLORS.secondary,
                         headerTitleStyle: styles.dashboardHeading,
-                        drawerItemStyle: { height: 0 },
                         headerRight: () => (
                             <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
                                 <Image source={icons.bell_icon}></Image>
@@ -418,18 +419,42 @@ const AdminDashboard = (props) => {
                         ),
                     }} />
 
-                <Drawer.Screen name="Payment" component={PaymentScreen} options={{
-                    title: 'PAYMENTS',
+                <Drawer.Screen name="mentors" component={ConnectionRequestsScreen} options={{
+                    title: 'MENTORS',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
-                    drawerItemStyle: { height: 0 },
                     headerRight: () => (
                         <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
                             <Image source={icons.bell_icon}></Image>
                         </TouchableOpacity >
                     ),
                 }} />
+
+                <Drawer.Screen name="services" component={ConnectionRequestsScreen} options={{
+                    title: 'SERVICES',
+                    headerTitleAlign: 'center',
+                    headerTintColor: COLORS.secondary,
+                    headerTitleStyle: styles.dashboardHeading,
+                    headerRight: () => (
+                        <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+                            <Image source={icons.bell_icon}></Image>
+                        </TouchableOpacity >
+                    ),
+                }} />
+                <Drawer.Screen name="Payment" component={ConnectionRequestsScreen} options={{
+                    title: 'PAYMENTS',
+                    headerTitleAlign: 'center',
+                    headerTintColor: COLORS.secondary,
+                    headerTitleStyle: styles.dashboardHeading,
+                    headerRight: () => (
+                        <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+                            <Image source={icons.bell_icon}></Image>
+                        </TouchableOpacity >
+                    ),
+                }} />
+
+ 
  
 
             </Drawer.Navigator>
@@ -438,3 +463,4 @@ const AdminDashboard = (props) => {
 };
 
 export default AdminDashboard;
+

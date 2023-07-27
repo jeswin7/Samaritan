@@ -32,10 +32,110 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+
+  //Profile Page Style
   profileIcon: {
     height: 20,
     width: 20,
   },
+  headerView: {
+    marginTop: 20,
+    width: '100%',
+    height: '30%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+ },
+ Text:{
+  fontSize: SIZES.large,
+  fontWeight:"bold"
+ },
+  profileLogo: {
+    height: 150,
+    width: 150
+  },
+  editBtnImage: {
+    width: "50%",
+    height: "50%",
+  },
+  editBtn: {
+    width: 50,
+    height: "100%",
+    marginLeft: 5,
+    marginRight: -9,
+    paddingBottom: 4,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  TextField: {
+    paddingVertical: 12,
+    backgroundColor: COLORS.tertiary,
+    fontSize: SIZES.medium,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    marginTop: SIZES.medium,
+    borderColor: COLORS.tertiary,
+  },
+  saveButton: {
+    marginVertical: 40,
+    elevation: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12
+  },
+  cancelButton: {
+    marginVertical: 5,
+    elevation: 8,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12
+  },
+  buttonText: {
+    fontSize: 18,
+    color: COLORS.white,
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dialogBox: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  message: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  button: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'blue',
+  },
+  textWrapper: {
+    flex: 1,
+    marginRight: SIZES.small,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    borderRadius: SIZES.medium,
+    borderBottomColor:COLORS.primary,
+    height: "100%",
+    fontWeight:"bold",
+  },
+
+
   //Home Component Style
   searchContainer: {
     justifyContent: "center",

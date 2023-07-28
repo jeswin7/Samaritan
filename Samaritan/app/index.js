@@ -3,7 +3,7 @@ import { View, Text, ScrollView, SafeAreaView, Image, StyleSheet, TouchableOpaci
 import { Stack, useRouter } from "expo-router";
 
 import { COLORS, icons, images, SIZES, strings } from '../constants';
-import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login, Signup, ForgotPassword, Dashboard } from '../components';
+import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login, Signup, ForgotPassword, Dashboard, AdminDashboard } from '../components';
 
 
 console.log('text:', strings.appHeader)
@@ -19,8 +19,22 @@ const Home = () => {
     const [userRole, setRole] = useState('seeker');
     const [userId, setUserId] = useState(null);
 
+    const CONSOLE_MAP = {
+        'seeker': <Welcome userId={userId} />,
+        'admin': <AdminDashboard userId={userId} logout={() => redirectToLoginScreen()} />,
+        'mentor': <Dashboard userId={userId} />,
+
+    }
+
+
+    getConsole = (role) => {
+        console.log("-----------at switch:", role, CONSOLE_MAP[role])
+        return CONSOLE_MAP[role];
+    }
+
+
     redirectToHomeScreen = (role, user_id) => {
-        console.log("@parent | ", role, typeof(role), user_id, typeof(user_id))
+        console.log("@parent | ", role, typeof (role), user_id, typeof (user_id))
         setLoggedIn(true);
         setRole(String(role));
         setUserId(user_id);
@@ -36,6 +50,7 @@ const Home = () => {
         setIsNewUser(false);
         setBackButtonVisible(false);
         setForgotPassword(false);
+        setLoggedIn(false);
     }
 
     redirectToForgotPassword = () => {
@@ -61,14 +76,20 @@ const Home = () => {
                 <Image source={icons.logo} style={styles.logo}></Image>
             </View>) : ''}
             {
-                isLoggedIn?
-                        userId?
-                            userRole == 'seeker'?
-                                <Welcome userId={userId} />  
-                            :
-                                <Dashboard userId={userId} />
+                isLoggedIn ?
+                    userId ?
+                        getConsole(userRole)
+
                         :
-                            <Text>Loading...</Text>
+                        <View style={styles.headerView}>
+                            <Image source={icons.logo} style={styles.logo}></Image>
+                            <View style={styles.headerButtonView}>
+                                <TouchableOpacity style={styles.buttonStyle} onPress={() => redirectToLoginScreen()}>
+                                    {backButtonVisible ? (<Image source={icons.backIcon} style={styles.backIcon}></Image>) : ''}
+                                </TouchableOpacity >
+                                <Text>Unable to fetch request! Server must be down!!</Text>
+                            </View>
+                        </View>
                     :
                     <View>
                         {

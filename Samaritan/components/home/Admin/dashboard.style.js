@@ -122,19 +122,41 @@ const styles = StyleSheet.create({
     border: '1px solid red'
   },
   seperatorStyle: {
-    height: 30, 
+    height: 20, 
     width: '100%' 
   },
   homeContainer: {
-    backgroundColor: '#fff', 
     height: '100%', 
     justifyContent: 'center', 
     alignItems: 'center' 
   },
   homeSubContainer: { 
-    backgroundColor: '#fff', 
     width: '90%', 
-    margin: -40 
+    //marginTop: 0 
+  },
+  welcomeMsg: { 
+    fontSize: 20, 
+    color: COLORS.white, 
+    marginRight: 5, 
+    fontWeight: 'bold', 
+    marginTop: 5 
+  },
+  cardContainer:{
+    margin:10,
+    backgroundColor:COLORS.primary, 
+    opacity:0.8, 
+    borderRadius:10
+  },
+  headingMsg:{ 
+    fontSize: 20, 
+    color: COLORS.white, 
+    margin: 10, 
+    fontWeight: 'bold' 
+  },
+  textContainer: { 
+    fontSize: 20, 
+    color: COLORS.white, 
+    margin:5 
   },
   profileView: { 
     flex: 1, 

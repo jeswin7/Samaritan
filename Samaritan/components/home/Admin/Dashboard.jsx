@@ -168,11 +168,9 @@ const AdminDashboard = (props) => {
      
       const response = await fetch(api.apiUrl + `/admin/dashboard`);
       const data = await response.json();
-      console.log("-------data-----", data.service)
       setDetail(data);
 
-      // Handle the API response and update component state
-      // ...
+
     } catch (error) {
       console.log(error);
     }
@@ -279,13 +277,13 @@ const AdminDashboard = (props) => {
             <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
           </View>
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Ongoing: {adminDetail.ongoing}</Text>
+            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Ongoing: {adminDetail.service?.ongoing}</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Completed: {adminDetail.completed}</Text>
+            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Completed: {adminDetail.service?.completed}</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Failed: {adminDetail.failed}</Text>
+            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Failed: {adminDetail.service?.failed}</Text>
           </View>
 
 
@@ -297,13 +295,13 @@ const AdminDashboard = (props) => {
           </View>
 
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Applied: {adminDetail.applied}</Text>
+            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Applied: {adminDetail.mentorsStatus?.applied}</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Invited: {adminDetail.invited}</Text>
+            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Invited: {adminDetail.mentorsStatus?.invited}</Text>
           </View>
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Approved: {adminDetail.approved}</Text>
+            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Approved: {adminDetail.mentorsStatus?.approved}</Text>
           </View>
         </View>
 

@@ -17,6 +17,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, ThemeProvider, DrawerItem } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
+import Table from './Table';
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -170,8 +171,6 @@ const AdminDashboard = (props) => {
       const response = await fetch(api.apiUrl + `/admin/dashboard`);
       const data = await response.json();
       setDetail(data);
-
-
     } catch (error) {
       console.log(error);
     }
@@ -188,19 +187,19 @@ const AdminDashboard = (props) => {
 
 
   // 5. Fetch Connection Requests
-  // const fetchMentorConnRequests = async () => {
-  //     try {
-  //         // Make API requests here
-  //         const response = await fetch(api.apiUrl+`/mentor/connectionRequests?user_id=${props.userId}`);
-  //         const data = await response.json();
-  //         setConnReqs(data);
+  const fetchConnRequests = async () => {
+      try {
+          // Make API requests here
+          const response = await fetch(api.apiUrl+`/admin/viewConnections`);
+          const data = await response.json();
+          setConnReqs(data);
 
-  //         // Handle the API response and update component state
-  //         // ...
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-  // };
+          // Handle the API response and update component state
+          // ...
+      } catch (error) {
+          console.log(error);
+      }
+  };
 
 
   // 5. Fetch Connection Requests
@@ -223,6 +222,7 @@ const AdminDashboard = (props) => {
   useEffect(() => {
     // Fetch API data here
     fetchDashboardData()
+    fetchConnRequests()
   }, []);
 
 
@@ -331,8 +331,7 @@ const AdminDashboard = (props) => {
 
     return (
       <ScrollView>
-        <Text>Connections Screen!</Text>
-        <Button onPress={() => navigation.navigate("Home")} title="Go back home" />
+        <Table data={connReqs} />
       </ScrollView>
 
     );

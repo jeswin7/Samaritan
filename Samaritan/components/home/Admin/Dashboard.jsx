@@ -8,6 +8,7 @@ import {
   FlatList,
   Button
 } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from "expo-router";
 import { Picker } from '@react-native-picker/picker';
 import styles from "./dashboard.style";
@@ -165,7 +166,7 @@ const AdminDashboard = (props) => {
   const fetchDashboardData = async () => {
     try {
       // Make API requests here
-     
+
       const response = await fetch(api.apiUrl + `/admin/dashboard`);
       const data = await response.json();
       setDetail(data);
@@ -249,63 +250,67 @@ const AdminDashboard = (props) => {
     };
 
     return (
-      <View style={styles.homeContainer}>
+      <LinearGradient
+        colors={['#458592', '#50A4AB', '#CFF4F7']}>
+        <View style={styles.homeContainer}>
 
-        <View style={styles.homeSubContainer}>
+          <View style={styles.homeSubContainer}>
 
-          <View>
-            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 'bold', marginBottom: 10 }}>Welcome Admin!</Text>
-          </View>
-          <ItemSeparatorView />
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View>
-              <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Users Analytics</Text>
+              <Text style={styles.welcomeMsg}>Welcome Admin!</Text>
             </View>
-            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Seekers: {adminDetail.seekerCount}</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Mentors: {adminDetail.mentorCount}</Text>
-          </View>
-
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View>
-              <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Services Analytics</Text>
+            <ItemSeparatorView />
+            <View style={styles.cardContainer}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.headingMsg}>Users Analytics</Text>
+                </View>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Seekers: {adminDetail.seekerCount}</Text>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Mentors: {adminDetail.mentorCount}</Text>
+              </View>
             </View>
-            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Ongoing: {adminDetail.service?.ongoing}</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Completed: {adminDetail.service?.completed}</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Failed: {adminDetail.service?.failed}</Text>
-          </View>
-
-
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View>
-              <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Mentor Status</Text>
+            <View style={styles.cardContainer}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View>
+                <Text style={styles.headingMsg}>Services Analytics</Text>
+              </View>
             </View>
-            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.textContainer}>#Ongoing: {adminDetail.service?.ongoing}</Text>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.textContainer}>#Completed: {adminDetail.service?.completed}</Text>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.textContainer}>#Failed: {adminDetail.service?.failed}</Text>
+            </View>
+            </View>
+
+            <View style={styles.cardContainer}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View>
+                <Text style={styles.headingMsg}>Mentor Status</Text>
+              </View>
+            </View>
+
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.textContainer}>#Applied: {adminDetail.mentorsStatus?.applied}</Text>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.textContainer}>#Invited: {adminDetail.mentorsStatus?.invited}</Text>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.textContainer}>#Approved: {adminDetail.mentorsStatus?.approved}</Text>
+            </View>
+          </View>
           </View>
 
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Applied: {adminDetail.mentorsStatus?.applied}</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Invited: {adminDetail.mentorsStatus?.invited}</Text>
-          </View>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>#Approved: {adminDetail.mentorsStatus?.approved}</Text>
-          </View>
         </View>
-
-      </View>
+      </LinearGradient>
     );
   }
 
@@ -383,6 +388,8 @@ const AdminDashboard = (props) => {
 
 
   return (
+    // <LinearGradient 
+    // colors={['#4c669f', '#3b5998', '#192f6a']}>
     <NavigationContainer independent={true}>
       <Drawer.Navigator
         initialRouteName="Home"
@@ -485,6 +492,7 @@ const AdminDashboard = (props) => {
 
       </Drawer.Navigator>
     </NavigationContainer>
+
   );
 };
 

@@ -17,7 +17,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, ThemeProvider, DrawerItem } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
-import Table from './Table';
+import ConnTable from './ConnTable';
+import ServicesTable from './ServicesTable';
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -26,6 +27,7 @@ const AdminDashboard = (props) => {
   const Drawer = createDrawerNavigator();
   const [adminDetail, setDetail] = useState({});
   const [connReqs, setConnReqs] = useState(null);
+  const [services, setServices] = useState(null);
 
   const SERVICE_MAP = {
     1: 'Accommodation',
@@ -178,7 +180,16 @@ const AdminDashboard = (props) => {
 
 
   // 2. Fetch Services list API
-
+  const fetchServices = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(api.apiUrl + `/admin/viewServices`);
+      const data = await response.json();
+      setServices(data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // 3. Fetch Payments list API
 
@@ -188,17 +199,17 @@ const AdminDashboard = (props) => {
 
   // 5. Fetch Connection Requests
   const fetchConnRequests = async () => {
-      try {
-          // Make API requests here
-          const response = await fetch(api.apiUrl+`/admin/viewConnections`);
-          const data = await response.json();
-          setConnReqs(data);
+    try {
+      // Make API requests here
+      const response = await fetch(api.apiUrl + `/admin/viewConnections`);
+      const data = await response.json();
+      setConnReqs(data);
 
-          // Handle the API response and update component state
-          // ...
-      } catch (error) {
-          console.log(error);
-      }
+      // Handle the API response and update component state
+      // ...
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
@@ -223,6 +234,7 @@ const AdminDashboard = (props) => {
     // Fetch API data here
     fetchDashboardData()
     fetchConnRequests()
+    fetchServices()
   }, []);
 
 
@@ -274,39 +286,39 @@ const AdminDashboard = (props) => {
               </View>
             </View>
             <View style={styles.cardContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View>
-                <Text style={styles.headingMsg}>Services Analytics</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.headingMsg}>Services Analytics</Text>
+                </View>
               </View>
-            </View>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.textContainer}>#Ongoing: {adminDetail.service?.ongoing}</Text>
-            </View>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.textContainer}>#Completed: {adminDetail.service?.completed}</Text>
-            </View>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.textContainer}>#Failed: {adminDetail.service?.failed}</Text>
-            </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Ongoing: {adminDetail.service?.ongoing}</Text>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Completed: {adminDetail.service?.completed}</Text>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Failed: {adminDetail.service?.failed}</Text>
+              </View>
             </View>
 
             <View style={styles.cardContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View>
-                <Text style={styles.headingMsg}>Mentor Status</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.headingMsg}>Mentor Status</Text>
+                </View>
+              </View>
+
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Applied: {adminDetail.mentorsStatus?.applied}</Text>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Invited: {adminDetail.mentorsStatus?.invited}</Text>
+              </View>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.textContainer}>#Approved: {adminDetail.mentorsStatus?.approved}</Text>
               </View>
             </View>
-
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.textContainer}>#Applied: {adminDetail.mentorsStatus?.applied}</Text>
-            </View>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.textContainer}>#Invited: {adminDetail.mentorsStatus?.invited}</Text>
-            </View>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.textContainer}>#Approved: {adminDetail.mentorsStatus?.approved}</Text>
-            </View>
-          </View>
           </View>
 
         </View>
@@ -331,10 +343,10 @@ const AdminDashboard = (props) => {
 
     return (
       <LinearGradient
-      colors={['#458592', '#50A4AB', '#CFF4F7']}>
-      <ScrollView>
-        <Table data={connReqs} />
-      </ScrollView>
+        colors={['#458592', '#50A4AB', '#CFF4F7']}>
+        <ScrollView>
+          <ConnTable data={connReqs} />
+        </ScrollView>
       </LinearGradient>
 
     );
@@ -345,17 +357,13 @@ const AdminDashboard = (props) => {
 
 
     return (
-      <View style={styles.homeContainer}>
+      <LinearGradient
+        colors={['#458592', '#50A4AB', '#CFF4F7']}>
+        <ScrollView>
+          <ServicesTable data={services} />
+        </ScrollView>
+      </LinearGradient>
 
-        <View style={styles.homeSubContainer}>
-          <Text>Services Screen!</Text>
-          <Button onPress={() => navigation.navigate("Home")} title="Go back home" />
-
-
-
-        </View>
-
-      </View>
     );
   }
 
@@ -405,7 +413,7 @@ const AdminDashboard = (props) => {
         }}
 
       >
-        
+
         <Drawer.Screen name="Home" component={HomeScreen} options={{
           title: 'SAMARITAN',
           headerTitleAlign: 'center',
@@ -466,7 +474,7 @@ const AdminDashboard = (props) => {
           ),
         }} />
 
-        <Drawer.Screen name="services" component={ConnectionRequestsScreen} options={{
+        <Drawer.Screen name="services" component={ServiceScreen} options={{
           title: 'SERVICES',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,

@@ -7,16 +7,15 @@ const Table = ({ data }) => {
   const renderRow = ({ item }) => {
     const { seeker, mentor, type, status } = item;
 
-    STATUS_COLOR = {
-      'PENDING' : 'gold',
-      'ACCEPTED': 'green',
-      'DECLINED': 'red'
+    SERVICE_TYPE_ICON = {
+        'Accommodation' : 'bed-outline',
+        'Part-Time Job' : 'construct-outline'
     }
 
     STATUS_ICON = {
       'PENDING' : 'hourglass-outline',
-      'ACCEPTED': 'thumbs-up-outline',
-      'DECLINED': 'thumbs-down-outline'
+      'COMPLETED': 'checkmark-outline',
+      'FAILED': 'skull-outline'
     }
 
     return (
@@ -28,7 +27,7 @@ const Table = ({ data }) => {
           <Text>{mentor.fname} {mentor.lname}</Text>
         </View>
         <View style={styles.cell}>
-          <Text>{type}</Text>
+          <Text style={{ textAlign: 'center'}}><Ionicons name={SERVICE_TYPE_ICON[type]} size={20} /></Text>
         </View>
         <View style={styles.cell}>
           <Text style={{ textAlign: 'center'}}><Ionicons name={STATUS_ICON[status]} size={20} /></Text>

@@ -1,10 +1,23 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { COLORS } from '../../../constants';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Table = ({ data }) => {
   const renderRow = ({ item }) => {
     const { seeker, mentor, type, status } = item;
+
+    STATUS_COLOR = {
+      'PENDING' : 'gold',
+      'ACCEPTED': 'green',
+      'DECLINED': 'red'
+    }
+
+    STATUS_ICON = {
+      'PENDING' : 'hourglass-outline',
+      'ACCEPTED': 'thumbs-up-outline',
+      'DECLINED': 'thumbs-down-outline'
+    }
 
     return (
       <View style={styles.row}>
@@ -18,7 +31,7 @@ const Table = ({ data }) => {
           <Text>{type}</Text>
         </View>
         <View style={styles.cell}>
-          <Text>{status}</Text>
+          <Text style={{ textAlign: 'center'}}><Ionicons name={STATUS_ICON[status]} size={20} /></Text>
         </View>
       </View>
     );
@@ -51,17 +64,18 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderColor: '#000',
+
   },
   headerCell: {
     flex: 1,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   row: {
     flexDirection: 'row',
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderColor: COLORS.primary,
+    borderColor: 'black',
   },
   cell: {
     flex: 1,

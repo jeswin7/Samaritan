@@ -330,9 +330,12 @@ const AdminDashboard = (props) => {
   function ConnectionRequestsScreen() {
 
     return (
+      <LinearGradient
+      colors={['#458592', '#50A4AB', '#CFF4F7']}>
       <ScrollView>
         <Table data={connReqs} />
       </ScrollView>
+      </LinearGradient>
 
     );
   }
@@ -387,8 +390,7 @@ const AdminDashboard = (props) => {
 
 
   return (
-    // <LinearGradient 
-    // colors={['#4c669f', '#3b5998', '#192f6a']}>
+
     <NavigationContainer independent={true}>
       <Drawer.Navigator
         initialRouteName="Home"
@@ -403,6 +405,7 @@ const AdminDashboard = (props) => {
         }}
 
       >
+        
         <Drawer.Screen name="Home" component={HomeScreen} options={{
           title: 'SAMARITAN',
           headerTitleAlign: 'center',

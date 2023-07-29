@@ -1,10 +1,22 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { COLORS } from '../../../constants';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Table = ({ data }) => {
   const renderRow = ({ item }) => {
     const { seeker, mentor, type, status } = item;
+
+    SERVICE_TYPE_ICON = {
+        'Accommodation' : 'bed-outline',
+        'Part-Time Job' : 'construct-outline'
+    }
+
+    STATUS_ICON = {
+      'PENDING' : 'hourglass-outline',
+      'COMPLETED': 'checkmark-outline',
+      'FAILED': 'skull-outline'
+    }
 
     return (
       <View style={styles.row}>
@@ -15,10 +27,10 @@ const Table = ({ data }) => {
           <Text>{mentor.fname} {mentor.lname}</Text>
         </View>
         <View style={styles.cell}>
-          <Text>{type}</Text>
+          <Text style={{ textAlign: 'center'}}><Ionicons name={SERVICE_TYPE_ICON[type]} size={20} /></Text>
         </View>
         <View style={styles.cell}>
-          <Text>{status}</Text>
+          <Text style={{ textAlign: 'center'}}><Ionicons name={STATUS_ICON[status]} size={20} /></Text>
         </View>
       </View>
     );
@@ -51,17 +63,18 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderColor: '#000',
+
   },
   headerCell: {
     flex: 1,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   row: {
     flexDirection: 'row',
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderColor: COLORS.primary,
+    borderColor: 'black',
   },
   cell: {
     flex: 1,

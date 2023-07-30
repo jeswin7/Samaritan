@@ -130,9 +130,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center' 
   },
-  homeSubContainer: { 
+  connectionContainer: {
+    height: '100%', 
+    alignItems: 'center' 
+  },
+  subContainer: { 
     width: '90%', 
-    //marginTop: 0 
+   // marginTop: -100 
   },
   welcomeMsg: { 
     fontSize: 20, 

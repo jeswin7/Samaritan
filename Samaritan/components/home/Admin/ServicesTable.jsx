@@ -21,16 +21,16 @@ const Table = ({ data }) => {
     return (
       <View style={styles.row}>
         <View style={styles.cell}>
-          <Text>{seeker.fname} {seeker.lname}</Text>
+          <Text style={styles.textStyle}>{seeker.fname} {seeker.lname}</Text>
         </View>
         <View style={styles.cell}>
-          <Text>{mentor.fname} {mentor.lname}</Text>
+          <Text style={styles.textStyle}>{mentor.fname} {mentor.lname}</Text>
         </View>
         <View style={styles.cell}>
-          <Text style={{ textAlign: 'center'}}><Ionicons name={SERVICE_TYPE_ICON[type]} size={20} /></Text>
+          <Text style={styles.textStyle}><Ionicons name={SERVICE_TYPE_ICON[type]} size={20} /></Text>
         </View>
         <View style={styles.cell}>
-          <Text style={{ textAlign: 'center'}}><Ionicons name={STATUS_ICON[status]} size={20} /></Text>
+          <Text style={styles.textStyle}><Ionicons name={STATUS_ICON[status]} size={20} /></Text>
         </View>
       </View>
     );
@@ -62,25 +62,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderColor: '#000',
+    borderColor: COLORS.white,
 
   },
   headerCell: {
     flex: 1,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: COLORS.white
   },
   row: {
     flexDirection: 'row',
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: COLORS.white,
   },
   cell: {
     flex: 1,
     textAlign: 'center',
     borderRightColor: COLORS.primary,
   },
+  textStyle: {
+    color:COLORS.white,
+    textAlign: 'center'
+  }
 });
 
 export default Table;

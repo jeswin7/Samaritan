@@ -365,6 +365,28 @@ const AdminDashboard = (props) => {
     );
   }
 
+   //Mentors Screen component
+   function MentorsScreen() {
+
+    return (
+      <LinearGradient
+        colors={['#458592', '#50A4AB', '#CFF4F7']}>
+        <View style={styles.connectionContainer}>
+
+          <View style={styles.subContainer}>
+            <ScrollView>
+              <TouchableOpacity>
+              <Image source={icons.add_icon}></Image>
+              </TouchableOpacity>
+              <ConnTable data={connReqs} />
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+
+    );
+  }
+
   //Profile component
   function ServiceScreen({ route, navigation }) {
     return (
@@ -504,7 +526,7 @@ const AdminDashboard = (props) => {
 
         <Drawer.Screen
           name="mentors"
-          component={ConnectionRequestsScreen}
+          component={MentorsScreen}
           options={{
             title: "MENTORS",
             headerTitleAlign: "center",

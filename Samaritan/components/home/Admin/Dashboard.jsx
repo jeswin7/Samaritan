@@ -6,163 +6,165 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Button
+  Button,
 } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 import styles from "./dashboard.style";
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer, ThemeProvider, DrawerItem } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  NavigationContainer,
+  ThemeProvider,
+  DrawerItem,
+} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
-import ConnTable from './ConnTable';
-import ServicesTable from './ServicesTable';
+import ConnTable from "./ConnTable";
+import ServicesTable from "./ServicesTable";
+import PaymentTable from "./PaymentTable";
 
 const AdminDashboard = (props) => {
   const router = useRouter();
-
 
   const Drawer = createDrawerNavigator();
   const [adminDetail, setDetail] = useState({});
   const [connReqs, setConnReqs] = useState(null);
   const [services, setServices] = useState(null);
+  const [payments, setPayments] = useState(null);
 
   const SERVICE_MAP = {
-    1: 'Accommodation',
-    2: 'Part-Time Job'
-  }
+    1: "Accommodation",
+    2: "Part-Time Job",
+  };
 
   // Static APIs for testing purpose
   DETAILS_API = {
-    fname: 'Luke',
-    lname: 'John',
-    rating: '4'
+    fname: "Luke",
+    lname: "John",
+    rating: "4",
   };
 
   const SERVICES_API = [
     {
-      id: '1',
-      name: 'Than John',
-      service: 'Accomodation',
-      status: 'Completed'
+      id: "1",
+      name: "Than John",
+      service: "Accomodation",
+      status: "Completed",
     },
     {
-      id: '2',
-      name: 'Mary Brown',
-      service: 'Job',
-      status: 'In Progress'
+      id: "2",
+      name: "Mary Brown",
+      service: "Job",
+      status: "In Progress",
     },
 
     {
-      id: '3',
-      name: 'Ed John',
-      service: 'Accomodation',
-      status: 'Completed'
+      id: "3",
+      name: "Ed John",
+      service: "Accomodation",
+      status: "Completed",
     },
     {
-      id: '4',
-      name: 'Tej John',
-      service: 'Job',
-      status: 'In Progress'
+      id: "4",
+      name: "Tej John",
+      service: "Job",
+      status: "In Progress",
     },
     {
-      id: '5',
-      name: 'Jake Brown',
-      service: 'Accomodation',
-      status: 'Completed'
+      id: "5",
+      name: "Jake Brown",
+      service: "Accomodation",
+      status: "Completed",
     },
     {
-      id: '6',
-      name: 'Joel Cullen',
-      service: 'Job',
-      status: 'In Progress'
-    }
+      id: "6",
+      name: "Joel Cullen",
+      service: "Job",
+      status: "In Progress",
+    },
   ];
 
   const PAYMENT_API = [
     {
-      id: '1',
-      name: 'Jes John',
-      service: 'Accomodation',
-      status: 'In Progress'
+      id: "1",
+      name: "Jes John",
+      service: "Accomodation",
+      status: "In Progress",
     },
     {
-      id: '2',
-      name: 'Mary Brown',
-      service: 'Job',
-      status: 'Completed'
+      id: "2",
+      name: "Mary Brown",
+      service: "Job",
+      status: "Completed",
     },
 
     {
-      id: '3',
-      name: 'Ed John',
-      service: 'Accomodation',
-      status: 'In Progress'
+      id: "3",
+      name: "Ed John",
+      service: "Accomodation",
+      status: "In Progress",
     },
     {
-      id: '4',
-      name: 'Tej John',
-      service: 'Job',
-      status: 'In Progress'
+      id: "4",
+      name: "Tej John",
+      service: "Job",
+      status: "In Progress",
     },
     {
-      id: '5',
-      name: 'Jake Brown',
-      service: 'Accomodation',
-      status: 'In Progress'
+      id: "5",
+      name: "Jake Brown",
+      service: "Accomodation",
+      status: "In Progress",
     },
     {
-      id: '6',
-      name: 'Joel Cullen',
-      service: 'Job',
-      status: 'Completed'
-    }
+      id: "6",
+      name: "Joel Cullen",
+      service: "Job",
+      status: "Completed",
+    },
   ];
-
 
   const CONNECTION_REQUESTS_API = [
     {
-      id: '1',
-      name: 'Jes John',
-      service: 'Accomodation',
-      status: 'In Progress'
+      id: "1",
+      name: "Jes John",
+      service: "Accomodation",
+      status: "In Progress",
     },
     {
-      id: '2',
-      name: 'Mary Brown',
-      service: 'Job',
-      status: 'Completed'
+      id: "2",
+      name: "Mary Brown",
+      service: "Job",
+      status: "Completed",
     },
 
     {
-      id: '3',
-      name: 'Ed John',
-      service: 'Accomodation',
-      status: 'In Progress'
+      id: "3",
+      name: "Ed John",
+      service: "Accomodation",
+      status: "In Progress",
     },
     {
-      id: '4',
-      name: 'Tej John',
-      service: 'Job',
-      status: 'In Progress'
+      id: "4",
+      name: "Tej John",
+      service: "Job",
+      status: "In Progress",
     },
     {
-      id: '5',
-      name: 'Jake Brown',
-      service: 'Accomodation',
-      status: 'In Progress'
+      id: "5",
+      name: "Jake Brown",
+      service: "Accomodation",
+      status: "In Progress",
     },
     {
-      id: '6',
-      name: 'Joel Cullen',
-      service: 'Job',
-      status: 'Completed'
-    }
+      id: "6",
+      name: "Joel Cullen",
+      service: "Job",
+      status: "Completed",
+    },
   ];
-
-
 
   // Dynamic APIS
   // 1. Fetch Mentor Details API
@@ -178,24 +180,31 @@ const AdminDashboard = (props) => {
     }
   };
 
-
   // 2. Fetch Services list API
   const fetchServices = async () => {
     try {
       // Make API requests here
       const response = await fetch(api.apiUrl + `/admin/viewServices`);
       const data = await response.json();
-      setServices(data)
+      setServices(data);
     } catch (error) {
       console.log(error);
     }
   };
 
   // 3. Fetch Payments list API
-
+  const fetchPayments = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(api.apiUrl + `/admin/viewPayments`);
+      const data = await response.json();
+      setPayments(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // 4. Update Service Status API
-
 
   // 5. Fetch Connection Requests
   const fetchConnRequests = async () => {
@@ -211,7 +220,6 @@ const AdminDashboard = (props) => {
       console.log(error);
     }
   };
-
 
   // 5. Fetch Connection Requests
   // const updateMentorConnRequestStatus = async (id, status) => {
@@ -229,24 +237,17 @@ const AdminDashboard = (props) => {
   //     }
   // };
 
-
   useEffect(() => {
     // Fetch API data here
-    fetchDashboardData()
-    fetchConnRequests()
-    fetchServices()
+    fetchDashboardData();
+    fetchConnRequests();
+    fetchServices();
+    fetchPayments();
   }, []);
-
-
-
-
-
 
   //Home Component
   function HomeScreen() {
-
     const navigation = useNavigation();
-
 
     const Separator = () => {
       return <View style={styles.separator} />;
@@ -255,97 +256,105 @@ const AdminDashboard = (props) => {
     const ItemSeparatorView = () => {
       return (
         //Item Separator
-        <View
-          style={styles.seperatorStyle}
-        />
+        <View style={styles.seperatorStyle} />
       );
     };
 
     return (
-      <LinearGradient
-        colors={['#458592', '#50A4AB', '#CFF4F7']}>
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.homeContainer}>
-
           <View style={styles.subContainer}>
-
             <View>
               <Text style={styles.welcomeMsg}>Welcome Admin!</Text>
             </View>
             <ItemSeparatorView />
             <View style={styles.cardContainer}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
                   <Text style={styles.headingMsg}>Users Analytics</Text>
                 </View>
               </View>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Seekers: {adminDetail.seekerCount}</Text>
+                <Text style={styles.textContainer}>
+                  #Seekers: {adminDetail.seekerCount}
+                </Text>
               </View>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Mentors: {adminDetail.mentorCount}</Text>
+                <Text style={styles.textContainer}>
+                  #Mentors: {adminDetail.mentorCount}
+                </Text>
               </View>
             </View>
             <View style={styles.cardContainer}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
                   <Text style={styles.headingMsg}>Services Analytics</Text>
                 </View>
               </View>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Ongoing: {adminDetail.service?.ongoing}</Text>
+                <Text style={styles.textContainer}>
+                  #Ongoing: {adminDetail.service?.ongoing}
+                </Text>
               </View>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Completed: {adminDetail.service?.completed}</Text>
+                <Text style={styles.textContainer}>
+                  #Completed: {adminDetail.service?.completed}
+                </Text>
               </View>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Failed: {adminDetail.service?.failed}</Text>
+                <Text style={styles.textContainer}>
+                  #Failed: {adminDetail.service?.failed}
+                </Text>
               </View>
             </View>
 
             <View style={styles.cardContainer}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
                   <Text style={styles.headingMsg}>Mentor Status</Text>
                 </View>
               </View>
 
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Applied: {adminDetail.mentorsStatus?.applied}</Text>
+                <Text style={styles.textContainer}>
+                  #Applied: {adminDetail.mentorsStatus?.applied}
+                </Text>
               </View>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Invited: {adminDetail.mentorsStatus?.invited}</Text>
+                <Text style={styles.textContainer}>
+                  #Invited: {adminDetail.mentorsStatus?.invited}
+                </Text>
               </View>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>#Approved: {adminDetail.mentorsStatus?.approved}</Text>
+                <Text style={styles.textContainer}>
+                  #Approved: {adminDetail.mentorsStatus?.approved}
+                </Text>
               </View>
             </View>
           </View>
-
         </View>
       </LinearGradient>
     );
   }
-
 
   //Profile component
   function ProfileScreen() {
     return (
       <View style={styles.profileView}>
         <Text>Profile Screen!</Text>
-        <Button onPress={() => navigation.navigate("Home")} title="Go back home" />
+        <Button
+          onPress={() => navigation.navigate("Home")}
+          title="Go back home"
+        />
       </View>
     );
   }
 
-
   //Connection requests component
   function ConnectionRequestsScreen() {
-
     return (
-      <LinearGradient
-        colors={['#458592', '#50A4AB', '#CFF4F7']}>
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
-
           <View style={styles.subContainer}>
             <ScrollView>
               <ConnTable data={connReqs} />
@@ -353,19 +362,14 @@ const AdminDashboard = (props) => {
           </View>
         </View>
       </LinearGradient>
-
     );
   }
 
   //Profile component
   function ServiceScreen({ route, navigation }) {
-
-
     return (
-      <LinearGradient
-        colors={['#458592', '#50A4AB', '#CFF4F7']}>
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
-
           <View style={styles.subContainer}>
             <ScrollView>
               <ServicesTable data={services} />
@@ -373,31 +377,23 @@ const AdminDashboard = (props) => {
           </View>
         </View>
       </LinearGradient>
-
     );
   }
 
-
-  //Profile component
+  //Payment component
   function PaymentScreen({ route, navigation }) {
-
-    const { paymentsList } = route.params;
-
     return (
-      <View style={styles.homeContainer}>
-
-        <View style={styles.subContainer}>
-
-
-          <Text>Payments Screen!</Text>
-          <Button onPress={() => navigation.navigate("Home")} title="Go back home" />
-
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.connectionContainer}>
+          <View style={styles.subContainer}>
+            <ScrollView>
+              <PaymentTable data={payments} />
+            </ScrollView>
+          </View>
         </View>
-
-      </View>
+      </LinearGradient>
     );
   }
-
 
   const handleSignOut = () => {
     // Call the props.logout function here
@@ -405,10 +401,7 @@ const AdminDashboard = (props) => {
     navigation.closeDrawer();
   };
 
-
-
   return (
-
     <NavigationContainer independent={true}>
       <Drawer.Navigator
         initialRouteName="Home"
@@ -418,124 +411,164 @@ const AdminDashboard = (props) => {
           },
           drawerActiveBackgroundColor: COLORS.primary,
           drawerLabelStyle: {
-            color: '#fff'
-          }
+            color: "#fff",
+          },
         }}
-
       >
-
-        <Drawer.Screen name="Home" component={HomeScreen} options={{
-          title: 'SAMARITAN',
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.secondary,
-          headerTitleStyle: styles.dashboardHeading,
-          headerStyle: {
-            backgroundColor: '#458592',
-          },
-          headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
-              <Image source={icons.bell_icon}></Image>
-            </TouchableOpacity >
-          ),
-        }} />
-        <Drawer.Screen name="Profile" component={ProfileScreen} options={{
-          title: 'PROFILE',
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.secondary,
-          headerTitleStyle: styles.dashboardHeading,
-          headerStyle: {
-            backgroundColor: '#458592',
-          },
-          headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
-              <Image source={icons.bell_icon}></Image>
-            </TouchableOpacity >
-          ),
-        }} />
-
-        <Drawer.Screen name="ConnRequests" component={ConnectionRequestsScreen} options={{
-          title: 'CONNECTIONS',
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.secondary,
-          headerTitleStyle: styles.dashboardHeading,
-          headerStyle: {
-            backgroundColor: '#458592',
-          },
-          headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
-              <Image source={icons.bell_icon}></Image>
-            </TouchableOpacity >
-          ),
-        }} />
-
-        <Drawer.Screen name="seekers" component={ConnectionRequestsScreen}
+        <Drawer.Screen
+          name="Home"
+          component={HomeScreen}
           options={{
-            title: 'SEEKERS',
-            headerTitleAlign: 'center',
+            title: "SAMARITAN",
+            headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
             headerStyle: {
-              backgroundColor: '#458592',
+              backgroundColor: "#458592",
             },
             headerRight: () => (
-              <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
                 <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity >
+              </TouchableOpacity>
             ),
-          }} />
+          }}
+        />
+        <Drawer.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            title: "PROFILE",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-        <Drawer.Screen name="mentors" component={ConnectionRequestsScreen} options={{
-          title: 'MENTORS',
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.secondary,
-          headerTitleStyle: styles.dashboardHeading,
-          headerStyle: {
-            backgroundColor: '#458592',
-          },
-          headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
-              <Image source={icons.bell_icon}></Image>
-            </TouchableOpacity >
-          ),
-        }} />
+        <Drawer.Screen
+          name="ConnRequests"
+          component={ConnectionRequestsScreen}
+          options={{
+            title: "CONNECTIONS",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-        <Drawer.Screen name="services" component={ServiceScreen} options={{
-          title: 'SERVICES',
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.secondary,
-          headerTitleStyle: styles.dashboardHeading,
-          headerStyle: {
-            backgroundColor: '#458592',
-          },
-          headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
-              <Image source={icons.bell_icon}></Image>
-            </TouchableOpacity >
-          ),
-        }} />
-        <Drawer.Screen name="Payment" component={ConnectionRequestsScreen} options={{
-          title: 'PAYMENTS',
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.secondary,
-          headerTitleStyle: styles.dashboardHeading,
-          headerStyle: {
-            backgroundColor: '#458592',
-          },
-          headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
-              <Image source={icons.bell_icon}></Image>
-            </TouchableOpacity >
-          ),
-        }} />
+        <Drawer.Screen
+          name="seekers"
+          component={ConnectionRequestsScreen}
+          options={{
+            title: "SEEKERS",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
+        <Drawer.Screen
+          name="mentors"
+          component={ConnectionRequestsScreen}
+          options={{
+            title: "MENTORS",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-
-
+        <Drawer.Screen
+          name="services"
+          component={ServiceScreen}
+          options={{
+            title: "SERVICES",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Payment"
+          component={PaymentScreen}
+          options={{
+            title: "PAYMENTS",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
       </Drawer.Navigator>
     </NavigationContainer>
-
   );
 };
 
 export default AdminDashboard;
-

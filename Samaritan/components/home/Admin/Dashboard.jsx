@@ -266,7 +266,7 @@ const AdminDashboard = (props) => {
         colors={['#458592', '#50A4AB', '#CFF4F7']}>
         <View style={styles.homeContainer}>
 
-          <View style={styles.homeSubContainer}>
+          <View style={styles.subContainer}>
 
             <View>
               <Text style={styles.welcomeMsg}>Welcome Admin!</Text>
@@ -344,9 +344,14 @@ const AdminDashboard = (props) => {
     return (
       <LinearGradient
         colors={['#458592', '#50A4AB', '#CFF4F7']}>
-        <ScrollView>
-          <ConnTable data={connReqs} />
-        </ScrollView>
+        <View style={styles.connectionContainer}>
+
+          <View style={styles.subContainer}>
+            <ScrollView>
+              <ConnTable data={connReqs} />
+            </ScrollView>
+          </View>
+        </View>
       </LinearGradient>
 
     );
@@ -359,9 +364,14 @@ const AdminDashboard = (props) => {
     return (
       <LinearGradient
         colors={['#458592', '#50A4AB', '#CFF4F7']}>
-        <ScrollView>
-          <ServicesTable data={services} />
-        </ScrollView>
+        <View style={styles.connectionContainer}>
+
+          <View style={styles.subContainer}>
+            <ScrollView>
+              <ServicesTable data={services} />
+            </ScrollView>
+          </View>
+        </View>
       </LinearGradient>
 
     );
@@ -376,7 +386,7 @@ const AdminDashboard = (props) => {
     return (
       <View style={styles.homeContainer}>
 
-        <View style={styles.homeSubContainer}>
+        <View style={styles.subContainer}>
 
 
           <Text>Payments Screen!</Text>
@@ -419,6 +429,9 @@ const AdminDashboard = (props) => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
+          headerStyle: {
+            backgroundColor: '#458592',
+          },
           headerRight: () => (
             <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
               <Image source={icons.bell_icon}></Image>
@@ -430,6 +443,9 @@ const AdminDashboard = (props) => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
+          headerStyle: {
+            backgroundColor: '#458592',
+          },
           headerRight: () => (
             <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
               <Image source={icons.bell_icon}></Image>
@@ -442,6 +458,9 @@ const AdminDashboard = (props) => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
+          headerStyle: {
+            backgroundColor: '#458592',
+          },
           headerRight: () => (
             <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
               <Image source={icons.bell_icon}></Image>
@@ -455,6 +474,9 @@ const AdminDashboard = (props) => {
             headerTitleAlign: 'center',
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: '#458592',
+            },
             headerRight: () => (
               <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
                 <Image source={icons.bell_icon}></Image>
@@ -467,6 +489,9 @@ const AdminDashboard = (props) => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
+          headerStyle: {
+            backgroundColor: '#458592',
+          },
           headerRight: () => (
             <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
               <Image source={icons.bell_icon}></Image>
@@ -479,6 +504,9 @@ const AdminDashboard = (props) => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
+          headerStyle: {
+            backgroundColor: '#458592',
+          },
           headerRight: () => (
             <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
               <Image source={icons.bell_icon}></Image>
@@ -490,6 +518,9 @@ const AdminDashboard = (props) => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
+          headerStyle: {
+            backgroundColor: '#458592',
+          },
           headerRight: () => (
             <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
               <Image source={icons.bell_icon}></Image>

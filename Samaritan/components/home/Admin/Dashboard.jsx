@@ -27,6 +27,7 @@ import ConnTable from "./ConnTable";
 import ServicesTable from "./ServicesTable";
 import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -185,6 +186,18 @@ const AdminDashboard = (props) => {
     { key: "1", value: "Completed" },
     { key: "2", value: "Pending" },
   ];
+
+  const ONTARIO_CITIES_MAP = {
+    2: 'Waterloo',
+    3: 'Kitchener',
+    4: 'Toronto',
+    5: 'Ottawa',
+    6: 'Hamilton',
+    7: 'London',
+    8: 'Mississauga',
+    9: 'Brampton',
+    10: 'Markham',
+  };
 
   // Dynamic APIS
   // 1. Fetch Mentor Details API
@@ -567,9 +580,9 @@ const AdminDashboard = (props) => {
           <View style={styles.subContainermentor}>
             <ScrollView>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingMsg}>Mentor name: {}</Text>
-                <Text style={styles.headingMsg}>Seeker name: {}</Text>
-                <Text style={styles.headingMsg}>Service: {}</Text>
+                <Text style={styles.headingMsg}>Mentor name: { }</Text>
+                <Text style={styles.headingMsg}>Seeker name: { }</Text>
+                <Text style={styles.headingMsg}>Service: { }</Text>
               </View>
 
               <SelectList
@@ -594,16 +607,83 @@ const AdminDashboard = (props) => {
   }
 
   function UpdateMentorStatusScreen({ route, navigation }) {
+    const { mentor } = route.params;
+    SERVICE_TEXT_MAP = {
+      1: "Accommodation",
+      2: "Part-Time Job",
+    };
+
+    STATUS_MAP = {
+      APPLIED: "Applied",
+      INVITED: "Invited",
+      APPROVED: "Approved",
+    };
+
+    SERVICE_TYPE_ICON = {
+      1: "bed-outline",
+      2: "construct-outline",
+    };
+
+
+
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingMsg}>Mentor name: {}</Text>
-                <Text style={styles.headingMsg}>Type: {}</Text>
-                <Text style={styles.headingMsg}>Status: {}</Text>
+                <Text style={styles.headingText}>{mentor.fname} {mentor.lname}</Text>
+                <Text style={styles.subHeadingText}>{mentor.email} | {mentor.num}</Text>
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+
+                <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentor.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentor.serviceOffered]}</Text>
+                <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentor.currentLocation]}</Text>
+
+
+                {/* Status */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.detailText}>Status</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentor.onboardStatus]}</Text>
+                <Text style={styles.detailText}>Visa Status: {mentor.visaStatus}</Text>
+
+                {/* Strike Count */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.detailText}>Strike Count</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <Text style={styles.detailText}>{mentor.strikeCount}/5</Text>
+
+                {/* Rating */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.detailText}>Rating</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {[...Array(5)].map((_, index) => (
+                    <Text key={index} style={styles.star}>
+                      {index < Math.floor(mentor.rating) ? '★' : '☆'}
+                    </Text>
+                  ))}
+                </View>
               </View>
+
+
+              {/* Update Mentor Onboard Status */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.detailText}>Update Mentor Status</Text>
+                </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+              </View>
+
 
               <SelectList
                 data={statuslist}

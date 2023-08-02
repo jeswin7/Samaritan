@@ -16,33 +16,48 @@ const Table = ({ data }) => {
     console.log("mentors data----", item);
 
     SERVICE_TYPE_ICON = {
-      Accommodation: "bed-outline",
-      "Part-Time Job": "construct-outline",
+      1: "bed-outline",
+      2: "construct-outline",
     };
 
     STATUS_ICON = {
-      APPLIED: "hourglass-outline",
-      ACCEPTED: "thumbs-up-outline",
-      DECLINED: "thumbs-down-outline",
+      APPLIED: "Applied",
+      INVITED: "Invited",
+      APPROVED: "Approved",
     };
 
+    const redirectToDetail = (mentor) => {
+      navigation.navigate("updatementor", { mentor })
+    }
+
     return (
+      <TouchableOpacity onPress={() => redirectToDetail(item)}>
       <View style={styles.row}>
         <View style={styles.cell}>
           <Text style={styles.textStyle}>
             {item.fname} {item.lname}
-            {}
           </Text>
         </View>
-        {/* <View style={styles.cell}>
-          <Text style={styles.textStyle}>
-            <Ionicons name={SERVICE_TYPE_ICON[type]} size={20} />
-          </Text>
-        </View> */}
         <View style={styles.cell}>
-          <Text style={styles.textStyle}>{item.onboardStatus}</Text>
+          <Text style={styles.textStyle}>
+            {<Ionicons name={SERVICE_TYPE_ICON[item.serviceOffered]} size={20} />}
+          </Text>
+        </View>
+        <View style={styles.cell}>
+          <Text style={styles.textStyle}>
+            {item.rating}
+          </Text>
+        </View>
+        <View style={styles.cell}>
+          <Text style={styles.textStyle}>
+            {item.strikeCount}
+          </Text>
+        </View>
+        <View style={styles.cell}>
+          <Text style={styles.textStyle}>{STATUS_ICON[item.onboardStatus]}</Text>
         </View>
       </View>
+      </TouchableOpacity>
     );
   };
 
@@ -50,16 +65,16 @@ const Table = ({ data }) => {
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.headerCell}>Mentor</Text>
-        {/* <Text style={styles.headerCell}>Type</Text> */}
+        <Text style={styles.headerCell}>Service(s)</Text>
+        <Text style={styles.headerCell}>Rating</Text>
+        <Text style={styles.headerCell}>Strikes</Text>
         <Text style={styles.headerCell}>Status</Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("updatementor")}>
         <FlatList
           data={data}
           renderItem={renderRow}
           keyExtractor={(item, index) => index.toString()}
         />
-      </TouchableOpacity>
     </View>
   );
 };

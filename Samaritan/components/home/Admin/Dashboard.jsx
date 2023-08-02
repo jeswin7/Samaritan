@@ -50,6 +50,9 @@ const AdminDashboard = (props) => {
   const [organization, setOrganization] = useState("");
   const [orgtype, setOrgType] = useState("");
 
+  const [selected, setSelected] = useState("");
+
+
   const SERVICE_MAP = {
     1: "Accommodation",
     2: "Part-Time Job",
@@ -186,6 +189,14 @@ const AdminDashboard = (props) => {
     { key: "1", value: "Completed" },
     { key: "2", value: "Pending" },
   ];
+
+  const MENTOR_ONBOARD_STATUS_MAP = [
+    { key: 'APPLIED', value: 'Applied'},
+    { key: 'INVITED', value: 'Invited'},
+    { key: 'APPROVED', value: 'Approved'}
+  ]
+
+
 
   const ONTARIO_CITIES_MAP = {
     2: 'Waterloo',
@@ -624,6 +635,8 @@ const AdminDashboard = (props) => {
       2: "construct-outline",
     };
 
+      setSelected(mentor.onboardStatus);
+
 
 
     return (
@@ -686,11 +699,11 @@ const AdminDashboard = (props) => {
 
 
               <SelectList
-                data={statuslist}
-                setStatus={setStatus}
+                data={MENTOR_ONBOARD_STATUS_MAP}
+                setSelected={() => setSelected(selected)} 
                 boxStyles={styles.pickercardContainer}
                 text
-                value={status}
+                value={selected}
                 dropdownStyles={styles.dropdownbox}
                 dropdownTextStyles={styles.dropdowntext}
                 placeholderTextColor={COLORS.white}

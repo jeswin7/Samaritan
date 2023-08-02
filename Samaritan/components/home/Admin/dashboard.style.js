@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import { COLORS, FONT, SIZES } from "../../../constants";
+import { color } from "react-native-reanimated";
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   menuIcon: {
     height: 20,
     width: 25,
-    marginLeft: 20
+    marginLeft: 20,
   },
   buttonBellStyle: {
     height: 30,
@@ -136,7 +137,10 @@ const styles = StyleSheet.create({
   },
   subContainer: { 
     width: '90%', 
-   // marginTop: -100 
+  },
+  subContainermentor : {
+      width: '90%', 
+     marginTop: 40, 
   },
   welcomeMsg: { 
     fontSize: 20, 
@@ -150,6 +154,14 @@ const styles = StyleSheet.create({
     backgroundColor:COLORS.primary, 
     opacity:0.8, 
     borderRadius:10
+  },
+  pickercardContainer:{
+    width: 330,
+    margin:10,
+    backgroundColor:COLORS.primary, 
+    opacity:0.8, 
+    borderRadius:10,
+    color: COLORS.white,
   },
   headingMsg:{ 
     fontSize: 20, 
@@ -168,7 +180,55 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     backgroundColor:'#fff' 
   },
+  //add mentor
+  addIcon: {
+    position: 'absolute',
+     right: 20,
+      top: 10,
+      marginTop: 10,
+  },
+  inputTextField: {
+    paddingVertical: 10, 
+    fontSize: 18, 
+    color: COLORS.white, 
+    margin:5,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    textShadowColor: COLORS.white
+  },
+  dropdown: {
+    paddingVertical: 12,
+    fontSize: 50,
+    backgroundColor: COLORS.primary,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    marginTop: SIZES.medium,
+    borderColor: COLORS.primary
+  },
 
+  dropdownbox: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+    maxHeight: 200,
+  },
+  dropdowntext: {
+    color: COLORS.white,
+  },
+  saveButton: {
+    marginVertical: 40,
+    elevation: 8,
+    backgroundColor: COLORS.secondary,
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12
+
+  },
+  saveText: {
+    fontSize: 18,
+    color: COLORS.white,
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
   ratingText: {
     marginRight: 5,
     fontSize: 16,

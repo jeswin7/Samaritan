@@ -10,10 +10,12 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { SelectList } from "react-native-dropdown-select-list";
 import { Picker } from "@react-native-picker/picker";
 import styles from "./dashboard.style";
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import DropDownPicker from "react-native-dropdown-picker";
 import {
   NavigationContainer,
   ThemeProvider,
@@ -24,6 +26,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import ConnTable from "./ConnTable";
 import ServicesTable from "./ServicesTable";
 import PaymentTable from "./PaymentTable";
+import MentorTable from "./MentorTable";
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -33,6 +36,18 @@ const AdminDashboard = (props) => {
   const [connReqs, setConnReqs] = useState(null);
   const [services, setServices] = useState(null);
   const [payments, setPayments] = useState(null);
+  const [mentors, setMentors] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [city, setCity] = useState("");
+  const [province, setProvince] = useState("");
+  const [service, setService] = useState("");
+  const [status, setStatus] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [orgtype, setOrgType] = useState("");
 
   const SERVICE_MAP = {
     1: "Accommodation",
@@ -166,6 +181,11 @@ const AdminDashboard = (props) => {
     },
   ];
 
+  const statuslist = [
+    { key: "1", value: "Completed" },
+    { key: "2", value: "Pending" },
+  ];
+
   // Dynamic APIS
   // 1. Fetch Mentor Details API
   const fetchDashboardData = async () => {
@@ -199,6 +219,19 @@ const AdminDashboard = (props) => {
       const response = await fetch(api.apiUrl + `/admin/viewPayments`);
       const data = await response.json();
       setPayments(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Fetch Mentors
+  const fetchMentors = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(api.apiUrl + `/mentors`);
+      const data = await response.json();
+      setMentors(data);
+      console.log("dtaaaa", data);
     } catch (error) {
       console.log(error);
     }
@@ -243,6 +276,7 @@ const AdminDashboard = (props) => {
     fetchConnRequests();
     fetchServices();
     fetchPayments();
+    fetchMentors();
   }, []);
 
   //Home Component
@@ -365,6 +399,136 @@ const AdminDashboard = (props) => {
     );
   }
 
+  //Mentors Screen component
+  function MentorsScreen() {
+    const navigation = useNavigation();
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.connectionContainer}>
+          <TouchableOpacity
+            style={styles.addIcon}
+            onPress={() => navigation.navigate("addmentor")}
+          >
+            <Image source={icons.add_icon}></Image>
+          </TouchableOpacity>
+          <View style={styles.subContainermentor}>
+            <ScrollView>
+              <MentorTable data={mentors} />
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+    );
+  }
+
+  //Add mentor component
+  function AddmentorScreen({ route, navigation }) {
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.connectionContainer}>
+          <View style={styles.subContainermentor}>
+            <ScrollView>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.firstName}
+                  value={firstName}
+                  onChangeText={(value) => setFirstName(value)}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.lastName}
+                  onChangeText={(value) => setLastName(value)}
+                  value={lastName}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.contactNumber}
+                  onChangeText={(value) => setContactNumber(value)}
+                  value={contactNumber}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.city}
+                  onChangeText={(value) => setCity(value)}
+                  value={city}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.province}
+                  onChangeText={(value) => setProvince(value)}
+                  value={province}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.services}
+                  onChangeText={(value) => setService(value)}
+                  value={service}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.organization}
+                  onChangeText={(value) => setOrganization(value)}
+                  value={organization}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.orgType}
+                  onChangeText={(value) => setOrgType(value)}
+                  value={orgtype}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.email}
+                  onChangeText={(value) => setEmail(value)}
+                  value={email}
+                />
+              </View>
+              <View style={styles.cardContainer}>
+                <TextInput
+                  placeholderTextColor={COLORS.white}
+                  style={styles.inputTextField}
+                  placeholder={strings.password}
+                  onChangeText={(value) => setPassword(value)}
+                  value={password}
+                />
+              </View>
+
+              <TouchableOpacity style={styles.saveButton}>
+                <Text style={styles.saveText}>{strings.save}</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+    );
+  }
+
   //Profile component
   function ServiceScreen({ route, navigation }) {
     return (
@@ -395,6 +559,72 @@ const AdminDashboard = (props) => {
     );
   }
 
+  //Payment details
+  function UpdatepaymentstatusScreen({ route, navigation }) {
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.connectionContainer}>
+          <View style={styles.subContainermentor}>
+            <ScrollView>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.headingMsg}>Mentor name: {}</Text>
+                <Text style={styles.headingMsg}>Seeker name: {}</Text>
+                <Text style={styles.headingMsg}>Service: {}</Text>
+              </View>
+
+              <SelectList
+                data={statuslist}
+                setStatus={setStatus}
+                boxStyles={styles.pickercardContainer}
+                text
+                value={status}
+                dropdownStyles={styles.dropdownbox}
+                dropdownTextStyles={styles.dropdowntext}
+                placeholderTextColor={COLORS.white}
+              />
+
+              <TouchableOpacity style={styles.saveButton}>
+                <Text style={styles.saveText}>{strings.update}</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+    );
+  }
+
+  function UpdateMentorStatusScreen({ route, navigation }) {
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.connectionContainer}>
+          <View style={styles.subContainermentor}>
+            <ScrollView>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.headingMsg}>Mentor name: {}</Text>
+                <Text style={styles.headingMsg}>Type: {}</Text>
+                <Text style={styles.headingMsg}>Status: {}</Text>
+              </View>
+
+              <SelectList
+                data={statuslist}
+                setStatus={setStatus}
+                boxStyles={styles.pickercardContainer}
+                text
+                value={status}
+                dropdownStyles={styles.dropdownbox}
+                dropdownTextStyles={styles.dropdowntext}
+                placeholderTextColor={COLORS.white}
+              />
+
+              <TouchableOpacity style={styles.saveButton}>
+                <Text style={styles.saveText}>{strings.update}</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+    );
+  }
   const handleSignOut = () => {
     // Call the props.logout function here
     props.logout();
@@ -504,7 +734,7 @@ const AdminDashboard = (props) => {
 
         <Drawer.Screen
           name="mentors"
-          component={ConnectionRequestsScreen}
+          component={MentorsScreen}
           options={{
             title: "MENTORS",
             headerTitleAlign: "center",
@@ -550,6 +780,74 @@ const AdminDashboard = (props) => {
           component={PaymentScreen}
           options={{
             title: "PAYMENTS",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="addmentor"
+          component={AddmentorScreen}
+          options={{
+            title: "ADD MENTOR",
+            drawerLabel: () => null,
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="payment"
+          component={UpdatepaymentstatusScreen}
+          options={{
+            title: "PAYMENT DETAILS",
+            drawerLabel: () => null,
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={() => alert("notification")}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="updatementor"
+          component={UpdateMentorStatusScreen}
+          options={{
+            title: "MENTOR DETAILS",
+            drawerLabel: () => null,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,

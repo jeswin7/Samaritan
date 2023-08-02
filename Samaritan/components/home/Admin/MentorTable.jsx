@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 const Table = ({ data }) => {
   const navigation = useNavigation();
   const renderRow = ({ item }) => {
-    const { seeker, mentor, type, status } = item;
+    console.log("mentors data----", item);
 
     SERVICE_TYPE_ICON = {
       Accommodation: "bed-outline",
@@ -21,7 +21,7 @@ const Table = ({ data }) => {
     };
 
     STATUS_ICON = {
-      PENDING: "hourglass-outline",
+      APPLIED: "hourglass-outline",
       ACCEPTED: "thumbs-up-outline",
       DECLINED: "thumbs-down-outline",
     };
@@ -30,23 +30,17 @@ const Table = ({ data }) => {
       <View style={styles.row}>
         <View style={styles.cell}>
           <Text style={styles.textStyle}>
-            {seeker.fname} {seeker.lname}
+            {item.fname} {item.lname}
+            {}
           </Text>
         </View>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>
-            {mentor.fname} {mentor.lname}
-          </Text>
-        </View>
-        <View style={styles.cell}>
+        {/* <View style={styles.cell}>
           <Text style={styles.textStyle}>
             <Ionicons name={SERVICE_TYPE_ICON[type]} size={20} />
           </Text>
-        </View>
+        </View> */}
         <View style={styles.cell}>
-          <Text style={styles.textStyle}>
-            <Ionicons name={STATUS_ICON[status]} size={20} />
-          </Text>
+          <Text style={styles.textStyle}>{item.onboardStatus}</Text>
         </View>
       </View>
     );
@@ -55,12 +49,11 @@ const Table = ({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.headerCell}>Seeker</Text>
         <Text style={styles.headerCell}>Mentor</Text>
-        <Text style={styles.headerCell}>Type</Text>
+        {/* <Text style={styles.headerCell}>Type</Text> */}
         <Text style={styles.headerCell}>Status</Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("payment")}>
+      <TouchableOpacity onPress={() => navigation.navigate("updatementor")}>
         <FlatList
           data={data}
           renderItem={renderRow}

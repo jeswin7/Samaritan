@@ -679,7 +679,12 @@ const AdminDashboard = (props) => {
           <ScrollView>
             <View style={{ marginBottom: 10 }}>
               <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
-              <Text style={styles.subHeadingText}>{mentorDetail?.email} | {mentorDetail?.num}</Text>
+              <Text style={styles.subHeadingText}> {<Ionicons name="call-outline" size={20} color="white" />} +1 {mentorDetail?.num}</Text>
+              <Text style={styles.subHeadingText}> {<Ionicons name="mail-outline" size={20} color="white" />} {mentorDetail?.email}</Text>
+
+   
+             
+
               <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
 
               <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
@@ -689,7 +694,7 @@ const AdminDashboard = (props) => {
               {/* Status */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
-                  <Text style={styles.detailText}>Status</Text>
+                  <Text style={styles.sectionHeadingText}>Status</Text>
                 </View>
                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
@@ -699,7 +704,7 @@ const AdminDashboard = (props) => {
               {/* Strike Count */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
-                  <Text style={styles.detailText}>Strike Count</Text>
+                  <Text style={styles.sectionHeadingText}>Strike Count</Text>
                 </View>
                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
@@ -708,7 +713,7 @@ const AdminDashboard = (props) => {
               {/* Rating */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
-                  <Text style={styles.detailText}>Rating</Text>
+                  <Text style={styles.sectionHeadingText}>Rating</Text>
                 </View>
                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
@@ -725,7 +730,7 @@ const AdminDashboard = (props) => {
             {/* Update Mentor Onboard Status */}
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View>
-                <Text style={styles.detailText}>Update Mentor Status</Text>
+                <Text style={styles.sectionHeadingText}>Update Mentor Status</Text>
               </View>
               <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
             </View>

@@ -177,8 +177,15 @@ const styles = StyleSheet.create({
     textAlign :'center'
   },
   subHeadingText:{ 
-    fontSize: 20, 
+    fontSize: 16, 
     color: COLORS.white, 
+    margin: 10, 
+    fontWeight: 'bold',
+    textAlign :'center'
+  },
+  sectionHeadingText:{ 
+    fontSize: 16, 
+    color: COLORS.secondary, 
     margin: 10, 
     fontWeight: 'bold',
     textAlign :'center'

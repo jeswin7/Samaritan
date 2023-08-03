@@ -169,6 +169,26 @@ const styles = StyleSheet.create({
     margin: 10, 
     fontWeight: 'bold' 
   },
+  headingText:{ 
+    fontSize: 25, 
+    color: COLORS.white, 
+    margin: 5, 
+    fontWeight: 'bold',
+    textAlign :'center'
+  },
+  subHeadingText:{ 
+    fontSize: 20, 
+    color: COLORS.white, 
+    margin: 10, 
+    fontWeight: 'bold',
+    textAlign :'center'
+  },
+  detailText:{ 
+    fontSize: 15, 
+    color: COLORS.white, 
+    margin: 10, 
+    fontWeight: 'bold' 
+  },
   textContainer: { 
     fontSize: 20, 
     color: COLORS.white, 

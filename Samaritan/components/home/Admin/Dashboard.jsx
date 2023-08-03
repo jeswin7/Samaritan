@@ -27,6 +27,7 @@ import ConnTable from "./ConnTable";
 import ServicesTable from "./ServicesTable";
 import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -48,6 +49,7 @@ const AdminDashboard = (props) => {
   const [status, setStatus] = useState("");
   const [organization, setOrganization] = useState("");
   const [orgtype, setOrgType] = useState("");
+
 
   const SERVICE_MAP = {
     1: "Accommodation",
@@ -185,6 +187,26 @@ const AdminDashboard = (props) => {
     { key: "1", value: "Completed" },
     { key: "2", value: "Pending" },
   ];
+
+  const MENTOR_ONBOARD_STATUS_MAP = [
+    { key: 'APPLIED', value: 'Applied' },
+    { key: 'INVITED', value: 'Invited' },
+    { key: 'APPROVED', value: 'Approved' }
+  ]
+
+
+
+  const ONTARIO_CITIES_MAP = {
+    2: 'Waterloo',
+    3: 'Kitchener',
+    4: 'Toronto',
+    5: 'Ottawa',
+    6: 'Hamilton',
+    7: 'London',
+    8: 'Mississauga',
+    9: 'Brampton',
+    10: 'Markham',
+  };
 
   // Dynamic APIS
   // 1. Fetch Mentor Details API
@@ -567,9 +589,9 @@ const AdminDashboard = (props) => {
           <View style={styles.subContainermentor}>
             <ScrollView>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingMsg}>Mentor name: {}</Text>
-                <Text style={styles.headingMsg}>Seeker name: {}</Text>
-                <Text style={styles.headingMsg}>Service: {}</Text>
+                <Text style={styles.headingMsg}>Mentor name: { }</Text>
+                <Text style={styles.headingMsg}>Seeker name: { }</Text>
+                <Text style={styles.headingMsg}>Service: { }</Text>
               </View>
 
               <SelectList
@@ -594,34 +616,137 @@ const AdminDashboard = (props) => {
   }
 
   function UpdateMentorStatusScreen({ route, navigation }) {
+    const { mentor } = route.params;
+    SERVICE_TEXT_MAP = {
+      1: "Accommodation",
+      2: "Part-Time Job",
+    };
+
+    STATUS_MAP = {
+      APPLIED: "Applied",
+      INVITED: "Invited",
+      APPROVED: "Approved",
+    };
+
+    SERVICE_TYPE_ICON = {
+      1: "bed-outline",
+      2: "construct-outline",
+    };
+
+    const [mentorDetail, setMentorDetail] = useState(null);
+
+    useEffect(() => {
+      fetchMentorDetail()
+    }, [])
+
+    // Fetch mentor detail data
+    const fetchMentorDetail = async () => {
+      try {
+        // Make API requests here
+        const response = await fetch(api.apiUrl + `/mentorDetail?user_id=${mentor.id}`);
+        const data = await response.json();
+        console.log("@ detail API=", data)
+        setMentorDetail(data[0])
+        console.log("onboard Status Upd:", mentor.id, data)
+  
+      } catch (error) {
+        console.log(error);
+      }
+  
+    }
+  
+    const [onboard, setOnboardStatus] = useState(null)
+
+
+    // Handle mentor onboard status update/API call
+    const handleMentorStatusUpdate = async () => {
+      try {
+        // Make API requests here
+        const response = await fetch(api.apiUrl + `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`);
+        const data = await response.json();
+        console.log("onboard Status Upd:", mentor.id, data)
+        fetchMentorDetail()
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
-          <View style={styles.subContainermentor}>
-            <ScrollView>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingMsg}>Mentor name: {}</Text>
-                <Text style={styles.headingMsg}>Type: {}</Text>
-                <Text style={styles.headingMsg}>Status: {}</Text>
+        <View style={styles.subContainermentor}>
+          <ScrollView>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
+              <Text style={styles.subHeadingText}>{mentorDetail?.email} | {mentorDetail?.num}</Text>
+              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+
+              <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
+              <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
+
+
+              {/* Status */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.detailText}>Status</Text>
+                </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
+              <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
+              <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
 
-              <SelectList
-                data={statuslist}
-                setStatus={setStatus}
-                boxStyles={styles.pickercardContainer}
-                text
-                value={status}
-                dropdownStyles={styles.dropdownbox}
-                dropdownTextStyles={styles.dropdowntext}
-                placeholderTextColor={COLORS.white}
-              />
+              {/* Strike Count */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.detailText}>Strike Count</Text>
+                </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+              </View>
+              <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
 
-              <TouchableOpacity style={styles.saveButton}>
-                <Text style={styles.saveText}>{strings.update}</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
+              {/* Rating */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.detailText}>Rating</Text>
+                </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {[...Array(5)].map((_, index) => (
+                  <Text key={index} style={styles.star}>
+                    {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
+                  </Text>
+                ))}
+              </View>
+            </View>
+
+
+            {/* Update Mentor Onboard Status */}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View>
+                <Text style={styles.detailText}>Update Mentor Status</Text>
+              </View>
+              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+            </View>
+
+
+            <SelectList
+              data={MENTOR_ONBOARD_STATUS_MAP}
+              setSelected={(val) => setOnboardStatus(val)}
+              search={false}
+              boxStyles={styles.pickercardContainer}
+              dropdownStyles={styles.dropdownbox}
+              dropdownTextStyles={styles.dropdowntext}
+              placeholderTextColor={COLORS.white}
+            />
+
+            <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
+              <Text style={styles.saveText}>{strings.update}</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
+      </View>
       </LinearGradient>
     );
   }

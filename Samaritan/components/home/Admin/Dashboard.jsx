@@ -637,7 +637,7 @@ const AdminDashboard = (props) => {
 
     useEffect(() => {
       fetchMentorDetail()
-    }, [])
+    }, [route])
 
     // Fetch mentor detail data
     const fetchMentorDetail = async () => {

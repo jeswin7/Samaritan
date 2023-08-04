@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   Button,
+  Alert
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -27,6 +28,7 @@ import ConnTable from "./ConnTable";
 import ServicesTable from "./ServicesTable";
 import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
+import SeekerTable from "./SeekerTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const AdminDashboard = (props) => {
@@ -38,6 +40,7 @@ const AdminDashboard = (props) => {
   const [services, setServices] = useState(null);
   const [payments, setPayments] = useState(null);
   const [mentors, setMentors] = useState(null);
+  const [seekers, setSeekers] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -51,137 +54,7 @@ const AdminDashboard = (props) => {
   const [orgtype, setOrgType] = useState("");
 
 
-  const SERVICE_MAP = {
-    1: "Accommodation",
-    2: "Part-Time Job",
-  };
 
-  // Static APIs for testing purpose
-  DETAILS_API = {
-    fname: "Luke",
-    lname: "John",
-    rating: "4",
-  };
-
-  const SERVICES_API = [
-    {
-      id: "1",
-      name: "Than John",
-      service: "Accomodation",
-      status: "Completed",
-    },
-    {
-      id: "2",
-      name: "Mary Brown",
-      service: "Job",
-      status: "In Progress",
-    },
-
-    {
-      id: "3",
-      name: "Ed John",
-      service: "Accomodation",
-      status: "Completed",
-    },
-    {
-      id: "4",
-      name: "Tej John",
-      service: "Job",
-      status: "In Progress",
-    },
-    {
-      id: "5",
-      name: "Jake Brown",
-      service: "Accomodation",
-      status: "Completed",
-    },
-    {
-      id: "6",
-      name: "Joel Cullen",
-      service: "Job",
-      status: "In Progress",
-    },
-  ];
-
-  const PAYMENT_API = [
-    {
-      id: "1",
-      name: "Jes John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "2",
-      name: "Mary Brown",
-      service: "Job",
-      status: "Completed",
-    },
-
-    {
-      id: "3",
-      name: "Ed John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "4",
-      name: "Tej John",
-      service: "Job",
-      status: "In Progress",
-    },
-    {
-      id: "5",
-      name: "Jake Brown",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "6",
-      name: "Joel Cullen",
-      service: "Job",
-      status: "Completed",
-    },
-  ];
-
-  const CONNECTION_REQUESTS_API = [
-    {
-      id: "1",
-      name: "Jes John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "2",
-      name: "Mary Brown",
-      service: "Job",
-      status: "Completed",
-    },
-
-    {
-      id: "3",
-      name: "Ed John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "4",
-      name: "Tej John",
-      service: "Job",
-      status: "In Progress",
-    },
-    {
-      id: "5",
-      name: "Jake Brown",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "6",
-      name: "Joel Cullen",
-      service: "Job",
-      status: "Completed",
-    },
-  ];
 
   const statuslist = [
     { key: "1", value: "Completed" },
@@ -246,13 +119,26 @@ const AdminDashboard = (props) => {
     }
   };
 
-  //Fetch Mentors
+  // 4. Fetch Mentors
   const fetchMentors = async () => {
     try {
       // Make API requests here
       const response = await fetch(api.apiUrl + `/mentors`);
       const data = await response.json();
       setMentors(data);
+      console.log("dtaaaa", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 5. Fetch Seekers
+  const fetchSeekers = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(api.apiUrl + `/seekers`);
+      const data = await response.json();
+      setSeekers(data);
       console.log("dtaaaa", data);
     } catch (error) {
       console.log(error);
@@ -299,6 +185,7 @@ const AdminDashboard = (props) => {
     fetchServices();
     fetchPayments();
     fetchMentors();
+    fetchSeekers();
   }, []);
 
   //Home Component
@@ -473,8 +360,48 @@ const AdminDashboard = (props) => {
     );
   }
 
+  //Seekers Screen component
+  function SeekersScreen() {
+    const navigation = useNavigation();
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.connectionContainer}>
+          <TouchableOpacity
+            style={styles.addIcon}
+            onPress={() => navigation.navigate("addmentor")}
+          >
+            <Image source={icons.add_icon}></Image>
+          </TouchableOpacity>
+          <View style={styles.subContainermentor}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <SeekerTable data={seekers} refresh={fetchSeekers} />
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+    );
+  }
+
+
+
   //Add mentor component
   function AddmentorScreen({ route, navigation }) {
+
+    const [mentorServiceType, setmentorServiceType] = useState(null);
+    const [mentorOrgType, setmentorOrgType] = useState(null);
+
+    const SERVICE_MAP = [
+      { key: "Accommodation", value: "Accommodation" },
+      { key: "Part-Time Job", value: "Part-Time Job" }
+    ];
+
+    const ORG_TYPE_MAP = [
+      { key: "immigration", value: "Immigration Agency" },
+      { key: "landlord", value: "Landlord/Housing" },
+      { key: "employer", value: "Employer" }
+    ];
+
+
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
@@ -525,15 +452,7 @@ const AdminDashboard = (props) => {
                   value={province}
                 />
               </View>
-              <View style={styles.inputTextFieldContainer}>
-                <TextInput
-                  placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder={strings.services}
-                  onChangeText={(value) => setService(value)}
-                  value={service}
-                />
-              </View>
+
               <View style={styles.inputTextFieldContainer}>
                 <TextInput
                   placeholderTextColor={COLORS.secondary}
@@ -543,13 +462,29 @@ const AdminDashboard = (props) => {
                   value={organization}
                 />
               </View>
-              <View style={styles.inputTextFieldContainer}>
-                <TextInput
+              <View>
+                <SelectList
+                  data={ORG_TYPE_MAP}
+                  setSelected={(val) => setmentorOrgType(val)}
+                  search={false}
+                  boxStyles={styles.inputTextFieldContainer}
+                  dropdownStyles={styles.dropdownbox}
+                  dropdownTextStyles={styles.dropdowntext}
                   placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder={strings.orgType}
-                  onChangeText={(value) => setOrgType(value)}
-                  value={orgtype}
+                  placeholder="Organization Type"
+                />
+              </View>
+
+              <View>
+                <SelectList
+                  data={SERVICE_MAP}
+                  setSelected={(val) => setmentorServiceType(val)}
+                  search={false}
+                  boxStyles={styles.inputTextFieldContainer}
+                  dropdownStyles={styles.dropdownbox}
+                  dropdownTextStyles={styles.dropdowntext}
+                  placeholderTextColor={COLORS.secondary}
+                  placeholder="Service"
                 />
               </View>
               <View style={styles.inputTextFieldContainer}>
@@ -559,15 +494,6 @@ const AdminDashboard = (props) => {
                   placeholder={strings.email}
                   onChangeText={(value) => setEmail(value)}
                   value={email}
-                />
-              </View>
-              <View style={styles.inputTextFieldContainer}>
-                <TextInput
-                  placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder={strings.password}
-                  onChangeText={(value) => setPassword(value)}
-                  value={password}
                 />
               </View>
 
@@ -695,7 +621,14 @@ const AdminDashboard = (props) => {
         const response = await fetch(api.apiUrl + `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`);
         const data = await response.json();
         console.log("onboard Status Upd:", mentor.id, data)
-        fetchMentorDetail()
+        Alert.alert(
+          'Onboard Status Updated!', // Specify the desired title here
+          `${mentor.fname} ${mentor.lname}'s onboard status updated successfully!`,
+          [
+            { text: 'Done', onPress: () => fetchMentorDetail() }
+          ]
+        );
+
 
       } catch (error) {
         console.log(error);
@@ -705,70 +638,70 @@ const AdminDashboard = (props) => {
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
-        <View style={styles.subContainermentor}>
-          <ScrollView>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
-              <Text style={styles.subHeadingText}>+1 {mentorDetail?.num}</Text>
-              <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
+          <View style={styles.subContainermentor}>
+            <ScrollView>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
+                <Text style={styles.subHeadingText}>+1 {mentorDetail?.num}</Text>
+                <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
 
-              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-              <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
-              <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
-              {/* Status */}
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
+                <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
+                {/* Status */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.sectionHeadingText}>Status</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
+                <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
+                {/* Strike Count */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.sectionHeadingText}>Strike Count</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
+                {/* Rating */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.sectionHeadingText}>Rating</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {[...Array(5)].map((_, index) => (
+                    <Text key={index} style={styles.star}>
+                      {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
+                    </Text>
+                  ))}
+                </View>
+              </View>
+              {/* Update Mentor Onboard Status */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
-                  <Text style={styles.sectionHeadingText}>Status</Text>
+                  <Text style={styles.sectionHeadingText}>Update Mentor Status</Text>
                 </View>
                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
-              <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
-              <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
-              {/* Strike Count */}
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View>
-                  <Text style={styles.sectionHeadingText}>Strike Count</Text>
-                </View>
-                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-              </View>
-              <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
-              {/* Rating */}
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View>
-                  <Text style={styles.sectionHeadingText}>Rating</Text>
-                </View>
-                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {[...Array(5)].map((_, index) => (
-                  <Text key={index} style={styles.star}>
-                    {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
-                  </Text>
-                ))}
-              </View>
-            </View>
-            {/* Update Mentor Onboard Status */}
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View>
-                <Text style={styles.sectionHeadingText}>Update Mentor Status</Text>
-              </View>
-              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-            </View>
-            <SelectList
-              data={MENTOR_ONBOARD_STATUS_MAP}
-              setSelected={(val) => setOnboardStatus(val)}
-              search={false}
-              boxStyles={styles.pickercardContainer}
-              dropdownStyles={styles.dropdownbox}
-              dropdownTextStyles={styles.dropdowntext}
-              placeholderTextColor={COLORS.white}
-            />
-            <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
-              <Text style={styles.saveText}>{strings.update}</Text>
-            </TouchableOpacity>
-          </ScrollView>
+              <SelectList
+                data={MENTOR_ONBOARD_STATUS_MAP}
+                setSelected={(val) => setOnboardStatus(val)}
+                search={false}
+                boxStyles={styles.pickercardContainer}
+                dropdownStyles={styles.dropdownbox}
+                dropdownTextStyles={styles.dropdowntext}
+                placeholderTextColor={COLORS.white}
+              />
+              <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
+                <Text style={styles.saveText}>{strings.update}</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
         </View>
-      </View>
       </LinearGradient>
     );
   }
@@ -859,7 +792,7 @@ const AdminDashboard = (props) => {
 
         <Drawer.Screen
           name="seekers"
-          component={ConnectionRequestsScreen}
+          component={SeekersScreen}
           options={{
             title: "SEEKERS",
             headerTitleAlign: "center",

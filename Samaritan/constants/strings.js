@@ -31,14 +31,14 @@ const strings = {
     province: 'Province',
     services: 'Services',
     organization: 'Organization Name',
-    orgType: 'Oraganization Service Type',
+    orgType: 'Oraganization Type',
     confirmPassword: 'Confirm Password',
     emptyfieldError: 'All fields are required',
     contactformatError: 'Contact number should contain numbers only',
     pwdmatchError: 'passwords do not match',
     country: 'Country',
     searchHintText: 'What are you looking for?',
-    dendConnectionRequest: 'Send Connection Request'
+    dendConnectionRequest: 'Send Connection Request',
   };
 
   export default strings;

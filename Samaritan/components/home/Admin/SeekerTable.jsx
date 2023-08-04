@@ -41,42 +41,45 @@ const Table = ({ data, refresh }) => {
     const handleDelete = async (id) => {
       try {
         // Make API requests here
-        const response = await fetch(api.apiUrl + `/admin/deleteSeeker?id=`+id);
+        const response = await fetch(api.apiUrl + `/admin/deleteSeeker?id=` + id);
         const data = await response.json();
         refresh();
       } catch (error) {
         console.log(error);
       }
     }
- 
+
 
 
     return (
-      <View style={styles.row}>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>
-            {item.fname} {item.lname}
-          </Text>
-        </View>
+      <View>
+        <View style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}>
+              {item.fname} {item.lname}
+            </Text>
+          </View>
 
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>
-            {item.num}
-          </Text>
-        </View>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>
-            {item.location}
-          </Text>
-        </View>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}>
+              {item.num}
+            </Text>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}>
+              {item.location}
+            </Text>
+          </View>
 
-        <View style={styles.cell}>
-        <Text style={styles.textStyle}>
-          <TouchableOpacity  onPress={()=>handleDelete(item.id)}>
-            <Ionicons name="trash-bin" size={20} color="white"/>        
-          </TouchableOpacity>
-          </Text>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}>
+              <TouchableOpacity onPress={() => handleDelete(item.id)}>
+                <Ionicons name="trash-bin" size={20} color="white" />
+              </TouchableOpacity>
+            </Text>
+          </View>
         </View>
+        <View style={styles.separatorStyle}></View>
       </View>
     );
   };
@@ -85,16 +88,16 @@ const Table = ({ data, refresh }) => {
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.headerCell}>Name</Text>
-        <Text style={styles.headerCell}>Number</Text>
+        <Text style={styles.headerCell}>Phone</Text>
         <Text style={styles.headerCell}>Target City</Text>
         <Text style={styles.headerCell}>Action</Text>
 
       </View>
-        <FlatList
-          data={data}
-          renderItem={renderRow}
-          keyExtractor={(item, index) => index.toString()}
-        />
+      <FlatList
+        data={data}
+        renderItem={renderRow}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 };
@@ -105,22 +108,25 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   headerRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: COLORS.white,
   },
   headerCell: {
     flex: 1,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     color: COLORS.white,
+    fontSize: 16
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: COLORS.white,
+    backgroundColor: '#458592',
+    opacity: 0.9,
+    borderRadius: 10,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cell: {
     flex: 1,
@@ -131,6 +137,10 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     textAlign: "center",
   },
+  separatorStyle: {
+    width: '100%',
+    height: 10
+  }
 });
 
 export default Table;

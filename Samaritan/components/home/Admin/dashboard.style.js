@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     placeholderTextColor:COLORS.white
   },
   dropdowntext: {
-    color: COLORS.white,
+    color: COLORS.secondary,
   },
   saveButton: {
     marginVertical: 40,
@@ -343,14 +343,14 @@ const styles = StyleSheet.create({
     textAlign :'center'
   },
   paymentDetailText: {
-    fontSize: 20,
+    fontSize: 15,
     color: COLORS.white,
     margin: 5,
     fontWeight: 'bold',
     //textAlign: 'center'
   },
   paymentValusText: {
-    fontSize: 20,
+    fontSize: 15,
     color: COLORS.white,
     margin: 5,
     //fontWeight: 'bold',

@@ -468,7 +468,7 @@ const AdminDashboard = (props) => {
                   setSelected={(val) => setmentorOrgType(val)}
                   search={false}
                   boxStyles={styles.inputTextFieldContainer}
-                  dropdownStyles={styles.dropdownbox}
+                  dropdownStyles={styles.inputTextFieldContainer}
                   dropdownTextStyles={styles.dropdowntext}
                   placeholderTextColor={COLORS.secondary}
                   placeholder="Organization Type"
@@ -481,7 +481,7 @@ const AdminDashboard = (props) => {
                   setSelected={(val) => setmentorServiceType(val)}
                   search={false}
                   boxStyles={styles.inputTextFieldContainer}
-                  dropdownStyles={styles.dropdownbox}
+                  dropdownStyles={styles.inputTextFieldContainer}
                   dropdownTextStyles={styles.dropdowntext}
                   placeholderTextColor={COLORS.secondary}
                   placeholder="Service"
@@ -592,6 +592,13 @@ const AdminDashboard = (props) => {
       }
     };
 
+    const ItemSeparatorView = () => {
+      return (
+        //Item Separator
+        <View style={styles.seperatorStyle} />
+      );
+    };
+
 
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -617,13 +624,15 @@ const AdminDashboard = (props) => {
                 </View>
               </View>
               <Text style={styles.paymentDetailText}>Update Payment Status:</Text>
+              {/* <ItemSeparatorView /> */}
               <SelectList
                 data={statuslist}
                 setSelected={(val) => setPaymentStatus(val)}
                 search={false}
-                dropdownStyles={styles.dropdownbox}
+                boxStyles={styles.inputTextFieldContainer}
+                dropdownStyles={styles.inputTextFieldContainer}
                 dropdownTextStyles={styles.dropdowntext}
-                placeholderTextColor={COLORS.white}
+                placeholderTextColor={COLORS.secondary}
               />
               <TouchableOpacity style={styles.saveButton} onPress={handlePaymentStatusUpdate}>
                 <Text style={styles.saveText}>{strings.update}</Text>
@@ -755,10 +764,10 @@ const AdminDashboard = (props) => {
                 data={MENTOR_ONBOARD_STATUS_MAP}
                 setSelected={(val) => setOnboardStatus(val)}
                 search={false}
-                boxStyles={styles.pickercardContainer}
-                dropdownStyles={styles.dropdownbox}
+                boxStyles={styles.inputTextFieldContainer}
+                dropdownStyles={styles.inputTextFieldContainer}
                 dropdownTextStyles={styles.dropdowntext}
-                placeholderTextColor={COLORS.white}
+                placeholderTextColor={COLORS.secondary}
               />
               <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
                 <Text style={styles.saveText}>{strings.update}</Text>

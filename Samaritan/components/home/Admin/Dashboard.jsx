@@ -57,8 +57,8 @@ const AdminDashboard = (props) => {
 
 
   const statuslist = [
-    { key: "1", value: "Completed" },
-    { key: "2", value: "Pending" },
+    { key: "COMPLETED", value: "Completed" },
+    { key: "PENDING", value: "Pending" },
   ];
 
   const MENTOR_ONBOARD_STATUS_MAP = [
@@ -538,30 +538,94 @@ const AdminDashboard = (props) => {
   }
 
   //Payment details
-  function UpdatepaymentstatusScreen({ route, navigation }) {
+  function UpdatePaymentStatusScreen({ route, navigation }) {
+    const { item } = route.params;
+    console.log('payment item--', item)
+
+    STATUS_MAP = {
+      PENDING: "Pending",
+      COMPLETED: "Completed",
+    };
+
+    const [paymentDetail, setPaymentDetail] = useState(null);
+
+    useEffect(() => {
+      fetchPaymentDetail()
+    }, [route])
+
+    // Fetch payment detail data
+    const fetchPaymentDetail = async () => {
+      try {
+        // Make API requests here
+        const response = await fetch(api.apiUrl + `/admin/paymentDetail?id=${item.id}`);
+        const data = await response.json();
+        console.log("@ detail API=", data)
+        setPaymentDetail(data[0])
+        console.log("payment Status Upd:", item.id, data)
+
+      } catch (error) {
+        console.log(error);
+      }
+
+    }
+
+    const [paymentStatus, setPaymentStatus] = useState(null)
+
+
+    // Handle payment status update/API call
+    const handlePaymentStatusUpdate = async () => {
+      try {
+        // Make API requests here
+        const response = await fetch(api.apiUrl + `/admin/updatePayment?id=${item.id}&status=${paymentStatus}`);
+        const data = await response.json();
+        console.log("onboard Status Upd:", item.id, data)
+        Alert.alert(
+          'Payment Status Updated!', // Specify the desired title here
+          `${item.mentor.fname} ${item.mentor.lname}'s payment status updated successfully!`,
+          [
+            { text: 'Done', onPress: () => fetchPaymentDetail() }
+          ]
+        );
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingMsg}>Mentor name: { }</Text>
-                <Text style={styles.headingMsg}>Seeker name: { }</Text>
-                <Text style={styles.headingMsg}>Service: { }</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.paymentDetailText}>Mentor:</Text>
+                  <Text style={styles.paymentValusText}>{item.mentor.fname} {item.mentor.lname}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.paymentDetailText}>Seeker:</Text>
+                  <Text style={styles.paymentValusText}>{item.seeker.fname} {item.seeker.lname}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.paymentDetailText}>Service: </Text>
+                <Text style={styles.paymentValusText}>{item.type}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.paymentDetailText}>Payment Status: </Text>
+                <Text style={styles.paymentValusText}>{paymentDetail?.status}</Text>
+                </View>
               </View>
-
+              <Text style={styles.paymentDetailText}>Update Payment Status:</Text>
               <SelectList
                 data={statuslist}
-                setStatus={setStatus}
-                boxStyles={styles.pickercardContainer}
-                text
-                value={status}
+                setSelected={(val) => setPaymentStatus(val)}
+                search={false}
                 dropdownStyles={styles.dropdownbox}
                 dropdownTextStyles={styles.dropdowntext}
                 placeholderTextColor={COLORS.white}
               />
-
-              <TouchableOpacity style={styles.saveButton}>
+              <TouchableOpacity style={styles.saveButton} onPress={handlePaymentStatusUpdate}>
                 <Text style={styles.saveText}>{strings.update}</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -901,8 +965,8 @@ const AdminDashboard = (props) => {
         />
 
         <Drawer.Screen
-          name="payment"
-          component={UpdatepaymentstatusScreen}
+          name="updatePayment"
+          component={UpdatePaymentStatusScreen}
           options={{
             title: "PAYMENT DETAILS",
             drawerLabel: () => null,

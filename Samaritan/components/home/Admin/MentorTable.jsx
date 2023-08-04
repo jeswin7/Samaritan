@@ -31,6 +31,7 @@ const Table = ({ data }) => {
     }
 
     return (
+      <View>
       <TouchableOpacity onPress={() => redirectToDetail(item)}>
       <View style={styles.row}>
         <View style={styles.cell}>
@@ -63,6 +64,8 @@ const Table = ({ data }) => {
         </View>
       </View>
       </TouchableOpacity>
+      <View style={styles.separatorStyle}></View>
+      </View>
     );
   };
 
@@ -76,11 +79,11 @@ const Table = ({ data }) => {
         <Text style={styles.headerCell}>Status</Text>
         <Text style={styles.headerCell}>Action</Text>
       </View>
-        <FlatList
-          data={data}
-          renderItem={renderRow}
-          keyExtractor={(item, index) => index.toString()}
-        />
+      <FlatList
+        data={data}
+        renderItem={renderRow}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 };
@@ -88,25 +91,27 @@ const Table = ({ data }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    marginTop:30
   },
   headerRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: COLORS.white,
   },
   headerCell: {
     flex: 1,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     color: COLORS.white,
   },
   row: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: COLORS.white,
+    backgroundColor: '#458592',
+    opacity: 0.9,
+    borderRadius: 10,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cell: {
     flex: 1,
@@ -117,6 +122,10 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     textAlign: "center",
   },
+  separatorStyle:{
+    width: '100%', 
+    height: 10
+  }
 });
 
 export default Table;

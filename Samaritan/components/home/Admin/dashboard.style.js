@@ -249,6 +249,59 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff'
   },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+
+  //Notifications
+  containernotification: {
+    height: '100%', 
+    alignItems: 'center',
+    marginTop: 30
+
+  },
+  notificationheader: {
+    width: '100%',
+    color: COLORS.tertiary,
+    paddingVertical: 10,
+    //paddingHorizontal: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  headertext: {
+    color: COLORS.secondary,
+    fontSize: SIZES.xLarge,
+    fontWeight: 'bold',
+    paddingLeft: 120,
+  },
+  notificationline: {
+    backgroundColor: COLORS.tertiary,
+    height: 0.5,
+    width: "100%",
+  },
+  notificationcardContainer:{
+    width: '95%',
+    margin:5,
+    padding:5,
+    backgroundColor:COLORS.primary, 
+    opacity:0.8, 
+    borderRadius:10,
+    marginTop:40,
+  },
+  closeButton:{
+    maxWidth: 50,
+    alignSelf: 'flex-end',
+    paddingRight: 8,
+
+  },
   //add mentor
   addIcon: {
     position: 'absolute',

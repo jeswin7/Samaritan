@@ -51,137 +51,7 @@ const AdminDashboard = (props) => {
   const [orgtype, setOrgType] = useState("");
 
 
-  const SERVICE_MAP = {
-    1: "Accommodation",
-    2: "Part-Time Job",
-  };
 
-  // Static APIs for testing purpose
-  DETAILS_API = {
-    fname: "Luke",
-    lname: "John",
-    rating: "4",
-  };
-
-  const SERVICES_API = [
-    {
-      id: "1",
-      name: "Than John",
-      service: "Accomodation",
-      status: "Completed",
-    },
-    {
-      id: "2",
-      name: "Mary Brown",
-      service: "Job",
-      status: "In Progress",
-    },
-
-    {
-      id: "3",
-      name: "Ed John",
-      service: "Accomodation",
-      status: "Completed",
-    },
-    {
-      id: "4",
-      name: "Tej John",
-      service: "Job",
-      status: "In Progress",
-    },
-    {
-      id: "5",
-      name: "Jake Brown",
-      service: "Accomodation",
-      status: "Completed",
-    },
-    {
-      id: "6",
-      name: "Joel Cullen",
-      service: "Job",
-      status: "In Progress",
-    },
-  ];
-
-  const PAYMENT_API = [
-    {
-      id: "1",
-      name: "Jes John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "2",
-      name: "Mary Brown",
-      service: "Job",
-      status: "Completed",
-    },
-
-    {
-      id: "3",
-      name: "Ed John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "4",
-      name: "Tej John",
-      service: "Job",
-      status: "In Progress",
-    },
-    {
-      id: "5",
-      name: "Jake Brown",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "6",
-      name: "Joel Cullen",
-      service: "Job",
-      status: "Completed",
-    },
-  ];
-
-  const CONNECTION_REQUESTS_API = [
-    {
-      id: "1",
-      name: "Jes John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "2",
-      name: "Mary Brown",
-      service: "Job",
-      status: "Completed",
-    },
-
-    {
-      id: "3",
-      name: "Ed John",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "4",
-      name: "Tej John",
-      service: "Job",
-      status: "In Progress",
-    },
-    {
-      id: "5",
-      name: "Jake Brown",
-      service: "Accomodation",
-      status: "In Progress",
-    },
-    {
-      id: "6",
-      name: "Joel Cullen",
-      service: "Job",
-      status: "Completed",
-    },
-  ];
 
   const statuslist = [
     { key: "1", value: "Completed" },
@@ -475,6 +345,22 @@ const AdminDashboard = (props) => {
 
   //Add mentor component
   function AddmentorScreen({ route, navigation }) {
+
+    const [mentorServiceType, setmentorServiceType] = useState(null);
+    const [mentorOrgType, setmentorOrgType] = useState(null);
+
+    const SERVICE_MAP = [
+      { key: "Accommodation", value: "Accommodation" },
+      { key: "Part-Time Job", value: "Part-Time Job" }
+    ];
+
+    const ORG_TYPE_MAP = [
+      { key: "immigration", value: "Immigration Agency" },
+      { key: "landlord", value: "Landlord/Housing" },
+      { key: "employer", value: "Employer" }
+    ];
+
+
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
@@ -525,15 +411,7 @@ const AdminDashboard = (props) => {
                   value={province}
                 />
               </View>
-              <View style={styles.inputTextFieldContainer}>
-                <TextInput
-                  placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder={strings.services}
-                  onChangeText={(value) => setService(value)}
-                  value={service}
-                />
-              </View>
+
               <View style={styles.inputTextFieldContainer}>
                 <TextInput
                   placeholderTextColor={COLORS.secondary}
@@ -543,13 +421,29 @@ const AdminDashboard = (props) => {
                   value={organization}
                 />
               </View>
-              <View style={styles.inputTextFieldContainer}>
-                <TextInput
+              <View>
+              <SelectList
+                  data={ORG_TYPE_MAP}
+                  setSelected={(val) => setmentorOrgType(val)}
+                  search={false}
+                  boxStyles={styles.inputTextFieldContainer}
+                  dropdownStyles={styles.dropdownbox}
+                  dropdownTextStyles={styles.dropdowntext}
                   placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder={strings.orgType}
-                  onChangeText={(value) => setOrgType(value)}
-                  value={orgtype}
+                  placeholder="Organization Type"
+                />
+              </View>
+
+              <View>
+              <SelectList
+                  data={SERVICE_MAP}
+                  setSelected={(val) => setmentorServiceType(val)}
+                  search={false}
+                  boxStyles={styles.inputTextFieldContainer}
+                  dropdownStyles={styles.dropdownbox}
+                  dropdownTextStyles={styles.dropdowntext}
+                  placeholderTextColor={COLORS.secondary}
+                  placeholder="Service"
                 />
               </View>
               <View style={styles.inputTextFieldContainer}>
@@ -559,15 +453,6 @@ const AdminDashboard = (props) => {
                   placeholder={strings.email}
                   onChangeText={(value) => setEmail(value)}
                   value={email}
-                />
-              </View>
-              <View style={styles.inputTextFieldContainer}>
-                <TextInput
-                  placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder={strings.password}
-                  onChangeText={(value) => setPassword(value)}
-                  value={password}
                 />
               </View>
 
@@ -705,70 +590,70 @@ const AdminDashboard = (props) => {
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
-        <View style={styles.subContainermentor}>
-          <ScrollView>
-            <View style={{ marginBottom: 10 }}>
-              <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
-              <Text style={styles.subHeadingText}>+1 {mentorDetail?.num}</Text>
-              <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
+          <View style={styles.subContainermentor}>
+            <ScrollView>
+              <View style={{ marginBottom: 10 }}>
+                <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
+                <Text style={styles.subHeadingText}>+1 {mentorDetail?.num}</Text>
+                <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
 
-              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-              <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
-              <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
-              {/* Status */}
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
+                <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
+                {/* Status */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.sectionHeadingText}>Status</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
+                <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
+                {/* Strike Count */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.sectionHeadingText}>Strike Count</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
+                {/* Rating */}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View>
+                    <Text style={styles.sectionHeadingText}>Rating</Text>
+                  </View>
+                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {[...Array(5)].map((_, index) => (
+                    <Text key={index} style={styles.star}>
+                      {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
+                    </Text>
+                  ))}
+                </View>
+              </View>
+              {/* Update Mentor Onboard Status */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
-                  <Text style={styles.sectionHeadingText}>Status</Text>
+                  <Text style={styles.sectionHeadingText}>Update Mentor Status</Text>
                 </View>
                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
-              <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
-              <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
-              {/* Strike Count */}
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View>
-                  <Text style={styles.sectionHeadingText}>Strike Count</Text>
-                </View>
-                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-              </View>
-              <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
-              {/* Rating */}
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View>
-                  <Text style={styles.sectionHeadingText}>Rating</Text>
-                </View>
-                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {[...Array(5)].map((_, index) => (
-                  <Text key={index} style={styles.star}>
-                    {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
-                  </Text>
-                ))}
-              </View>
-            </View>
-            {/* Update Mentor Onboard Status */}
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View>
-                <Text style={styles.sectionHeadingText}>Update Mentor Status</Text>
-              </View>
-              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-            </View>
-            <SelectList
-              data={MENTOR_ONBOARD_STATUS_MAP}
-              setSelected={(val) => setOnboardStatus(val)}
-              search={false}
-              boxStyles={styles.pickercardContainer}
-              dropdownStyles={styles.dropdownbox}
-              dropdownTextStyles={styles.dropdowntext}
-              placeholderTextColor={COLORS.white}
-            />
-            <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
-              <Text style={styles.saveText}>{strings.update}</Text>
-            </TouchableOpacity>
-          </ScrollView>
+              <SelectList
+                data={MENTOR_ONBOARD_STATUS_MAP}
+                setSelected={(val) => setOnboardStatus(val)}
+                search={false}
+                boxStyles={styles.pickercardContainer}
+                dropdownStyles={styles.dropdownbox}
+                dropdownTextStyles={styles.dropdowntext}
+                placeholderTextColor={COLORS.white}
+              />
+              <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
+                <Text style={styles.saveText}>{strings.update}</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
         </View>
-      </View>
       </LinearGradient>
     );
   }

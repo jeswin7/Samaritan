@@ -14,13 +14,11 @@ import { useRouter } from "expo-router";
 import { SelectList } from "react-native-dropdown-select-list";
 import { Picker } from "@react-native-picker/picker";
 import styles from "./dashboard.style";
+import { DrawerContentScrollView,DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
-  NavigationContainer,
-  ThemeProvider,
-  DrawerItem,
+  NavigationContainer
 } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -311,17 +309,18 @@ const AdminDashboard = (props) => {
   }
 
   //Profile component
-  function ProfileScreen() {
-    return (
-      <View style={styles.profileView}>
-        <Text>Profile Screen!</Text>
-        <Button
-          onPress={() => navigation.navigate("Home")}
-          title="Go back home"
-        />
-      </View>
-    );
-  }
+  // function ProfileScreen() {
+  //   const navigation = useNavigation();
+  //   return (
+  //     <View style={styles.profileView}>
+  //       <Text>Profile Screen!</Text>
+  //       <Button
+  //         onPress={() => navigation.navigate("Home")}
+  //         title="Go back home"
+  //       />
+  //     </View>
+  //   );
+  // }
 
   //Connection requests component
   function ConnectionRequestsScreen() {
@@ -366,12 +365,6 @@ const AdminDashboard = (props) => {
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
-          <TouchableOpacity
-            style={styles.addIcon}
-            onPress={() => navigation.navigate("addmentor")}
-          >
-            <Image source={icons.add_icon}></Image>
-          </TouchableOpacity>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <SeekerTable data={seekers} refresh={fetchSeekers} />
@@ -507,7 +500,7 @@ const AdminDashboard = (props) => {
     );
   }
 
-  //Profile component
+  //Service component
   function ServiceScreen({ route, navigation }) {
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -608,12 +601,12 @@ const AdminDashboard = (props) => {
                   <Text style={styles.paymentValusText}>{item.seeker.fname} {item.seeker.lname}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.paymentDetailText}>Service: </Text>
-                <Text style={styles.paymentValusText}>{item.type}</Text>
+                  <Text style={styles.paymentDetailText}>Service: </Text>
+                  <Text style={styles.paymentValusText}>{item.type}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.paymentDetailText}>Payment Status: </Text>
-                <Text style={styles.paymentValusText}>{paymentDetail?.status}</Text>
+                  <Text style={styles.paymentDetailText}>Payment Status: </Text>
+                  <Text style={styles.paymentValusText}>{paymentDetail?.status}</Text>
                 </View>
               </View>
               <Text style={styles.paymentDetailText}>Update Payment Status:</Text>
@@ -775,6 +768,15 @@ const AdminDashboard = (props) => {
     navigation.closeDrawer();
   };
 
+  function CustomDrawerContent(props) {
+    return (
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem label="LOG OUT" labelStyle={{ marginTop:-18,color: COLORS.white }} onPress={() => alert('Logout')} />
+      </DrawerContentScrollView>
+    );
+  }
+
   return (
     <NavigationContainer independent={true}>
       <Drawer.Navigator
@@ -787,7 +789,9 @@ const AdminDashboard = (props) => {
           drawerLabelStyle: {
             color: "#fff",
           },
+          
         }}
+        drawerContent={props => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen
           name="Home"
@@ -810,7 +814,7 @@ const AdminDashboard = (props) => {
             ),
           }}
         />
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="Profile"
           component={ProfileScreen}
           options={{
@@ -830,7 +834,7 @@ const AdminDashboard = (props) => {
               </TouchableOpacity>
             ),
           }}
-        />
+        /> */}
 
         <Drawer.Screen
           name="ConnRequests"
@@ -1011,6 +1015,7 @@ const AdminDashboard = (props) => {
             ),
           }}
         />
+
       </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -8,30 +8,27 @@ const Table = ({ data }) => {
     const { seeker, mentor, type, status } = item;
 
     SERVICE_TYPE_ICON = {
-      'Accommodation' : 'bed-outline',
-      'Part-Time Job' : 'construct-outline'
-  }
-
-    STATUS_ICON = {
-      'PENDING' : 'hourglass-outline',
-      'ACCEPTED': 'thumbs-up-outline',
-      'DECLINED': 'thumbs-down-outline'
+      'Accommodation': 'bed-outline',
+      'Part-Time Job': 'construct-outline'
     }
 
     return (
-      <View style={styles.row}>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>{seeker.fname} {seeker.lname}</Text>
+      <View>
+        <View style={styles.row}>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}>{seeker.fname} {seeker.lname}</Text>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}>{mentor.fname} {mentor.lname}</Text>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}><Ionicons style={styles.textStyle} name={SERVICE_TYPE_ICON[type]} size={20} /></Text>
+          </View>
+          <View style={styles.cell}>
+            <Text style={styles.textStyle}>{status}</Text>
+          </View>
         </View>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>{mentor.fname} {mentor.lname}</Text>
-        </View>
-        <View style={styles.cell}>
-        <Text style={styles.textStyle}><Ionicons style={styles.textStyle} name={SERVICE_TYPE_ICON[type]} size={20} /></Text>
-        </View>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}><Ionicons style={styles.textStyle} name={STATUS_ICON[status]} size={20} /></Text>
-        </View>
+        <View style={styles.separatorStyle}></View>
       </View>
     );
   };
@@ -61,21 +58,23 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: COLORS.white,
-
   },
   headerCell: {
     flex: 1,
     fontWeight: 'bold',
     textAlign: 'center',
-    color:COLORS.white
+    color: COLORS.white,
+    fontSize: 20
   },
   row: {
     flexDirection: 'row',
     paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: COLORS.white,
+    backgroundColor: '#458592',
+    opacity: 0.9,
+    borderRadius: 10,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cell: {
     flex: 1,
@@ -83,8 +82,12 @@ const styles = StyleSheet.create({
     borderRightColor: COLORS.primary,
   },
   textStyle: {
-    color:COLORS.white,
+    color: COLORS.white,
     textAlign: 'center'
+  },
+  separatorStyle:{
+    width: '100%', 
+    height: 10
   }
 });
 

@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
   Button,
-  Alert
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -33,7 +33,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 const AdminDashboard = (props) => {
   const router = useRouter();
-
+  const navigation = useNavigation();
   const Drawer = createDrawerNavigator();
   const [adminDetail, setDetail] = useState({});
   const [connReqs, setConnReqs] = useState(null);
@@ -53,33 +53,12 @@ const AdminDashboard = (props) => {
   const [organization, setOrganization] = useState("");
   const [orgtype, setOrgType] = useState("");
 
-
-
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const statuslist = [
     { key: "COMPLETED", value: "Completed" },
     { key: "PENDING", value: "Pending" },
   ];
-
-  const MENTOR_ONBOARD_STATUS_MAP = [
-    { key: 'APPLIED', value: 'Applied' },
-    { key: 'INVITED', value: 'Invited' },
-    { key: 'APPROVED', value: 'Approved' }
-  ]
-
-
-
-  const ONTARIO_CITIES_MAP = {
-    2: 'Waterloo',
-    3: 'Kitchener',
-    4: 'Toronto',
-    5: 'Ottawa',
-    6: 'Hamilton',
-    7: 'London',
-    8: 'Mississauga',
-    9: 'Brampton',
-    10: 'Markham',
-  };
 
   // Dynamic APIS
   // 1. Fetch Mentor Details API
@@ -217,20 +196,20 @@ const AdminDashboard = (props) => {
                   <Text style={styles.headingMsg}>Users Analytics</Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ marginBottom: 10, flex: 1, flexDirection: 'column' }}>
-                  <Text style={styles.textContainer}>
-                    Seekers
-                  </Text>
+              <View style={{ flexDirection: "row" }}>
+                <View
+                  style={{ marginBottom: 10, flex: 1, flexDirection: "column" }}
+                >
+                  <Text style={styles.textContainer}>Seekers</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.seekerCount}
                   </Text>
                 </View>
                 <View style={styles.seperatorViewStyles}></View>
-                <View style={{ marginBottom: 10, flex: 1, flexDirection: 'column' }}>
-                  <Text style={styles.textContainer}>
-                    Mentors
-                  </Text>
+                <View
+                  style={{ marginBottom: 10, flex: 1, flexDirection: "column" }}
+                >
+                  <Text style={styles.textContainer}>Mentors</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorCount}
                   </Text>
@@ -243,27 +222,21 @@ const AdminDashboard = (props) => {
                   <Text style={styles.headingMsg}>Services Analytics</Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>
-                    Ongoing
-                  </Text>
+                  <Text style={styles.textContainer}>Ongoing</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.service?.ongoing}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>
-                    Completed
-                  </Text>
+                  <Text style={styles.textContainer}>Completed</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.service?.completed}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>
-                    Failed
-                  </Text>
+                  <Text style={styles.textContainer}>Failed</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.service?.failed}
                   </Text>
@@ -271,33 +244,27 @@ const AdminDashboard = (props) => {
               </View>
             </View>
 
-            <View >
+            <View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
                   <Text style={styles.headingMsg}>Mentor Status</Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>
-                    Applied
-                  </Text>
+                  <Text style={styles.textContainer}>Applied</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorsStatus?.applied}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>
-                    Invited
-                  </Text>
+                  <Text style={styles.textContainer}>Invited</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorsStatus?.invited}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>
-                    Approved
-                  </Text>
+                  <Text style={styles.textContainer}>Approved</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorsStatus?.approved}
                   </Text>
@@ -382,25 +349,21 @@ const AdminDashboard = (props) => {
     );
   }
 
-
-
   //Add mentor component
   function AddmentorScreen({ route, navigation }) {
-
     const [mentorServiceType, setmentorServiceType] = useState(null);
     const [mentorOrgType, setmentorOrgType] = useState(null);
 
     const SERVICE_MAP = [
       { key: "Accommodation", value: "Accommodation" },
-      { key: "Part-Time Job", value: "Part-Time Job" }
+      { key: "Part-Time Job", value: "Part-Time Job" },
     ];
 
     const ORG_TYPE_MAP = [
       { key: "immigration", value: "Immigration Agency" },
       { key: "landlord", value: "Landlord/Housing" },
-      { key: "employer", value: "Employer" }
+      { key: "employer", value: "Employer" },
     ];
-
 
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -540,7 +503,7 @@ const AdminDashboard = (props) => {
   //Payment details
   function UpdatePaymentStatusScreen({ route, navigation }) {
     const { item } = route.params;
-    console.log('payment item--', item)
+    console.log("payment item--", item);
 
     STATUS_MAP = {
       PENDING: "Pending",
@@ -550,48 +513,46 @@ const AdminDashboard = (props) => {
     const [paymentDetail, setPaymentDetail] = useState(null);
 
     useEffect(() => {
-      fetchPaymentDetail()
-    }, [route])
+      fetchPaymentDetail();
+    }, [route]);
 
     // Fetch payment detail data
     const fetchPaymentDetail = async () => {
       try {
         // Make API requests here
-        const response = await fetch(api.apiUrl + `/admin/paymentDetail?id=${item.id}`);
-        const data = await response.json();
-        console.log("@ detail API=", data)
-        setPaymentDetail(data[0])
-        console.log("payment Status Upd:", item.id, data)
-
-      } catch (error) {
-        console.log(error);
-      }
-
-    }
-
-    const [paymentStatus, setPaymentStatus] = useState(null)
-
-
-    // Handle payment status update/API call
-    const handlePaymentStatusUpdate = async () => {
-      try {
-        // Make API requests here
-        const response = await fetch(api.apiUrl + `/admin/updatePayment?id=${item.id}&status=${paymentStatus}`);
-        const data = await response.json();
-        console.log("onboard Status Upd:", item.id, data)
-        Alert.alert(
-          'Payment Status Updated!', // Specify the desired title here
-          `${item.mentor.fname} ${item.mentor.lname}'s payment status updated successfully!`,
-          [
-            { text: 'Done', onPress: () => fetchPaymentDetail() }
-          ]
+        const response = await fetch(
+          api.apiUrl + `/admin/paymentDetail?id=${item.id}`
         );
-
+        const data = await response.json();
+        console.log("@ detail API=", data);
+        setPaymentDetail(data[0]);
+        console.log("payment Status Upd:", item.id, data);
       } catch (error) {
         console.log(error);
       }
     };
 
+    const [paymentStatus, setPaymentStatus] = useState(null);
+
+    // Handle payment status update/API call
+    const handlePaymentStatusUpdate = async () => {
+      try {
+        // Make API requests here
+        const response = await fetch(
+          api.apiUrl +
+            `/admin/updatePayment?id=${item.id}&status=${paymentStatus}`
+        );
+        const data = await response.json();
+        console.log("onboard Status Upd:", item.id, data);
+        Alert.alert(
+          "Payment Status Updated!", // Specify the desired title here
+          `${item.mentor.fname} ${item.mentor.lname}'s payment status updated successfully!`,
+          [{ text: "Done", onPress: () => fetchPaymentDetail() }]
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -599,24 +560,32 @@ const AdminDashboard = (props) => {
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 10 }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: "row" }}>
                   <Text style={styles.paymentDetailText}>Mentor:</Text>
-                  <Text style={styles.paymentValusText}>{item.mentor.fname} {item.mentor.lname}</Text>
+                  <Text style={styles.paymentValusText}>
+                    {item.mentor.fname} {item.mentor.lname}
+                  </Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: "row" }}>
                   <Text style={styles.paymentDetailText}>Seeker:</Text>
-                  <Text style={styles.paymentValusText}>{item.seeker.fname} {item.seeker.lname}</Text>
+                  <Text style={styles.paymentValusText}>
+                    {item.seeker.fname} {item.seeker.lname}
+                  </Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.paymentDetailText}>Service: </Text>
-                <Text style={styles.paymentValusText}>{item.type}</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.paymentDetailText}>Service: </Text>
+                  <Text style={styles.paymentValusText}>{item.type}</Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.paymentDetailText}>Payment Status: </Text>
-                <Text style={styles.paymentValusText}>{paymentDetail?.status}</Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.paymentDetailText}>Payment Status: </Text>
+                  <Text style={styles.paymentValusText}>
+                    {paymentDetail?.status}
+                  </Text>
                 </View>
               </View>
-              <Text style={styles.paymentDetailText}>Update Payment Status:</Text>
+              <Text style={styles.paymentDetailText}>
+                Update Payment Status:
+              </Text>
               <SelectList
                 data={statuslist}
                 setSelected={(val) => setPaymentStatus(val)}
@@ -625,7 +594,10 @@ const AdminDashboard = (props) => {
                 dropdownTextStyles={styles.dropdowntext}
                 placeholderTextColor={COLORS.white}
               />
-              <TouchableOpacity style={styles.saveButton} onPress={handlePaymentStatusUpdate}>
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handlePaymentStatusUpdate}
+              >
                 <Text style={styles.saveText}>{strings.update}</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -656,44 +628,42 @@ const AdminDashboard = (props) => {
     const [mentorDetail, setMentorDetail] = useState(null);
 
     useEffect(() => {
-      fetchMentorDetail()
-    }, [route])
+      fetchMentorDetail();
+    }, [route]);
 
     // Fetch mentor detail data
     const fetchMentorDetail = async () => {
       try {
         // Make API requests here
-        const response = await fetch(api.apiUrl + `/mentorDetail?user_id=${mentor.id}`);
+        const response = await fetch(
+          api.apiUrl + `/mentorDetail?user_id=${mentor.id}`
+        );
         const data = await response.json();
-        console.log("@ detail API=", data)
-        setMentorDetail(data[0])
-        console.log("onboard Status Upd:", mentor.id, data)
-
+        console.log("@ detail API=", data);
+        setMentorDetail(data[0]);
+        console.log("onboard Status Upd:", mentor.id, data);
       } catch (error) {
         console.log(error);
       }
+    };
 
-    }
-
-    const [onboard, setOnboardStatus] = useState(null)
-
+    const [onboard, setOnboardStatus] = useState(null);
 
     // Handle mentor onboard status update/API call
     const handleMentorStatusUpdate = async () => {
       try {
         // Make API requests here
-        const response = await fetch(api.apiUrl + `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`);
-        const data = await response.json();
-        console.log("onboard Status Upd:", mentor.id, data)
-        Alert.alert(
-          'Onboard Status Updated!', // Specify the desired title here
-          `${mentor.fname} ${mentor.lname}'s onboard status updated successfully!`,
-          [
-            { text: 'Done', onPress: () => fetchMentorDetail() }
-          ]
+        const response = await fetch(
+          api.apiUrl +
+            `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`
         );
-
-
+        const data = await response.json();
+        console.log("onboard Status Upd:", mentor.id, data);
+        Alert.alert(
+          "Onboard Status Updated!", // Specify the desired title here
+          `${mentor.fname} ${mentor.lname}'s onboard status updated successfully!`,
+          [{ text: "Done", onPress: () => fetchMentorDetail() }]
+        );
       } catch (error) {
         console.log(error);
       }
@@ -705,51 +675,96 @@ const AdminDashboard = (props) => {
           <View style={styles.subContainermentor}>
             <ScrollView>
               <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
-                <Text style={styles.subHeadingText}>+1 {mentorDetail?.num}</Text>
+                <Text style={styles.headingText}>
+                  {mentorDetail?.fname} {mentorDetail?.lname}
+                </Text>
+                <Text style={styles.subHeadingText}>
+                  +1 {mentorDetail?.num}
+                </Text>
                 <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
 
-                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-                <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
-                <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
+                <View
+                  style={{ flex: 1, height: 1, backgroundColor: COLORS.white }}
+                />
+                <Text style={styles.detailText}>
+                  Service:{" "}
+                  {
+                    <Ionicons
+                      name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]}
+                      size={20}
+                    />
+                  }{" "}
+                  {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}
+                </Text>
+                <Text style={styles.detailText}>
+                  Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}
+                </Text>
                 {/* Status */}
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View>
                     <Text style={styles.sectionHeadingText}>Status</Text>
                   </View>
-                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 1,
+                      backgroundColor: COLORS.white,
+                    }}
+                  />
                 </View>
-                <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
-                <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
+                <Text style={styles.detailText}>
+                  Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}
+                </Text>
+                <Text style={styles.detailText}>
+                  Visa Status: {mentorDetail?.visaStatus}
+                </Text>
                 {/* Strike Count */}
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View>
                     <Text style={styles.sectionHeadingText}>Strike Count</Text>
                   </View>
-                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 1,
+                      backgroundColor: COLORS.white,
+                    }}
+                  />
                 </View>
-                <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
+                <Text style={styles.detailText}>
+                  {mentorDetail?.strikeCount}/5
+                </Text>
                 {/* Rating */}
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View>
                     <Text style={styles.sectionHeadingText}>Rating</Text>
                   </View>
-                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 1,
+                      backgroundColor: COLORS.white,
+                    }}
+                  />
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   {[...Array(5)].map((_, index) => (
                     <Text key={index} style={styles.star}>
-                      {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
+                      {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
                     </Text>
                   ))}
                 </View>
               </View>
               {/* Update Mentor Onboard Status */}
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
-                  <Text style={styles.sectionHeadingText}>Update Mentor Status</Text>
+                  <Text style={styles.sectionHeadingText}>
+                    Update Mentor Status
+                  </Text>
                 </View>
-                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+                <View
+                  style={{ flex: 1, height: 1, backgroundColor: COLORS.white }}
+                />
               </View>
               <SelectList
                 data={MENTOR_ONBOARD_STATUS_MAP}
@@ -760,7 +775,10 @@ const AdminDashboard = (props) => {
                 dropdownTextStyles={styles.dropdowntext}
                 placeholderTextColor={COLORS.white}
               />
-              <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleMentorStatusUpdate}
+              >
                 <Text style={styles.saveText}>{strings.update}</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -775,8 +793,45 @@ const AdminDashboard = (props) => {
     navigation.closeDrawer();
   };
 
+  // Notification modal component
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const NotificationsModal = () => {
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.containernotification}>
+          <View style={styles.notificationheader}>
+            <Text style={styles.headertext}>Notifications</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setShowNotifications(false)}
+            >
+              <Image source={icons.cancel_icon}></Image>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.notificationline}></View>
+
+          <View style={styles.subContainer}>
+            <ScrollView>
+              <View style={styles.notificationcardContainer}>
+                <Text style={styles.textContainer}>
+                  {}
+                  This is a static notification message.
+                </Text>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+    );
+  };
+
   return (
     <NavigationContainer independent={true}>
+      {showNotifications && <NotificationsModal />}
       <Drawer.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -803,7 +858,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -824,7 +879,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -846,7 +901,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -868,7 +923,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -890,7 +945,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -912,7 +967,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -933,7 +988,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -956,7 +1011,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -980,7 +1035,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>
@@ -1004,7 +1059,7 @@ const AdminDashboard = (props) => {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
-                onPress={() => alert("notification")}
+                onPress={toggleNotifications}
               >
                 <Image source={icons.bell_icon}></Image>
               </TouchableOpacity>

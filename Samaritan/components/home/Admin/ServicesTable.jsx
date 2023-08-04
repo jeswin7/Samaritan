@@ -53,7 +53,8 @@ const Table = ({ data }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    marginTop: 10,
+    width:'100%',
   },
   headerRow: {
     flexDirection: 'row',
@@ -64,7 +65,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: COLORS.white,
-    fontSize: 20
+    fontSize: 20,
+    padding:10
   },
   row: {
     flexDirection: 'row',
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    padding:10
   },
   cell: {
     flex: 1,

@@ -149,6 +149,19 @@ const styles = StyleSheet.create({
     width: '90%',
     marginTop: 40,
   },
+  mentorContainer: {
+    flexDirection: 'row',
+    width:'90%'
+  },
+  addMentorText:{
+    position: 'absolute',
+    left: 20,
+    top: 12,
+    marginTop: 10,
+    fontSize:20,
+    fontWeight:'bold',
+    color:COLORS.white
+  },
   welcomeMsg: {
     fontSize: 20,
     color: COLORS.white,
@@ -184,7 +197,7 @@ const styles = StyleSheet.create({
     borderRadius:20
   },
   pickercardContainer: {
-    width: 330,
+    width: '90%',
     margin: 10,
     backgroundColor: COLORS.primary,
     opacity: 0.8,
@@ -264,18 +277,20 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     paddingVertical: 12,
-    fontSize: 50,
+    fontSize: 60,
     backgroundColor: COLORS.primary,
     padding: SIZES.small,
     borderRadius: SIZES.small,
     marginTop: SIZES.medium,
-    borderColor: COLORS.primary
+    borderColor: COLORS.primary,
+    color: COLORS.white
   },
-
   dropdownbox: {
     backgroundColor: COLORS.primary,
     borderColor: COLORS.primary,
     maxHeight: 200,
+    color:COLORS.white,
+    placeholderTextColor:COLORS.white
   },
   dropdowntext: {
     color: COLORS.white,
@@ -327,6 +342,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign :'center'
   },
+  paymentDetailText: {
+    fontSize: 20,
+    color: COLORS.white,
+    margin: 5,
+    fontWeight: 'bold',
+    //textAlign: 'center'
+  },
+  paymentValusText: {
+    fontSize: 20,
+    color: COLORS.white,
+    margin: 5,
+    //fontWeight: 'bold',
+  }
 });
 
 export default styles;

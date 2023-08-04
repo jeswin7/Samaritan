@@ -420,7 +420,7 @@ const Dashboard = (props) => {
         }
 
         return (
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {
                     connReqs ?
                         connReqs.map((item, index) => {

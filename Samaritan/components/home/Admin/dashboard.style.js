@@ -26,6 +26,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  buttonBackStyle: {
+    height: 30,
+    width: 30,
+    marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonStyle: {
     height: 30,
     width: 30,
@@ -114,7 +121,7 @@ const styles = StyleSheet.create({
     color: 'green',
     paddingVertical: 5,
     border: '1px solid red'
-  },  
+  },
   statusPendingStyle: {
     fontSize: SIZES.large,
     fontWeight: 'bold',
@@ -123,105 +130,137 @@ const styles = StyleSheet.create({
     border: '1px solid red'
   },
   seperatorStyle: {
-    height: 20, 
-    width: '100%' 
+    height: 20,
+    width: '100%'
   },
   homeContainer: {
-    height: '100%', 
-    justifyContent: 'center', 
-    alignItems: 'center' 
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   connectionContainer: {
-    height: '100%', 
-    alignItems: 'center' 
+    height: '100%',
+    alignItems: 'center'
   },
-  subContainer: { 
-    width: '90%', 
+  subContainer: {
+    width: '90%',
   },
-  subContainermentor : {
-      width: '90%', 
-     marginTop: 40, 
+  subContainermentor: {
+    width: '90%',
+    marginTop: 40,
   },
-  welcomeMsg: { 
-    fontSize: 20, 
-    color: COLORS.white, 
-    marginRight: 5, 
-    fontWeight: 'bold', 
-    marginTop: 5 
+  welcomeMsg: {
+    fontSize: 20,
+    color: COLORS.white,
+    marginRight: 5,
+    fontWeight: 'bold',
+    marginTop: 5
   },
-  cardContainer:{
-    margin:10,
-    backgroundColor:COLORS.primary, 
-    opacity:0.8, 
-    borderRadius:10
+  cardContainer: {
+    margin: 10,
+    //backgroundColor: COLORS.primary,
+    opacity: 0.8,
+    borderRadius: 10,
+    backgroundColor: '#458592',
+    opacity: 0.9,
+    borderColor: '#458592',
+    borderWidth: 1,
+    //borderRadius: 20
   },
-  pickercardContainer:{
+  seperatorViewStyles: { 
+    height: 60, 
+    width: 2, 
+    backgroundColor: COLORS.white, 
+    marginTop: 30 
+  },
+  dashboardSubCardStyles: {
+    margin: 5, 
+    flex: 1, 
+    flexDirection: 'column',
+    backgroundColor:'#458592', 
+    opacity:0.9, 
+    borderColor:COLORS.primary,
+    borderWidth:1, 
+    borderRadius:20
+  },
+  pickercardContainer: {
     width: 330,
-    margin:10,
-    backgroundColor:COLORS.primary, 
-    opacity:0.8, 
-    borderRadius:10,
+    margin: 10,
+    backgroundColor: COLORS.primary,
+    opacity: 0.8,
+    borderRadius: 10,
     color: COLORS.white,
   },
-  headingMsg:{ 
-    fontSize: 20, 
-    color: COLORS.white, 
-    margin: 10, 
-    fontWeight: 'bold' 
-  },
-  headingText:{ 
-    fontSize: 25, 
-    color: COLORS.white, 
-    margin: 5, 
+  headingMsg: {
+    fontSize: 20,
+    color: COLORS.secondary,
+    margin: 10,
     fontWeight: 'bold',
-    textAlign :'center'
   },
-  subHeadingText:{ 
-    fontSize: 16, 
-    color: COLORS.white, 
-    margin: 10, 
+  headingText: {
+    fontSize: 25,
+    color: COLORS.white,
+    margin: 5,
     fontWeight: 'bold',
-    textAlign :'center'
+    textAlign: 'center'
   },
-  sectionHeadingText:{ 
-    fontSize: 16, 
-    color: COLORS.secondary, 
-    margin: 10, 
+  subHeadingText: {
+    fontSize: 20,
+    color: COLORS.white,
+    margin: 10,
     fontWeight: 'bold',
-    textAlign :'center'
+    textAlign: 'center'
   },
-  detailText:{ 
-    fontSize: 15, 
-    color: COLORS.white, 
-    margin: 10, 
-    fontWeight: 'bold' 
+  detailText: {
+    fontSize: 15,
+    color: COLORS.white,
+    margin: 10,
+    fontWeight: 'bold'
   },
-  textContainer: { 
-    fontSize: 20, 
-    color: COLORS.white, 
-    margin:5 
+  textContainer: {
+    fontSize: 17,
+    color: COLORS.white,
+    margin: 5,
+    textAlign: 'center'
   },
-  profileView: { 
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    backgroundColor:'#fff' 
+  textCountStyle: {
+    fontSize: 40,
+    color: COLORS.secondary,
+    //margin:10,
+    marginBottom: 10,
+    textAlign: 'center'
+  },
+  profileView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
   },
   //add mentor
   addIcon: {
     position: 'absolute',
-     right: 20,
-      top: 10,
-      marginTop: 10,
+    right: 20,
+    top: 10,
+    marginTop: 10,
+  },
+  inputTextFieldContainer: {
+    margin: 10,
+    backgroundColor: COLORS.tertiary,//'#9DC7CB', 
+    opacity: 0.6,
+    borderRadius: 10,
+    // borderColor: COLORS.tertiary,
+    // borderWidth:5
   },
   inputTextField: {
-    paddingVertical: 10, 
-    fontSize: 18, 
-    color: COLORS.white, 
-    margin:5,
+    paddingVertical: 10,
+    fontSize: 18,
+    color: COLORS.secondary,
+    margin: 5,
     padding: SIZES.small,
     borderRadius: SIZES.small,
-    textShadowColor: COLORS.white
+    textShadowColor: COLORS.secondary,
+    fontWeight: 'bold',
+    placeholderTextColor: COLORS.secondary
   },
   dropdown: {
     paddingVertical: 12,
@@ -267,6 +306,26 @@ const styles = StyleSheet.create({
   star: {
     fontSize: 30,
     color: 'gold'
+  },
+  detailText:{ 
+    fontSize: 15, 
+    color: COLORS.white, 
+    margin: 10, 
+    fontWeight: 'bold' 
+  },
+  subHeadingText: {
+    fontSize: 18,
+    color: COLORS.white,
+    margin: 10,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  sectionHeadingText:{ 
+    fontSize: 16, 
+    color: COLORS.secondary, 
+    margin: 10, 
+    fontWeight: 'bold',
+    textAlign :'center'
   },
 });
 

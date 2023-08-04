@@ -325,66 +325,96 @@ const AdminDashboard = (props) => {
             </View>
             <ItemSeparatorView />
             <View style={styles.cardContainer}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: "row" }}>
                 <View>
                   <Text style={styles.headingMsg}>Users Analytics</Text>
                 </View>
               </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Seekers: {adminDetail.seekerCount}
-                </Text>
-              </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Mentors: {adminDetail.mentorCount}
-                </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ marginBottom: 10, flex: 1, flexDirection: 'column' }}>
+                  <Text style={styles.textContainer}>
+                    Seekers
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.seekerCount}
+                  </Text>
+                </View>
+                <View style={styles.seperatorViewStyles}></View>
+                <View style={{ marginBottom: 10, flex: 1, flexDirection: 'column' }}>
+                  <Text style={styles.textContainer}>
+                    Mentors
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.mentorCount}
+                  </Text>
+                </View>
               </View>
             </View>
-            <View style={styles.cardContainer}>
+            <View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
                   <Text style={styles.headingMsg}>Services Analytics</Text>
                 </View>
               </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Ongoing: {adminDetail.service?.ongoing}
-                </Text>
-              </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Completed: {adminDetail.service?.completed}
-                </Text>
-              </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Failed: {adminDetail.service?.failed}
-                </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={styles.dashboardSubCardStyles}>
+                  <Text style={styles.textContainer}>
+                    Ongoing
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.service?.ongoing}
+                  </Text>
+                </View>
+                <View style={styles.dashboardSubCardStyles}>
+                  <Text style={styles.textContainer}>
+                    Completed
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.service?.completed}
+                  </Text>
+                </View>
+                <View style={styles.dashboardSubCardStyles}>
+                  <Text style={styles.textContainer}>
+                    Failed
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.service?.failed}
+                  </Text>
+                </View>
               </View>
             </View>
 
-            <View style={styles.cardContainer}>
+            <View >
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
                   <Text style={styles.headingMsg}>Mentor Status</Text>
                 </View>
               </View>
-
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Applied: {adminDetail.mentorsStatus?.applied}
-                </Text>
-              </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Invited: {adminDetail.mentorsStatus?.invited}
-                </Text>
-              </View>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.textContainer}>
-                  #Approved: {adminDetail.mentorsStatus?.approved}
-                </Text>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={styles.dashboardSubCardStyles}>
+                  <Text style={styles.textContainer}>
+                    Applied
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.mentorsStatus?.applied}
+                  </Text>
+                </View>
+                <View style={styles.dashboardSubCardStyles}>
+                  <Text style={styles.textContainer}>
+                    Invited
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.mentorsStatus?.invited}
+                  </Text>
+                </View>
+                <View style={styles.dashboardSubCardStyles}>
+                  <Text style={styles.textContainer}>
+                    Approved
+                  </Text>
+                  <Text style={styles.textCountStyle}>
+                    {adminDetail.mentorsStatus?.approved}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -412,7 +442,7 @@ const AdminDashboard = (props) => {
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <ConnTable data={connReqs} />
             </ScrollView>
           </View>
@@ -434,7 +464,7 @@ const AdminDashboard = (props) => {
             <Image source={icons.add_icon}></Image>
           </TouchableOpacity>
           <View style={styles.subContainermentor}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <MentorTable data={mentors} />
             </ScrollView>
           </View>
@@ -449,91 +479,91 @@ const AdminDashboard = (props) => {
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
-            <ScrollView>
-              <View style={styles.cardContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.firstName}
                   value={firstName}
                   onChangeText={(value) => setFirstName(value)}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.lastName}
                   onChangeText={(value) => setLastName(value)}
                   value={lastName}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.contactNumber}
                   onChangeText={(value) => setContactNumber(value)}
                   value={contactNumber}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.city}
                   onChangeText={(value) => setCity(value)}
                   value={city}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.province}
                   onChangeText={(value) => setProvince(value)}
                   value={province}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.services}
                   onChangeText={(value) => setService(value)}
                   value={service}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.organization}
                   onChangeText={(value) => setOrganization(value)}
                   value={organization}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.orgType}
                   onChangeText={(value) => setOrgType(value)}
                   value={orgtype}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.email}
                   onChangeText={(value) => setEmail(value)}
                   value={email}
                 />
               </View>
-              <View style={styles.cardContainer}>
+              <View style={styles.inputTextFieldContainer}>
                 <TextInput
-                  placeholderTextColor={COLORS.white}
+                  placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.password}
                   onChangeText={(value) => setPassword(value)}
@@ -557,7 +587,7 @@ const AdminDashboard = (props) => {
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <ServicesTable data={services} />
             </ScrollView>
           </View>
@@ -572,7 +602,7 @@ const AdminDashboard = (props) => {
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <PaymentTable data={payments} />
             </ScrollView>
           </View>
@@ -587,7 +617,7 @@ const AdminDashboard = (props) => {
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 10 }}>
                 <Text style={styles.headingMsg}>Mentor name: { }</Text>
                 <Text style={styles.headingMsg}>Seeker name: { }</Text>
@@ -648,13 +678,13 @@ const AdminDashboard = (props) => {
         console.log("@ detail API=", data)
         setMentorDetail(data[0])
         console.log("onboard Status Upd:", mentor.id, data)
-  
+
       } catch (error) {
         console.log(error);
       }
-  
+
     }
-  
+
     const [onboard, setOnboardStatus] = useState(null)
 
 
@@ -679,18 +709,12 @@ const AdminDashboard = (props) => {
           <ScrollView>
             <View style={{ marginBottom: 10 }}>
               <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
-              <Text style={styles.subHeadingText}> {<Ionicons name="call-outline" size={20} color="white" />} +1 {mentorDetail?.num}</Text>
-              <Text style={styles.subHeadingText}> {<Ionicons name="mail-outline" size={20} color="white" />} {mentorDetail?.email}</Text>
-
-   
-             
+              <Text style={styles.subHeadingText}>+1 {mentorDetail?.num}</Text>
+              <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
 
               <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-
               <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
               <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
-
-
               {/* Status */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
@@ -700,7 +724,6 @@ const AdminDashboard = (props) => {
               </View>
               <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
               <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
-
               {/* Strike Count */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
@@ -709,7 +732,6 @@ const AdminDashboard = (props) => {
                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
               <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
-
               {/* Rating */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
@@ -725,8 +747,6 @@ const AdminDashboard = (props) => {
                 ))}
               </View>
             </View>
-
-
             {/* Update Mentor Onboard Status */}
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View>
@@ -734,8 +754,6 @@ const AdminDashboard = (props) => {
               </View>
               <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
             </View>
-
-
             <SelectList
               data={MENTOR_ONBOARD_STATUS_MAP}
               setSelected={(val) => setOnboardStatus(val)}
@@ -745,7 +763,6 @@ const AdminDashboard = (props) => {
               dropdownTextStyles={styles.dropdowntext}
               placeholderTextColor={COLORS.white}
             />
-
             <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
               <Text style={styles.saveText}>{strings.update}</Text>
             </TouchableOpacity>
@@ -938,6 +955,7 @@ const AdminDashboard = (props) => {
             headerStyle: {
               backgroundColor: "#458592",
             },
+            drawerItemStyle: { height: 0 },
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -961,6 +979,7 @@ const AdminDashboard = (props) => {
             headerStyle: {
               backgroundColor: "#458592",
             },
+            drawerItemStyle: { height: 0 },
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -984,6 +1003,7 @@ const AdminDashboard = (props) => {
             headerStyle: {
               backgroundColor: "#458592",
             },
+            drawerItemStyle: { height: 0 },
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}

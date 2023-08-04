@@ -6,11 +6,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { COLORS } from "../../../constants";
+import { COLORS, api } from "../../../constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
-const Table = ({ data }) => {
+const Table = ({ data, refresh }) => {
   const navigation = useNavigation();
   const renderRow = ({ item }) => {
     console.log("mentors data----", item);
@@ -26,55 +26,69 @@ const Table = ({ data }) => {
       APPROVED: "Approved",
     };
 
-    const redirectToDetail = (mentor) => {
-      navigation.navigate("updatementor", { mentor })
+    const ONTARIO_CITIES_MAP = {
+      2: 'Waterloo',
+      3: 'Kitchener',
+      4: 'Toronto',
+      5: 'Ottawa',
+      6: 'Hamilton',
+      7: 'London',
+      8: 'Mississauga',
+      9: 'Brampton',
+      10: 'Markham',
+    };
+
+    const handleDelete = async (id) => {
+      try {
+        // Make API requests here
+        const response = await fetch(api.apiUrl + `/admin/deleteSeeker?id=`+id);
+        const data = await response.json();
+        refresh();
+      } catch (error) {
+        console.log(error);
+      }
     }
+ 
+
 
     return (
-      <TouchableOpacity onPress={() => redirectToDetail(item)}>
       <View style={styles.row}>
         <View style={styles.cell}>
           <Text style={styles.textStyle}>
             {item.fname} {item.lname}
           </Text>
         </View>
+
         <View style={styles.cell}>
           <Text style={styles.textStyle}>
-            {<Ionicons name={SERVICE_TYPE_ICON[item.serviceOffered]} size={20} />}
+            {item.num}
           </Text>
         </View>
         <View style={styles.cell}>
           <Text style={styles.textStyle}>
-            {item.rating}
+            {item.location}
           </Text>
         </View>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>
-            {item.strikeCount}
-          </Text>
-        </View>
-        <View style={styles.cell}>
-          <Text style={styles.textStyle}>{STATUS_ICON[item.onboardStatus]}</Text>
-        </View>
+
         <View style={styles.cell}>
         <Text style={styles.textStyle}>
-        <Ionicons name="trash-bin" size={20} />        
+          <TouchableOpacity  onPress={()=>handleDelete(item.id)}>
+            <Ionicons name="trash-bin" size={20} color="white"/>        
+          </TouchableOpacity>
           </Text>
         </View>
       </View>
-      </TouchableOpacity>
     );
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.headerCell}>Mentor</Text>
-        <Text style={styles.headerCell}>Service</Text>
-        <Text style={styles.headerCell}>Rating</Text>
-        <Text style={styles.headerCell}>Strikes</Text>
-        <Text style={styles.headerCell}>Status</Text>
+        <Text style={styles.headerCell}>Name</Text>
+        <Text style={styles.headerCell}>Number</Text>
+        <Text style={styles.headerCell}>Target City</Text>
         <Text style={styles.headerCell}>Action</Text>
+
       </View>
         <FlatList
           data={data}

@@ -27,6 +27,7 @@ import ConnTable from "./ConnTable";
 import ServicesTable from "./ServicesTable";
 import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
+import SeekerTable from "./SeekerTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const AdminDashboard = (props) => {
@@ -38,6 +39,7 @@ const AdminDashboard = (props) => {
   const [services, setServices] = useState(null);
   const [payments, setPayments] = useState(null);
   const [mentors, setMentors] = useState(null);
+  const [seekers, setSeekers] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -116,13 +118,26 @@ const AdminDashboard = (props) => {
     }
   };
 
-  //Fetch Mentors
+  // 4. Fetch Mentors
   const fetchMentors = async () => {
     try {
       // Make API requests here
       const response = await fetch(api.apiUrl + `/mentors`);
       const data = await response.json();
       setMentors(data);
+      console.log("dtaaaa", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // 5. Fetch Seekers
+  const fetchSeekers = async () => {
+    try {
+      // Make API requests here
+      const response = await fetch(api.apiUrl + `/seekers`);
+      const data = await response.json();
+      setSeekers(data);
       console.log("dtaaaa", data);
     } catch (error) {
       console.log(error);
@@ -169,6 +184,7 @@ const AdminDashboard = (props) => {
     fetchServices();
     fetchPayments();
     fetchMentors();
+    fetchSeekers();
   }, []);
 
   //Home Component
@@ -342,6 +358,30 @@ const AdminDashboard = (props) => {
       </LinearGradient>
     );
   }
+
+    //Seekers Screen component
+    function SeekersScreen() {
+      const navigation = useNavigation();
+      return (
+        <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+          <View style={styles.connectionContainer}>
+            <TouchableOpacity
+              style={styles.addIcon}
+              onPress={() => navigation.navigate("addmentor")}
+            >
+              <Image source={icons.add_icon}></Image>
+            </TouchableOpacity>
+            <View style={styles.subContainermentor}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <SeekerTable data={seekers} refresh={fetchSeekers}/>
+              </ScrollView>
+            </View>
+          </View>
+        </LinearGradient>
+      );
+    }
+
+
 
   //Add mentor component
   function AddmentorScreen({ route, navigation }) {
@@ -744,7 +784,7 @@ const AdminDashboard = (props) => {
 
         <Drawer.Screen
           name="seekers"
-          component={ConnectionRequestsScreen}
+          component={SeekersScreen}
           options={{
             title: "SEEKERS",
             headerTitleAlign: "center",

@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   Button,
+  Alert
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -359,27 +360,27 @@ const AdminDashboard = (props) => {
     );
   }
 
-    //Seekers Screen component
-    function SeekersScreen() {
-      const navigation = useNavigation();
-      return (
-        <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
-          <View style={styles.connectionContainer}>
-            <TouchableOpacity
-              style={styles.addIcon}
-              onPress={() => navigation.navigate("addmentor")}
-            >
-              <Image source={icons.add_icon}></Image>
-            </TouchableOpacity>
-            <View style={styles.subContainermentor}>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <SeekerTable data={seekers} refresh={fetchSeekers}/>
-              </ScrollView>
-            </View>
+  //Seekers Screen component
+  function SeekersScreen() {
+    const navigation = useNavigation();
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.connectionContainer}>
+          <TouchableOpacity
+            style={styles.addIcon}
+            onPress={() => navigation.navigate("addmentor")}
+          >
+            <Image source={icons.add_icon}></Image>
+          </TouchableOpacity>
+          <View style={styles.subContainermentor}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <SeekerTable data={seekers} refresh={fetchSeekers} />
+            </ScrollView>
           </View>
-        </LinearGradient>
-      );
-    }
+        </View>
+      </LinearGradient>
+    );
+  }
 
 
 
@@ -462,7 +463,7 @@ const AdminDashboard = (props) => {
                 />
               </View>
               <View>
-              <SelectList
+                <SelectList
                   data={ORG_TYPE_MAP}
                   setSelected={(val) => setmentorOrgType(val)}
                   search={false}
@@ -475,7 +476,7 @@ const AdminDashboard = (props) => {
               </View>
 
               <View>
-              <SelectList
+                <SelectList
                   data={SERVICE_MAP}
                   setSelected={(val) => setmentorServiceType(val)}
                   search={false}
@@ -620,7 +621,14 @@ const AdminDashboard = (props) => {
         const response = await fetch(api.apiUrl + `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`);
         const data = await response.json();
         console.log("onboard Status Upd:", mentor.id, data)
-        fetchMentorDetail()
+        Alert.alert(
+          'Onboard Status Updated!', // Specify the desired title here
+          `${mentor.fname} ${mentor.lname}'s onboard status updated successfully!`,
+          [
+            { text: 'Done', onPress: () => fetchMentorDetail() }
+          ]
+        );
+
 
       } catch (error) {
         console.log(error);

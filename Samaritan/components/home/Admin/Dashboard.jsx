@@ -705,78 +705,70 @@ const AdminDashboard = (props) => {
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
-          <View style={styles.subContainermentor}>
-            <ScrollView>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
-                <Text style={styles.subHeadingText}>{mentorDetail?.email} | {mentorDetail?.num}</Text>
-                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+        <View style={styles.subContainermentor}>
+          <ScrollView>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={styles.headingText}>{mentorDetail?.fname} {mentorDetail?.lname}</Text>
+              <Text style={styles.subHeadingText}>+1 {mentorDetail?.num}</Text>
+              <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
 
-                <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
-                <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
-
-
-                {/* Status */}
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View>
-                    <Text style={styles.detailText}>Status</Text>
-                  </View>
-                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-                </View>
-                <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
-                <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
-
-                {/* Strike Count */}
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View>
-                    <Text style={styles.detailText}>Strike Count</Text>
-                  </View>
-                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-                </View>
-                <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
-
-                {/* Rating */}
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View>
-                    <Text style={styles.detailText}>Rating</Text>
-                  </View>
-                  <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {[...Array(5)].map((_, index) => (
-                    <Text key={index} style={styles.star}>
-                      {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
-                    </Text>
-                  ))}
-                </View>
-              </View>
-
-
-              {/* Update Mentor Onboard Status */}
+              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+              <Text style={styles.detailText}>Service:  {<Ionicons name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]} size={20} />} {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}</Text>
+              <Text style={styles.detailText}>Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}</Text>
+              {/* Status */}
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View>
-                  <Text style={styles.detailText}>Update Mentor Status</Text>
+                  <Text style={styles.sectionHeadingText}>Status</Text>
                 </View>
                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
               </View>
-
-
-              <SelectList
-                data={MENTOR_ONBOARD_STATUS_MAP}
-                setSelected={(val) => setOnboardStatus(val)}
-                search={false}
-                boxStyles={styles.pickercardContainer}
-                dropdownStyles={styles.dropdownbox}
-                dropdownTextStyles={styles.dropdowntext}
-                placeholderTextColor={COLORS.white}
-              />
-
-              <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
-                <Text style={styles.saveText}>{strings.update}</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
+              <Text style={styles.detailText}>Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}</Text>
+              <Text style={styles.detailText}>Visa Status: {mentorDetail?.visaStatus}</Text>
+              {/* Strike Count */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.sectionHeadingText}>Strike Count</Text>
+                </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+              </View>
+              <Text style={styles.detailText}>{mentorDetail?.strikeCount}/5</Text>
+              {/* Rating */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.sectionHeadingText}>Rating</Text>
+                </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {[...Array(5)].map((_, index) => (
+                  <Text key={index} style={styles.star}>
+                    {index < Math.floor(mentorDetail?.rating) ? '★' : '☆'}
+                  </Text>
+                ))}
+              </View>
+            </View>
+            {/* Update Mentor Onboard Status */}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View>
+                <Text style={styles.sectionHeadingText}>Update Mentor Status</Text>
+              </View>
+              <View style={{ flex: 1, height: 1, backgroundColor: COLORS.white }} />
+            </View>
+            <SelectList
+              data={MENTOR_ONBOARD_STATUS_MAP}
+              setSelected={(val) => setOnboardStatus(val)}
+              search={false}
+              boxStyles={styles.pickercardContainer}
+              dropdownStyles={styles.dropdownbox}
+              dropdownTextStyles={styles.dropdowntext}
+              placeholderTextColor={COLORS.white}
+            />
+            <TouchableOpacity style={styles.saveButton} onPress={handleMentorStatusUpdate}>
+              <Text style={styles.saveText}>{strings.update}</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
+      </View>
       </LinearGradient>
     );
   }

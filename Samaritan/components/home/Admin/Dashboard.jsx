@@ -41,15 +41,7 @@ const AdminDashboard = (props) => {
   const [seekers, setSeekers] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [city, setCity] = useState("");
-  const [province, setProvince] = useState("");
-  const [service, setService] = useState("");
-  const [status, setStatus] = useState("");
-  const [organization, setOrganization] = useState("");
-  const [orgtype, setOrgType] = useState("");
+
 
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -347,6 +339,16 @@ const AdminDashboard = (props) => {
     const [mentorServiceType, setmentorServiceType] = useState(null);
     const [mentorOrgType, setmentorOrgType] = useState(null);
 
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [contactNumber, setContactNumber] = useState("");
+    const [city, setCity] = useState("");
+    const [province, setProvince] = useState("");
+    const [service, setService] = useState("");
+    const [status, setStatus] = useState("");
+    const [organization, setOrganization] = useState("");
+    const [orgtype, setOrgType] = useState("");
+
     const SERVICE_MAP = [
       { key: "Accommodation", value: "Accommodation" },
       { key: "Part-Time Job", value: "Part-Time Job" },
@@ -356,6 +358,29 @@ const AdminDashboard = (props) => {
       { key: "immigration", value: "Immigration Agency" },
       { key: "landlord", value: "Landlord/Housing" },
       { key: "employer", value: "Employer" },
+    ];
+
+    const ONTARIO_CITIES_MAP = [
+      { key: 1, value: 'Barrie' },
+      { key: 2, value: 'Waterloo' },
+      { key: 3, value: 'Kitchener' },
+      { key: 4, value: 'Toronto' },
+      { key: 5, value: 'Ottawa' },
+      { key: 6, value: 'Hamilton' },
+      { key: 7, value: 'London' },
+      { key: 8, value: 'Mississauga' },
+      { key: 9, value: 'Brampton' },
+      { key: 10, value: 'Markham' },
+      { key: 11, value: 'Scarborough' },
+      { key: 12, value: 'Peterborough' },
+      { key: 13, value: 'Brantford' },
+      { key: 14, value: 'Guelf' },
+      { key: 15, value: 'Windsor' },
+      { key: 16, value: 'Burlington' },
+      { key: 17, value: 'Thunderbay' },
+      { key: 18, value: 'Oshawa' },
+      { key: 19, value: 'Kingston' },
+      { key: 20, value: 'Sudbury' }
     ];
 
     return (
@@ -390,24 +415,28 @@ const AdminDashboard = (props) => {
                   value={contactNumber}
                 />
               </View>
-              <View style={styles.inputTextFieldContainer}>
+              {/* <View style={styles.inputTextFieldContainer}> */}
+              <SelectList
+                data={ONTARIO_CITIES_MAP}
+                setSelected={(val) => setCity(val)}
+                search={true}
+                boxStyles={styles.inputTextFieldContainer}
+                dropdownStyles={styles.inputTextFieldContainer}
+                dropdownTextStyles={styles.dropdowntext}
+                placeholderTextColor={COLORS.secondary}
+                placeholder="City"
+              />
+              {/* </View> */}
+              {/* <View style={styles.inputTextFieldContainer}>
                 <TextInput
                   placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
-                  placeholder={strings.city}
-                  onChangeText={(value) => setCity(value)}
-                  value={city}
+                  placeholder="Ontario"
+                  // onChangeText={(value) => setProvince(value)}
+                  // value={province}
+                  editable={false}
                 />
-              </View>
-              <View style={styles.inputTextFieldContainer}>
-                <TextInput
-                  placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder={strings.province}
-                  onChangeText={(value) => setProvince(value)}
-                  value={province}
-                />
-              </View>
+              </View> */}
 
               <View style={styles.inputTextFieldContainer}>
                 <TextInput
@@ -424,8 +453,8 @@ const AdminDashboard = (props) => {
                   setSelected={(val) => setmentorOrgType(val)}
                   search={false}
                   boxStyles={styles.inputTextFieldContainer}
-                  dropdownStyles={styles.dropdownbox}
-                  dropdownTextStyles={styles.dropdowntext}
+                  dropdownStyles={styles.inputTextFieldContainer}
+                  dropdownTextStyles={styles.inputTextField}
                   placeholderTextColor={COLORS.secondary}
                   placeholder="Organization Type"
                 />
@@ -437,7 +466,7 @@ const AdminDashboard = (props) => {
                   setSelected={(val) => setmentorServiceType(val)}
                   search={false}
                   boxStyles={styles.inputTextFieldContainer}
-                  dropdownStyles={styles.dropdownbox}
+                  dropdownStyles={styles.inputTextFieldContainer}
                   dropdownTextStyles={styles.dropdowntext}
                   placeholderTextColor={COLORS.secondary}
                   placeholder="Service"
@@ -533,7 +562,7 @@ const AdminDashboard = (props) => {
         // Make API requests here
         const response = await fetch(
           api.apiUrl +
-            `/admin/updatePayment?id=${item.id}&status=${paymentStatus}`
+          `/admin/updatePayment?id=${item.id}&status=${paymentStatus}`
         );
         const data = await response.json();
         console.log("onboard Status Upd:", item.id, data);
@@ -583,9 +612,10 @@ const AdminDashboard = (props) => {
                 data={statuslist}
                 setSelected={(val) => setPaymentStatus(val)}
                 search={false}
-                dropdownStyles={styles.dropdownbox}
+                boxStyles={styles.inputTextFieldContainer}
+                dropdownStyles={styles.inputTextFieldContainer}
                 dropdownTextStyles={styles.dropdowntext}
-                placeholderTextColor={COLORS.white}
+                placeholderTextColor={COLORS.secondary}
               />
               <TouchableOpacity
                 style={styles.saveButton}
@@ -618,6 +648,24 @@ const AdminDashboard = (props) => {
       2: "construct-outline",
     };
 
+    const ONTARIO_CITIES_MAP = {
+      2: 'Waterloo',
+      3: 'Kitchener',
+      4: 'Toronto',
+      5: 'Ottawa',
+      6: 'Hamilton',
+      7: 'London',
+      8: 'Mississauga',
+      9: 'Brampton',
+      10: 'Markham',
+    };
+
+    const MENTOR_ONBOARD_STATUS_MAP = [
+      { key: 'APPLIED', value: 'Applied' },
+      { key: 'INVITED', value:  'Invited' },
+      { key: 'APPROVED', value:  'Approved'}
+    ]
+
     const [mentorDetail, setMentorDetail] = useState(null);
 
     useEffect(() => {
@@ -648,7 +696,7 @@ const AdminDashboard = (props) => {
         // Make API requests here
         const response = await fetch(
           api.apiUrl +
-            `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`
+          `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`
         );
         const data = await response.json();
         console.log("onboard Status Upd:", mentor.id, data);
@@ -680,13 +728,11 @@ const AdminDashboard = (props) => {
                   style={{ flex: 1, height: 1, backgroundColor: COLORS.white }}
                 />
                 <Text style={styles.detailText}>
-                  Service:{" "}
-                  {
-                    <Ionicons
-                      name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]}
-                      size={20}
-                    />
-                  }{" "}
+                  Service: <Ionicons
+                    name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]}
+                    size={20}
+                  />
+
                   {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}
                 </Text>
                 <Text style={styles.detailText}>
@@ -763,10 +809,10 @@ const AdminDashboard = (props) => {
                 data={MENTOR_ONBOARD_STATUS_MAP}
                 setSelected={(val) => setOnboardStatus(val)}
                 search={false}
-                boxStyles={styles.pickercardContainer}
-                dropdownStyles={styles.dropdownbox}
+                boxStyles={styles.inputTextFieldContainer}
+                dropdownStyles={styles.inputTextFieldContainer}
                 dropdownTextStyles={styles.dropdowntext}
-                placeholderTextColor={COLORS.white}
+                placeholderTextColor={COLORS.secondary}
               />
               <TouchableOpacity
                 style={styles.saveButton}
@@ -811,7 +857,7 @@ const AdminDashboard = (props) => {
             <ScrollView>
               <View style={styles.notificationcardContainer}>
                 <Text style={styles.textContainer}>
-                  {}
+                  { }
                   This is a static notification message.
                 </Text>
               </View>

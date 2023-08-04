@@ -16,10 +16,10 @@ const Table = ({ data }) => {
       <View>
         <View style={styles.row}>
           <View style={styles.cell}>
-            <Text style={styles.textStyle}>{seeker.fname} {seeker.lname}</Text>
+            <Text style={styles.textStyle}>{seeker?.fname} {seeker?.lname}</Text>
           </View>
           <View style={styles.cell}>
-            <Text style={styles.textStyle}>{mentor.fname} {mentor.lname}</Text>
+            <Text style={styles.textStyle}>{mentor?.fname} {mentor?.lname}</Text>
           </View>
           <View style={styles.cell}>
             <Text style={styles.textStyle}><Ionicons style={styles.textStyle} name={SERVICE_TYPE_ICON[type]} size={20} /></Text>

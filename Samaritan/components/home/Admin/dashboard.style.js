@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   detailText: {
-    fontSize: 15,
+    fontSize: 18,
     color: COLORS.white,
     margin: 10,
     fontWeight: 'bold'
@@ -375,12 +375,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'gold'
   },
-  detailText:{ 
-    fontSize: 15, 
-    color: COLORS.white, 
-    margin: 10, 
-    fontWeight: 'bold' 
-  },
   subHeadingText: {
     fontSize: 18,
     color: COLORS.white,
@@ -407,6 +401,22 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     margin: 5,
     //fontWeight: 'bold',
+  },
+  chatContainer:{
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 70,
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    height: 70,
+    backgroundColor: '#fff',
+    borderRadius: 100,
+  },
+  chatIcon : {
+    color: COLORS.secondary
   }
 });
 

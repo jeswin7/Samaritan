@@ -20,9 +20,9 @@ const Home = () => {
     const [userId, setUserId] = useState(null);
 
     const CONSOLE_MAP = {
-        'seeker': <Welcome userId={userId} />,
+        'seeker': <Welcome userId={userId} logout={() => redirectToLoginScreen()}/>,
         'admin': <AdminDashboard userId={userId} logout={() => redirectToLoginScreen()} />,
-        'mentor': <Dashboard userId={userId} />,
+        'mentor': <Dashboard userId={userId} logout={() => redirectToLoginScreen()}/>,
 
     }
 
@@ -51,6 +51,8 @@ const Home = () => {
         setBackButtonVisible(false);
         setForgotPassword(false);
         setLoggedIn(false);
+        setRole(null);
+        setUserId(null);
     }
 
     redirectToForgotPassword = () => {

@@ -716,24 +716,25 @@ const AdminDashboard = (props) => {
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingText}>
-                  {mentorDetail?.fname} {mentorDetail?.lname}
-                </Text>
-                <Text style={styles.subHeadingText}>
-                  +1 {mentorDetail?.num}
-                </Text>
-                <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
-
-                <View
-                  style={{ flex: 1, height: 1, backgroundColor: COLORS.white }}
-                />
+              <View style={{ marginBottom: 5 }}>
+                <View style={{
+                  backgroundColor: '#458592',
+                  opacity: 0.9,
+                }}>
+                  <Text style={styles.headingText}>
+                    {mentorDetail?.fname} {mentorDetail?.lname}
+                  </Text>
+                  <Text style={styles.subHeadingText}>
+                    +1 {mentorDetail?.num}
+                  </Text>
+                  <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
+                </View>
                 <Text style={styles.detailText}>
                   Service: <Ionicons
                     name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]}
                     size={20}
                   />
-
+                  { ' '}
                   {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}
                 </Text>
                 <Text style={styles.detailText}>
@@ -741,16 +742,6 @@ const AdminDashboard = (props) => {
                 </Text>
                 {/* Status */}
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <View>
-                    <Text style={styles.sectionHeadingText}>Status</Text>
-                  </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 1,
-                      backgroundColor: COLORS.white,
-                    }}
-                  />
                 </View>
                 <Text style={styles.detailText}>
                   Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}
@@ -761,50 +752,29 @@ const AdminDashboard = (props) => {
                 {/* Strike Count */}
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View>
-                    <Text style={styles.sectionHeadingText}>Strike Count</Text>
+                    <Text style={styles.detailText}>Strike Count: {mentorDetail?.strikeCount}/5</Text>
                   </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 1,
-                      backgroundColor: COLORS.white,
-                    }}
-                  />
                 </View>
-                <Text style={styles.detailText}>
-                  {mentorDetail?.strikeCount}/5
-                </Text>
                 {/* Rating */}
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <View>
-                    <Text style={styles.sectionHeadingText}>Rating</Text>
-                  </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 1,
-                      backgroundColor: COLORS.white,
-                    }}
-                  />
+                    <Text style={styles.detailText}>Rating: </Text>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      {[...Array(5)].map((_, index) => (
+                        <Text key={index} style={styles.star}>
+                          {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
+                        </Text>
+                      ))}
+                    </View>
                 </View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  {[...Array(5)].map((_, index) => (
-                    <Text key={index} style={styles.star}>
-                      {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
-                    </Text>
-                  ))}
-                </View>
+
               </View>
               {/* Update Mentor Onboard Status */}
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View>
-                  <Text style={styles.sectionHeadingText}>
-                    Update Mentor Status
+                  <Text style={styles.detailText}>
+                    Update Mentor Status:
                   </Text>
                 </View>
-                <View
-                  style={{ flex: 1, height: 1, backgroundColor: COLORS.white }}
-                />
               </View>
               <SelectList
                 data={MENTOR_ONBOARD_STATUS_MAP}
@@ -923,41 +893,41 @@ const AdminDashboard = (props) => {
       {chatScreen}
       {
         !chatScreen && <Drawer.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          drawerStyle: {
-            backgroundColor: COLORS.secondary,
-          },
-          drawerActiveBackgroundColor: COLORS.primary,
-          drawerLabelStyle: {
-            color: "#fff",
-          },
-
-        }}
-        drawerContent={props => <CustomDrawerContent {...props} />}
-      >
-        <Drawer.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            title: "SAMARITAN",
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
+          initialRouteName="Home"
+          screenOptions={{
+            drawerStyle: {
+              backgroundColor: COLORS.secondary,
             },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
+            drawerActiveBackgroundColor: COLORS.primary,
+            drawerLabelStyle: {
+              color: "#fff",
+            },
+
           }}
-        />
-        {/* <Drawer.Screen
+          drawerContent={props => <CustomDrawerContent {...props} />}
+        >
+          <Drawer.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              title: "SAMARITAN",
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
+          {/* <Drawer.Screen
           name="Profile"
           component={ProfileScreen}
           options={{
@@ -979,189 +949,189 @@ const AdminDashboard = (props) => {
           }}
         /> */}
 
-        <Drawer.Screen
-          name="ConnRequests"
-          component={ConnectionRequestsScreen}
-          options={{
-            title: "CONNECTIONS",
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
+          <Drawer.Screen
+            name="ConnRequests"
+            component={ConnectionRequestsScreen}
+            options={{
+              title: "CONNECTIONS",
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
 
-        <Drawer.Screen
-          name="seekers"
-          component={SeekersScreen}
-          options={{
-            title: "SEEKERS",
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
+          <Drawer.Screen
+            name="seekers"
+            component={SeekersScreen}
+            options={{
+              title: "SEEKERS",
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
 
-        <Drawer.Screen
-          name="mentors"
-          component={MentorsScreen}
-          options={{
-            title: "MENTORS",
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
+          <Drawer.Screen
+            name="mentors"
+            component={MentorsScreen}
+            options={{
+              title: "MENTORS",
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
 
-        <Drawer.Screen
-          name="services"
-          component={ServiceScreen}
-          options={{
-            title: "SERVICES",
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="Payment"
-          component={PaymentScreen}
-          options={{
-            title: "PAYMENTS",
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="addmentor"
-          component={AddmentorScreen}
-          options={{
-            title: "ADD MENTOR",
-            drawerLabel: () => null,
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            drawerItemStyle: { height: 0 },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
+          <Drawer.Screen
+            name="services"
+            component={ServiceScreen}
+            options={{
+              title: "SERVICES",
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Payment"
+            component={PaymentScreen}
+            options={{
+              title: "PAYMENTS",
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="addmentor"
+            component={AddmentorScreen}
+            options={{
+              title: "ADD MENTOR",
+              drawerLabel: () => null,
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              drawerItemStyle: { height: 0 },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
 
-        <Drawer.Screen
-          name="updatePayment"
-          component={UpdatePaymentStatusScreen}
-          options={{
-            title: "PAYMENT DETAILS",
-            drawerLabel: () => null,
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            drawerItemStyle: { height: 0 },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
+          <Drawer.Screen
+            name="updatePayment"
+            component={UpdatePaymentStatusScreen}
+            options={{
+              title: "PAYMENT DETAILS",
+              drawerLabel: () => null,
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              drawerItemStyle: { height: 0 },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
 
-        <Drawer.Screen
-          name="updatementor"
-          component={UpdateMentorStatusScreen}
-          options={{
-            title: "MENTOR DETAILS",
-            drawerLabel: () => null,
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            drawerItemStyle: { height: 0 },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        />
+          <Drawer.Screen
+            name="updatementor"
+            component={UpdateMentorStatusScreen}
+            options={{
+              title: "MENTOR DETAILS",
+              drawerLabel: () => null,
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              drawerItemStyle: { height: 0 },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
 
-      </Drawer.Navigator>
+        </Drawer.Navigator>
       }
-      
+
     </NavigationContainer>
   );
 };

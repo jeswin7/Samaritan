@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   detailText: {
-    fontSize: 15,
+    fontSize: 18,
     color: COLORS.white,
     margin: 10,
     fontWeight: 'bold'
@@ -374,12 +374,6 @@ const styles = StyleSheet.create({
   star: {
     fontSize: 30,
     color: 'gold'
-  },
-  detailText:{ 
-    fontSize: 15, 
-    color: COLORS.white, 
-    margin: 10, 
-    fontWeight: 'bold' 
   },
   subHeadingText: {
     fontSize: 18,

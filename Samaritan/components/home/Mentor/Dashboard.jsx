@@ -12,19 +12,13 @@ import { useRouter } from "expo-router";
 import { Picker } from '@react-native-picker/picker';
 import styles from "./dashboard.style";
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
-
-
-
-
+import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 
 const Dashboard = (props) => {
     const router = useRouter();
-
-
     const Drawer = createDrawerNavigator();
     const [mentorDetail, setDetail] = useState({});
     const [connReqs, setConnReqs] = useState(null);
@@ -170,7 +164,7 @@ const Dashboard = (props) => {
         try {
             // Make API requests here
             console.log("-------props-----", props)
-            const response = await fetch(api.apiUrl+`/mentorDetail?user_id=${props.userId}`);
+            const response = await fetch(api.apiUrl + `/mentorDetail?user_id=${props.userId}`);
             const data = await response.json();
             setDetail(data[0]);
 
@@ -195,7 +189,7 @@ const Dashboard = (props) => {
     const fetchMentorConnRequests = async () => {
         try {
             // Make API requests here
-            const response = await fetch(api.apiUrl+`/mentor/connectionRequests?user_id=${props.userId}`);
+            const response = await fetch(api.apiUrl + `/mentor/connectionRequests?user_id=${props.userId}`);
             const data = await response.json();
             setConnReqs(data);
 
@@ -211,7 +205,7 @@ const Dashboard = (props) => {
     const updateMentorConnRequestStatus = async (id, status) => {
         try {
             // Make API requests here
-            const response = await fetch(api.apiUrl+`/updateConnection?id=${id}&status=${status}`);
+            const response = await fetch(api.apiUrl + `/updateConnection?id=${id}&status=${status}`);
             const data = await response.json();
             console.log("Conn Status Upd:", data)
             fetchMentorConnRequests()
@@ -225,7 +219,7 @@ const Dashboard = (props) => {
 
     useEffect(() => {
         // Fetch API data here
- return <View><Text>Loading...</Text></View>
+        return <View><Text>Loading...</Text></View>
     }, []);
     useEffect(() => {
         // Fetch API data here
@@ -369,7 +363,7 @@ const Dashboard = (props) => {
                         />
                     </View>
 
-                     {/* Rating */}
+                    {/* Rating */}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View>
                             <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Rating</Text>
@@ -468,7 +462,7 @@ const Dashboard = (props) => {
                                                 <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                                             </View>
                                             <View style={{ marginBottom: 30 }}>
-                                                <Text style={{ fontSize: 20, color: item.status === 'ACCEPTED'? 'green' : 'red', marginRight: 5, fontWeight: 5 }}>{item.status}</Text>
+                                                <Text style={{ fontSize: 20, color: item.status === 'ACCEPTED' ? 'green' : 'red', marginRight: 5, fontWeight: 5 }}>{item.status}</Text>
                                             </View>
                                         </View>
 
@@ -615,24 +609,34 @@ const Dashboard = (props) => {
         );
     }
 
+    const handleSignOut = () => {
+        // Call the props.logout function here
+        props.logout();
+    };
 
-
-
-
+    function CustomDrawerContent(props) {
+        return (
+            <DrawerContentScrollView {...props}>
+                <DrawerItemList {...props} />
+                <DrawerItem label="LOG OUT" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
+            </DrawerContentScrollView>
+        );
+    }
 
     return (
         <NavigationContainer independent={true}>
-            <Drawer.Navigator 
+            <Drawer.Navigator
                 initialRouteName="Home"
                 screenOptions={{
                     drawerStyle: {
-                      backgroundColor: COLORS.secondary,
+                        backgroundColor: COLORS.secondary,
                     },
                     drawerActiveBackgroundColor: COLORS.primary,
                     drawerLabelStyle: {
-                      color: '#fff'
+                        color: '#fff'
                     }
-                  }}
+                }}
+                drawerContent={props => <CustomDrawerContent {...props} />}
             >
                 <Drawer.Screen name="Home" component={HomeScreen} options={{
                     title: 'SAMARITAN',

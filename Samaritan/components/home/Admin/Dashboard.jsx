@@ -14,7 +14,7 @@ import { useRouter } from "expo-router";
 import { SelectList } from "react-native-dropdown-select-list";
 import { Picker } from "@react-native-picker/picker";
 import styles from "./dashboard.style";
-import { DrawerContentScrollView,DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
@@ -44,6 +44,7 @@ const AdminDashboard = (props) => {
 
 
   const [showNotifications, setShowNotifications] = useState(false);
+  const [chatScreen, setChatScreen] = useState(null);
 
   const statuslist = [
     { key: "COMPLETED", value: "Completed" },
@@ -662,8 +663,8 @@ const AdminDashboard = (props) => {
 
     const MENTOR_ONBOARD_STATUS_MAP = [
       { key: 'APPLIED', value: 'Applied' },
-      { key: 'INVITED', value:  'Invited' },
-      { key: 'APPROVED', value:  'Approved'}
+      { key: 'INVITED', value: 'Invited' },
+      { key: 'APPROVED', value: 'Approved' }
     ]
 
     const [mentorDetail, setMentorDetail] = useState(null);
@@ -714,7 +715,7 @@ const AdminDashboard = (props) => {
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 10 }}>
                 <Text style={styles.headingText}>
                   {mentorDetail?.fname} {mentorDetail?.lname}
@@ -821,15 +822,18 @@ const AdminDashboard = (props) => {
                 <Text style={styles.saveText}>{strings.update}</Text>
               </TouchableOpacity>
             </ScrollView>
+            <TouchableOpacity style={styles.chatContainer} onPress={() => chatScreenToggle(mentorDetail)}>
+              <Ionicons style={styles.chatIcon} name="chatbubbles" size={40} />
+            </TouchableOpacity>
           </View>
         </View>
       </LinearGradient>
     );
   }
+
   const handleSignOut = () => {
     // Call the props.logout function here
     props.logout();
-    navigation.closeDrawer();
   };
 
   // Notification modal component
@@ -854,7 +858,7 @@ const AdminDashboard = (props) => {
           <View style={styles.notificationline}></View>
 
           <View style={styles.subContainer}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.notificationcardContainer}>
                 <Text style={styles.textContainer}>
                   { }
@@ -868,11 +872,47 @@ const AdminDashboard = (props) => {
     );
   };
 
+  //Chat Screen
+  const chatScreenToggle = (mentorDetail) => {
+    setChatScreen(
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+        <View style={styles.containernotification}>
+          <View style={styles.notificationheader}>
+            <Text style={styles.headertext}>{mentorDetail.fname} {mentorDetail.lname}</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setChatScreen(null)}
+            >
+              <Image source={icons.cancel_icon}></Image>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.notificationline}></View>
+
+          <View style={styles.subContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.notificationcardContainer}>
+                <Text style={styles.textContainer}>
+                  This is a static notification message.
+                </Text>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </LinearGradient>
+    )
+
+  };
+
+  const ChatScreenModal = (mentorDetail) => {
+    console.log('mentorDetail---', mentorDetail)
+
+  };
+
   function CustomDrawerContent(props) {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="LOG OUT" labelStyle={{ marginTop:-18,color: COLORS.white }} onPress={() => alert('Logout')} />
+        <DrawerItem label="LOG OUT" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }
@@ -880,7 +920,9 @@ const AdminDashboard = (props) => {
   return (
     <NavigationContainer independent={true}>
       {showNotifications && <NotificationsModal />}
-      <Drawer.Navigator
+      {chatScreen}
+      {
+        !chatScreen && <Drawer.Navigator
         initialRouteName="Home"
         screenOptions={{
           drawerStyle: {
@@ -890,7 +932,7 @@ const AdminDashboard = (props) => {
           drawerLabelStyle: {
             color: "#fff",
           },
-          
+
         }}
         drawerContent={props => <CustomDrawerContent {...props} />}
       >
@@ -1118,6 +1160,8 @@ const AdminDashboard = (props) => {
         />
 
       </Drawer.Navigator>
+      }
+      
     </NavigationContainer>
   );
 };

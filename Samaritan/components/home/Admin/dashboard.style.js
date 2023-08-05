@@ -407,6 +407,22 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     margin: 5,
     //fontWeight: 'bold',
+  },
+  chatContainer:{
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 70,
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    height: 70,
+    backgroundColor: '#fff',
+    borderRadius: 100,
+  },
+  chatIcon : {
+    color: COLORS.secondary
   }
 });
 

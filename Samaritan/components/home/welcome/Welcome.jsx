@@ -341,11 +341,16 @@ const Welcome = (props) => {
     );
   }
 
+  const handleSignOut = () => {
+    // Call the props.logout function here
+    props.logout();
+  };
+
   function CustomDrawerContent(props) {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="LOG OUT" labelStyle={{ color: COLORS.white }} onPress={() => alert('Logout')} />
+        <DrawerItem label="LOG OUT" labelStyle={{ color: COLORS.white }} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }

@@ -343,11 +343,8 @@ const AdminDashboard = (props) => {
     const [lastName, setLastName] = useState("");
     const [contactNumber, setContactNumber] = useState("");
     const [city, setCity] = useState("");
-    const [province, setProvince] = useState("");
-    const [service, setService] = useState("");
-    const [status, setStatus] = useState("");
+    const [orgEmail, setOrgEmail] = useState("");
     const [organization, setOrganization] = useState("");
-    const [orgtype, setOrgType] = useState("");
 
     const SERVICE_MAP = [
       { key: "Accommodation", value: "Accommodation" },
@@ -382,6 +379,34 @@ const AdminDashboard = (props) => {
       { key: 19, value: 'Kingston' },
       { key: 20, value: 'Sudbury' }
     ];
+
+    const handleSignUp = () => {
+
+          // POST API
+          fetch(api.apiUrl+'/admin/addCollaborator', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              fname: firstName,
+              lname: lastName,
+              num: contactNumber,
+              city,
+              orgName: organization,
+              orgType: mentorOrgType,
+              service: mentorServiceType,
+              orgEmail
+            })
+          })
+            .then(() => Alert.alert(
+              "Added!", // Specify the desired title here
+              `Collaborator ${firstName} ${lastName} is added as mentor!`,
+              [{ text: "Done", onPress: () => navigation.navigate("mentors") }]
+            ));
+  
+        }
 
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -477,12 +502,12 @@ const AdminDashboard = (props) => {
                   placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.email}
-                  onChangeText={(value) => setEmail(value)}
-                  value={email}
+                  onChangeText={(value) => setOrgEmail(value)}
+                  value={orgEmail}
                 />
               </View>
 
-              <TouchableOpacity style={styles.saveButton}>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSignUp}>
                 <Text style={styles.saveText}>{strings.save}</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -720,7 +745,7 @@ const AdminDashboard = (props) => {
                   {mentorDetail?.fname} {mentorDetail?.lname}
                 </Text>
                 <Text style={styles.subHeadingText}>
-                  +1 {mentorDetail?.num}
+                   {mentorDetail && '+1 '+mentorDetail?.num}
                 </Text>
                 <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
 

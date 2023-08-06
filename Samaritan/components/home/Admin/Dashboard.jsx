@@ -480,7 +480,7 @@ const AdminDashboard = (props) => {
                   search={false}
                   boxStyles={styles.inputTextFieldContainer}
                   dropdownStyles={styles.inputTextFieldContainer}
-                  dropdownTextStyles={styles.inputTextField}
+                  //dropdownTextStyles={styles.inputTextField}
                   placeholderTextColor={COLORS.secondary}
                   placeholder="Organization Type"
                 />
@@ -904,7 +904,7 @@ const AdminDashboard = (props) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="LOG OUT" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
+        <DrawerItem label="Sign out" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }
@@ -932,7 +932,7 @@ const AdminDashboard = (props) => {
             name="Home"
             component={HomeScreen}
             options={{
-              title: "SAMARITAN",
+              title: "Dashboard",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -972,10 +972,10 @@ const AdminDashboard = (props) => {
         /> */}
 
           <Drawer.Screen
-            name="ConnRequests"
-            component={ConnectionRequestsScreen}
+            name="mentors"
+            component={MentorsScreen}
             options={{
-              title: "CONNECTIONS",
+              title: "Mentors",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -997,7 +997,7 @@ const AdminDashboard = (props) => {
             name="seekers"
             component={SeekersScreen}
             options={{
-              title: "SEEKERS",
+              title: "Seekers",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -1015,11 +1015,11 @@ const AdminDashboard = (props) => {
             }}
           />
 
-          <Drawer.Screen
-            name="mentors"
-            component={MentorsScreen}
+        <Drawer.Screen
+            name="ConnRequests"
+            component={ConnectionRequestsScreen}
             options={{
-              title: "MENTORS",
+              title: "Connections",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -1041,7 +1041,7 @@ const AdminDashboard = (props) => {
             name="services"
             component={ServiceScreen}
             options={{
-              title: "SERVICES",
+              title: "Services",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -1062,7 +1062,7 @@ const AdminDashboard = (props) => {
             name="Payment"
             component={PaymentScreen}
             options={{
-              title: "PAYMENTS",
+              title: "Payments",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -1083,7 +1083,7 @@ const AdminDashboard = (props) => {
             name="addmentor"
             component={AddmentorScreen}
             options={{
-              title: "ADD MENTOR",
+              title: "Add Collaborator",
               drawerLabel: () => null,
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
@@ -1107,10 +1107,10 @@ const AdminDashboard = (props) => {
             name="updatePayment"
             component={UpdatePaymentStatusScreen}
             options={{
-              title: "PAYMENT DETAILS",
+              title: "Payment Detail",
               drawerLabel: () => null,
               headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
+              headerTintColor: COLORS.secondary, 
               headerTitleStyle: styles.dashboardHeading,
               headerStyle: {
                 backgroundColor: "#458592",
@@ -1131,7 +1131,7 @@ const AdminDashboard = (props) => {
             name="updatementor"
             component={UpdateMentorStatusScreen}
             options={{
-              title: "MENTOR DETAILS",
+              title: "Mentor Detail",
               drawerLabel: () => null,
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,

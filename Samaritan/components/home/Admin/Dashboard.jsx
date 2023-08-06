@@ -383,31 +383,31 @@ const AdminDashboard = (props) => {
 
     const handleSignUp = () => {
 
-          // POST API
-          fetch(api.apiUrl+'/admin/addCollaborator', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              fname: firstName,
-              lname: lastName,
-              num: contactNumber,
-              city,
-              orgName: organization,
-              orgType: mentorOrgType,
-              service: mentorServiceType,
-              orgEmail
-            })
-          })
-            .then(() => Alert.alert(
-              "Added!", // Specify the desired title here
-              `Collaborator ${firstName} ${lastName} is added as mentor!`,
-              [{ text: "Done", onPress: () => navigation.navigate("mentors") }]
-            ));
-  
-        }
+      // POST API
+      fetch(api.apiUrl + '/admin/addCollaborator', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fname: firstName,
+          lname: lastName,
+          num: contactNumber,
+          city,
+          orgName: organization,
+          orgType: mentorOrgType,
+          service: mentorServiceType,
+          orgEmail
+        })
+      })
+        .then(() => Alert.alert(
+          "Added!", // Specify the desired title here
+          `Collaborator ${firstName} ${lastName} is added as mentor!`,
+          [{ text: "Done", onPress: () => navigation.navigate("mentors") }]
+        ));
+
+    }
 
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -740,42 +740,23 @@ const AdminDashboard = (props) => {
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
-<<<<<<< HEAD
-            <ScrollView>
-              <View style={{ marginBottom: 10 }}>
-                <Text style={styles.headingText}>
-                  {mentorDetail?.fname} {mentorDetail?.lname}
-                </Text>
-                <Text style={styles.subHeadingText}>
-                   {mentorDetail && '+1 '+mentorDetail?.num}
-                </Text>
-                <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
-
-                <View
-                  style={{ flex: 1, height: 1, backgroundColor: COLORS.white }}
-                />
-=======
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 5 }}>
-                <View style={{
-                  backgroundColor: '#458592',
-                  opacity: 0.9,
-                }}>
+                <View style={{ backgroundColor: '#458592', opacity: 0.9 }}>
                   <Text style={styles.headingText}>
                     {mentorDetail?.fname} {mentorDetail?.lname}
                   </Text>
                   <Text style={styles.subHeadingText}>
-                    +1 {mentorDetail?.num}
+                    {mentorDetail && '+1 ' + mentorDetail?.num}
                   </Text>
                   <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
                 </View>
->>>>>>> fd2c63cdf5bd9fd8226ae569a4f4540a787017fa
                 <Text style={styles.detailText}>
                   Service: <Ionicons
                     name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]}
                     size={20}
                   />
-                  { ' '}
+                  {' '}
                   {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}
                 </Text>
                 <Text style={styles.detailText}>
@@ -798,14 +779,14 @@ const AdminDashboard = (props) => {
                 </View>
                 {/* Rating */}
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={styles.detailText}>Rating: </Text>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                      {[...Array(5)].map((_, index) => (
-                        <Text key={index} style={styles.star}>
-                          {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
-                        </Text>
-                      ))}
-                    </View>
+                  <Text style={styles.detailText}>Rating: </Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    {[...Array(5)].map((_, index) => (
+                      <Text key={index} style={styles.star}>
+                        {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
+                      </Text>
+                    ))}
+                  </View>
                 </View>
 
               </View>

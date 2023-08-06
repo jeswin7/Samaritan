@@ -28,6 +28,7 @@ import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
 import SeekerTable from "./SeekerTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { set } from "react-native-reanimated";
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -109,7 +110,6 @@ const AdminDashboard = (props) => {
       const response = await fetch(api.apiUrl + `/seekers`);
       const data = await response.json();
       setSeekers(data);
-      console.log("dtaaaa", data);
     } catch (error) {
       console.log(error);
     }
@@ -551,8 +551,6 @@ const AdminDashboard = (props) => {
   //Payment details
   function UpdatePaymentStatusScreen({ route, navigation }) {
     const { item } = route.params;
-    console.log("payment item--", item);
-
     STATUS_MAP = {
       PENDING: "Pending",
       COMPLETED: "Completed",
@@ -572,9 +570,7 @@ const AdminDashboard = (props) => {
           api.apiUrl + `/admin/paymentDetail?id=${item.id}`
         );
         const data = await response.json();
-        console.log("@ detail API=", data);
         setPaymentDetail(data[0]);
-        console.log("payment Status Upd:", item.id, data);
       } catch (error) {
         console.log(error);
       }
@@ -591,7 +587,6 @@ const AdminDashboard = (props) => {
           `/admin/updatePayment?id=${item.id}&status=${paymentStatus}`
         );
         const data = await response.json();
-        console.log("onboard Status Upd:", item.id, data);
         Alert.alert(
           "Payment Status Updated!", // Specify the desired title here
           `${item.mentor.fname} ${item.mentor.lname}'s payment status updated successfully!`,
@@ -706,9 +701,7 @@ const AdminDashboard = (props) => {
           api.apiUrl + `/mentorDetail?user_id=${mentor.id}`
         );
         const data = await response.json();
-        console.log("@ detail API=", data);
         setMentorDetail(data[0]);
-        console.log("onboard Status Upd:", mentor.id, data);
       } catch (error) {
         console.log(error);
       }
@@ -725,7 +718,6 @@ const AdminDashboard = (props) => {
           `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`
         );
         const data = await response.json();
-        console.log("onboard Status Upd:", mentor.id, data);
         Alert.alert(
           "Onboard Status Updated!", // Specify the desired title here
           `${mentor.fname} ${mentor.lname}'s onboard status updated successfully!`,
@@ -815,7 +807,7 @@ const AdminDashboard = (props) => {
               </TouchableOpacity>
             </ScrollView>
             <TouchableOpacity style={styles.chatContainer} onPress={() => chatScreenToggle(mentorDetail)}>
-              <Ionicons style={styles.chatIcon} name="chatbubbles" size={40} />
+              <Ionicons name="chatbox-ellipses" size={40} color={COLORS.secondary}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -864,36 +856,70 @@ const AdminDashboard = (props) => {
     );
   };
 
-  //Chat Screen
-  const chatScreenToggle = (mentorDetail) => {
-    setChatScreen(
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
-        <View style={styles.containernotification}>
-          <View style={styles.notificationheader}>
-            <Text style={styles.headertext}>{mentorDetail.fname} {mentorDetail.lname}</Text>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setChatScreen(null)}
-            >
-              <Image source={icons.cancel_icon}></Image>
-            </TouchableOpacity>
+  const getMessages = async (mentorDetail) => {
+    try {
+      const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=1`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      const data = await response.json();
+      console.log("000000000000000000", data)
+  
+      setChatScreen(
+        <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+          <View style={styles.containernotification}>
+            <View style={styles.notificationheader}>
+              <Text style={styles.headertext}> {mentorDetail.fname} {mentorDetail.lname}</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setChatScreen(null)}
+              >
+                <Image source={icons.cancel_icon}></Image>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.notificationline}></View>
+  
+            <View style={styles.subContainer}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                {data && data.map((item, index) => (
+                  
+                  <View
+                    key={index} // Add a unique key for each element in the array
+                    style={{
+                      width: '95%',
+                      margin: 5,
+                      padding: 5,
+                      backgroundColor: (item.sender === 1 && item.receiver === 8) ? COLORS.secondary : COLORS.primary,
+                      opacity: 0.8,
+                      borderRadius: 10,
+                      marginTop: 40,
+                    }}
+                  >
+                    <Text style={styles.textContainer}>
+                      {item.content} {/* Assuming 'content' is the property containing the message */}
+                    </Text>
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
           </View>
-          <View style={styles.notificationline}></View>
-
-          <View style={styles.subContainer}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.notificationcardContainer}>
-                <Text style={styles.textContainer}>
-                  This is a static notification message.
-                </Text>
-              </View>
-            </ScrollView>
-          </View>
-        </View>
-      </LinearGradient>
-    )
-
+        </LinearGradient>
+      );
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    }
   };
+  
+  // Chat Screen
+  const chatScreenToggle = async (mentorDetail) => {
+    await getMessages(mentorDetail);
+  };
+  
 
   const ChatScreenModal = (mentorDetail) => {
     console.log('mentorDetail---', mentorDetail)

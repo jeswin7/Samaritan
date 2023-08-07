@@ -884,26 +884,27 @@ const AdminDashboard = (props) => {
             <View style={styles.notificationline}></View>
   
             <View style={styles.subContainer}>
-              <ScrollView showsVerticalScrollIndicator={false}>
+              <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:10}}>
                 {data && data.map((item, index) => (
                   
                   <View
                     key={index} // Add a unique key for each element in the array
-                    style={{
-                      width: '95%',
-                      margin: 5,
-                      padding: 5,
-                      backgroundColor: (item.sender === 1 && item.receiver === 8) ? COLORS.secondary : COLORS.primary,
-                      opacity: 0.8,
-                      borderRadius: 10,
-                      marginTop: 40,
-                    }}
+                    style={[styles.msgcontainer,
+                      (item.sender === 1 && item.receiver === 8)?
+                       styles.sentBubble
+                       :
+                       styles.receivedBubble
+
+                    ]}
                   >
                     <Text style={styles.textContainer}>
                       {item.content} {/* Assuming 'content' is the property containing the message */}
                     </Text>
                   </View>
                 ))}
+
+
+
               </ScrollView>
             </View>
           </View>

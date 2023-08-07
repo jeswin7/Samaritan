@@ -28,6 +28,7 @@ import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
 import SeekerTable from "./SeekerTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { set } from "react-native-reanimated";
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -109,7 +110,6 @@ const AdminDashboard = (props) => {
       const response = await fetch(api.apiUrl + `/seekers`);
       const data = await response.json();
       setSeekers(data);
-      console.log("dtaaaa", data);
     } catch (error) {
       console.log(error);
     }
@@ -344,11 +344,8 @@ const AdminDashboard = (props) => {
     const [lastName, setLastName] = useState("");
     const [contactNumber, setContactNumber] = useState("");
     const [city, setCity] = useState("");
-    const [province, setProvince] = useState("");
-    const [service, setService] = useState("");
-    const [status, setStatus] = useState("");
+    const [orgEmail, setOrgEmail] = useState("");
     const [organization, setOrganization] = useState("");
-    const [orgtype, setOrgType] = useState("");
 
     const SERVICE_MAP = [
       { key: "Accommodation", value: "Accommodation" },
@@ -383,6 +380,34 @@ const AdminDashboard = (props) => {
       { key: 19, value: 'Kingston' },
       { key: 20, value: 'Sudbury' }
     ];
+
+    const handleSignUp = () => {
+
+      // POST API
+      fetch(api.apiUrl + '/admin/addCollaborator', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fname: firstName,
+          lname: lastName,
+          num: contactNumber,
+          city,
+          orgName: organization,
+          orgType: mentorOrgType,
+          service: mentorServiceType,
+          orgEmail
+        })
+      })
+        .then(() => Alert.alert(
+          "Added!", // Specify the desired title here
+          `Collaborator ${firstName} ${lastName} is added as mentor!`,
+          [{ text: "Done", onPress: () => navigation.navigate("mentors") }]
+        ));
+
+    }
 
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -455,7 +480,7 @@ const AdminDashboard = (props) => {
                   search={false}
                   boxStyles={styles.inputTextFieldContainer}
                   dropdownStyles={styles.inputTextFieldContainer}
-                  dropdownTextStyles={styles.inputTextField}
+                  //dropdownTextStyles={styles.inputTextField}
                   placeholderTextColor={COLORS.secondary}
                   placeholder="Organization Type"
                 />
@@ -478,12 +503,12 @@ const AdminDashboard = (props) => {
                   placeholderTextColor={COLORS.secondary}
                   style={styles.inputTextField}
                   placeholder={strings.email}
-                  onChangeText={(value) => setEmail(value)}
-                  value={email}
+                  onChangeText={(value) => setOrgEmail(value)}
+                  value={orgEmail}
                 />
               </View>
 
-              <TouchableOpacity style={styles.saveButton}>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSignUp}>
                 <Text style={styles.saveText}>{strings.save}</Text>
               </TouchableOpacity>
             </ScrollView>
@@ -526,8 +551,6 @@ const AdminDashboard = (props) => {
   //Payment details
   function UpdatePaymentStatusScreen({ route, navigation }) {
     const { item } = route.params;
-    console.log("payment item--", item);
-
     STATUS_MAP = {
       PENDING: "Pending",
       COMPLETED: "Completed",
@@ -547,9 +570,7 @@ const AdminDashboard = (props) => {
           api.apiUrl + `/admin/paymentDetail?id=${item.id}`
         );
         const data = await response.json();
-        console.log("@ detail API=", data);
         setPaymentDetail(data[0]);
-        console.log("payment Status Upd:", item.id, data);
       } catch (error) {
         console.log(error);
       }
@@ -566,7 +587,6 @@ const AdminDashboard = (props) => {
           `/admin/updatePayment?id=${item.id}&status=${paymentStatus}`
         );
         const data = await response.json();
-        console.log("onboard Status Upd:", item.id, data);
         Alert.alert(
           "Payment Status Updated!", // Specify the desired title here
           `${item.mentor.fname} ${item.mentor.lname}'s payment status updated successfully!`,
@@ -681,9 +701,7 @@ const AdminDashboard = (props) => {
           api.apiUrl + `/mentorDetail?user_id=${mentor.id}`
         );
         const data = await response.json();
-        console.log("@ detail API=", data);
         setMentorDetail(data[0]);
-        console.log("onboard Status Upd:", mentor.id, data);
       } catch (error) {
         console.log(error);
       }
@@ -700,7 +718,6 @@ const AdminDashboard = (props) => {
           `/admin/mentorOnboardStatus/update?id=${mentor.id}&status=${onboard}`
         );
         const data = await response.json();
-        console.log("onboard Status Upd:", mentor.id, data);
         Alert.alert(
           "Onboard Status Updated!", // Specify the desired title here
           `${mentor.fname} ${mentor.lname}'s onboard status updated successfully!`,
@@ -717,15 +734,12 @@ const AdminDashboard = (props) => {
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 5 }}>
-                <View style={{
-                  backgroundColor: '#458592',
-                  opacity: 0.9,
-                }}>
+                <View style={{ backgroundColor: '#458592', opacity: 0.9 }}>
                   <Text style={styles.headingText}>
                     {mentorDetail?.fname} {mentorDetail?.lname}
                   </Text>
                   <Text style={styles.subHeadingText}>
-                    +1 {mentorDetail?.num}
+                    {mentorDetail && '+1 ' + mentorDetail?.num}
                   </Text>
                   <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
                 </View>
@@ -734,7 +748,7 @@ const AdminDashboard = (props) => {
                     name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]}
                     size={20}
                   />
-                  { ' '}
+                  {' '}
                   {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}
                 </Text>
                 <Text style={styles.detailText}>
@@ -757,14 +771,14 @@ const AdminDashboard = (props) => {
                 </View>
                 {/* Rating */}
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text style={styles.detailText}>Rating: </Text>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                      {[...Array(5)].map((_, index) => (
-                        <Text key={index} style={styles.star}>
-                          {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
-                        </Text>
-                      ))}
-                    </View>
+                  <Text style={styles.detailText}>Rating: </Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    {[...Array(5)].map((_, index) => (
+                      <Text key={index} style={styles.star}>
+                        {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
+                      </Text>
+                    ))}
+                  </View>
                 </View>
 
               </View>
@@ -793,7 +807,7 @@ const AdminDashboard = (props) => {
               </TouchableOpacity>
             </ScrollView>
             <TouchableOpacity style={styles.chatContainer} onPress={() => chatScreenToggle(mentorDetail)}>
-              <Ionicons style={styles.chatIcon} name="chatbubbles" size={40} />
+              <Ionicons name="chatbox-ellipses" size={40} color={COLORS.secondary}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -842,36 +856,71 @@ const AdminDashboard = (props) => {
     );
   };
 
-  //Chat Screen
-  const chatScreenToggle = (mentorDetail) => {
-    setChatScreen(
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
-        <View style={styles.containernotification}>
-          <View style={styles.notificationheader}>
-            <Text style={styles.headertext}>{mentorDetail.fname} {mentorDetail.lname}</Text>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setChatScreen(null)}
-            >
-              <Image source={icons.cancel_icon}></Image>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.notificationline}></View>
+  const getMessages = async (mentorDetail) => {
+    try {
+      const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=1`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+      });
+  
+      const data = await response.json();
+      console.log("000000000000000000", data)
+  
+      setChatScreen(
+        <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+          <View style={styles.containernotification}>
+            <View style={styles.notificationheader}>
+              <Text style={styles.headertext}> {mentorDetail.fname} {mentorDetail.lname}</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setChatScreen(null)}
+              >
+                <Image source={icons.cancel_icon}></Image>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.notificationline}></View>
+  
+            <View style={styles.subContainer}>
+              <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:10}}>
+                {data && data.map((item, index) => (
+                  
+                  <View
+                    key={index} // Add a unique key for each element in the array
+                    style={[styles.msgcontainer,
+                      (item.sender === 1 && item.receiver === 8)?
+                       styles.sentBubble
+                       :
+                       styles.receivedBubble
 
-          <View style={styles.subContainer}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.notificationcardContainer}>
-                <Text style={styles.textContainer}>
-                  This is a static notification message.
-                </Text>
-              </View>
-            </ScrollView>
-          </View>
-        </View>
-      </LinearGradient>
-    )
+                    ]}
+                  >
+                    <Text style={styles.textContainer}>
+                      {item.content} {/* Assuming 'content' is the property containing the message */}
+                    </Text>
+                  </View>
+                ))}
 
+
+
+              </ScrollView>
+            </View>
+          </View>
+        </LinearGradient>
+      );
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    }
   };
+  
+  // Chat Screen
+  const chatScreenToggle = async (mentorDetail) => {
+    await getMessages(mentorDetail);
+  };
+  
 
   const ChatScreenModal = (mentorDetail) => {
     console.log('mentorDetail---', mentorDetail)
@@ -882,7 +931,7 @@ const AdminDashboard = (props) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="LOG OUT" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
+        <DrawerItem label="Sign out" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }
@@ -910,7 +959,7 @@ const AdminDashboard = (props) => {
             name="Home"
             component={HomeScreen}
             options={{
-              title: "SAMARITAN",
+              title: "Dashboard",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -950,10 +999,10 @@ const AdminDashboard = (props) => {
         /> */}
 
           <Drawer.Screen
-            name="ConnRequests"
-            component={ConnectionRequestsScreen}
+            name="mentors"
+            component={MentorsScreen}
             options={{
-              title: "CONNECTIONS",
+              title: "Mentors",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -975,7 +1024,7 @@ const AdminDashboard = (props) => {
             name="seekers"
             component={SeekersScreen}
             options={{
-              title: "SEEKERS",
+              title: "Seekers",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -993,11 +1042,11 @@ const AdminDashboard = (props) => {
             }}
           />
 
-          <Drawer.Screen
-            name="mentors"
-            component={MentorsScreen}
+        <Drawer.Screen
+            name="ConnRequests"
+            component={ConnectionRequestsScreen}
             options={{
-              title: "MENTORS",
+              title: "Connections",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -1019,7 +1068,7 @@ const AdminDashboard = (props) => {
             name="services"
             component={ServiceScreen}
             options={{
-              title: "SERVICES",
+              title: "Services",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -1040,7 +1089,7 @@ const AdminDashboard = (props) => {
             name="Payment"
             component={PaymentScreen}
             options={{
-              title: "PAYMENTS",
+              title: "Payments",
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
               headerTitleStyle: styles.dashboardHeading,
@@ -1061,7 +1110,7 @@ const AdminDashboard = (props) => {
             name="addmentor"
             component={AddmentorScreen}
             options={{
-              title: "ADD MENTOR",
+              title: "Add Collaborator",
               drawerLabel: () => null,
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,
@@ -1085,10 +1134,10 @@ const AdminDashboard = (props) => {
             name="updatePayment"
             component={UpdatePaymentStatusScreen}
             options={{
-              title: "PAYMENT DETAILS",
+              title: "Payment Detail",
               drawerLabel: () => null,
               headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
+              headerTintColor: COLORS.secondary, 
               headerTitleStyle: styles.dashboardHeading,
               headerStyle: {
                 backgroundColor: "#458592",
@@ -1109,7 +1158,7 @@ const AdminDashboard = (props) => {
             name="updatementor"
             component={UpdateMentorStatusScreen}
             options={{
-              title: "MENTOR DETAILS",
+              title: "Mentor Detail",
               drawerLabel: () => null,
               headerTitleAlign: "center",
               headerTintColor: COLORS.secondary,

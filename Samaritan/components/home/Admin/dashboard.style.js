@@ -417,7 +417,32 @@ const styles = StyleSheet.create({
   },
   chatIcon : {
     color: COLORS.secondary
-  }
+  },
+
+
+
+
+
+
+
+  msgcontainer: {
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 10,
+    maxWidth: '70%', // Adjust this value to limit the chat bubble width
+  },
+  sentBubble: {
+    alignSelf: 'flex-end',
+    backgroundColor: COLORS.primary,
+  },
+  receivedBubble: {
+    alignSelf: 'flex-start',
+    backgroundColor: COLORS.secondary,
+  },
+  message: {
+    color: '#FFFFFF', // Text color for sent messages
+    fontSize: 16,
+  },
 });
 
 export default styles;

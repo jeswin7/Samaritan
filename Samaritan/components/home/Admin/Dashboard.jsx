@@ -870,45 +870,50 @@ const AdminDashboard = (props) => {
       console.log("000000000000000000", data)
   
       setChatScreen(
-        <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
-          <View style={styles.containernotification}>
-            <View style={styles.notificationheader}>
-              <Text style={styles.headertext}> {mentorDetail.fname} {mentorDetail.lname}</Text>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setChatScreen(null)}
-              >
-                <Image source={icons.cancel_icon}></Image>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.notificationline}></View>
-  
-            <View style={styles.subContainer}>
-              <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:10}}>
-                {data && data.map((item, index) => (
-                  
-                  <View
-                    key={index} // Add a unique key for each element in the array
-                    style={[styles.msgcontainer,
-                      (item.sender === 1 && item.receiver === 8)?
-                       styles.sentBubble
-                       :
-                       styles.receivedBubble
-
-                    ]}
-                  >
-                    <Text style={styles.textContainer}>
-                      {item.content} {/* Assuming 'content' is the property containing the message */}
-                    </Text>
-                  </View>
-                ))}
 
 
+<LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]} style={styles.linearGradient}>
+  <View style={styles.container}>
+    <View style={styles.header}>
+      <Text style={styles.headerText}>{mentorDetail.fname} {mentorDetail.lname}</Text>
+      <TouchableOpacity style={styles.closeButton} onPress={() => setChatScreen(null)}>
+        <Image source={icons.cancel_icon} style={styles.closeIcon} />
+      </TouchableOpacity>
+    </View>
+    <View style={styles.line} />
 
-              </ScrollView>
-            </View>
-          </View>
-        </LinearGradient>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
+      {data && data.map((item, index) => (
+        <View
+          key={index}
+          style={[
+            styles.messageBubble,
+            item.sender === 1 && item.receiver === 8 ? styles.sentBubble : styles.receivedBubble,
+          ]}
+        >
+          <Text style={styles.messageText}>
+            {item.content} {/* Assuming 'content' is the property containing the message */}
+          </Text>
+        </View>
+      ))}
+    </ScrollView>
+  </View>
+
+  <View style={styles.bottomContainer}>
+    <View style={styles.inputContainer}>
+      <TextInput
+        style={styles.inputText}
+        placeholder="Type your message..."
+        placeholderTextColor={COLORS.secondary}
+      />
+      <TouchableOpacity style={styles.sendButton}>
+        <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20}/></Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</LinearGradient>
+
+      
       );
     } catch (error) {
       console.error('Error:', error);

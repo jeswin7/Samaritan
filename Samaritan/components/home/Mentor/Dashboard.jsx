@@ -472,7 +472,7 @@ const Dashboard = (props) => {
                                             justifyContent: 'space-between',
                                             marginTop: 10
                                         }}>
-                                            <Button title="Accept" color={COLORS.secondary} onPress={() => updateStatus(item.id, 'ACCEPTED')} />
+                                            <Button title="Accept" color={COLORS.primary} onPress={() => updateStatus(item.id, 'ACCEPTED')} />
                                             <Button title="Decline" color={COLORS.red} onPress={() => updateStatus(item.id, 'DECLINED')} />
                                         </View>
                                         :

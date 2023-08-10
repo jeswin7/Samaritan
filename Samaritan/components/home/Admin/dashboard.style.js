@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
     },
     closeButton: {
       padding: 5,
-      fontSize: 20
+      fontSize:20
     },
     closeIcon: {
       width: 20,

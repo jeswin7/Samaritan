@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
-    Button
+    Button,
+    Alert
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Picker } from '@react-native-picker/picker';
@@ -16,12 +17,19 @@ import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { LinearGradient } from "expo-linear-gradient";
+
+
+const Drawer = createDrawerNavigator();
 
 const Dashboard = (props) => {
     const router = useRouter();
-    const Drawer = createDrawerNavigator();
+    const navigation = useNavigation();
+
     const [mentorDetail, setDetail] = useState({});
     const [connReqs, setConnReqs] = useState(null);
+    const [chatMsgs, setMsgs] = useState([]);
 
     const SERVICE_MAP = {
         1: 'Accommodation',
@@ -201,7 +209,7 @@ const Dashboard = (props) => {
     };
 
 
-    // 5. Fetch Connection Requests
+    // 6. Fetch Connection Requests
     const updateMentorConnRequestStatus = async (id, status) => {
         try {
             // Make API requests here
@@ -217,10 +225,28 @@ const Dashboard = (props) => {
         }
     };
 
-    useEffect(() => {
-        // Fetch API data here
-        return <View><Text>Loading...</Text></View>
-    }, []);
+    // 7. get cht messages
+    const fetchMessages = async () => {
+
+        try {
+            const response = await fetch(api.apiUrl + `/getMessages?sender=1&receiver=${props.userId}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            const data = await response.json();
+            setMsgs(data)
+
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle error
+        }
+    };
+
+
     useEffect(() => {
         // Fetch API data here
         console.log("********NEWWWW**********", props)
@@ -232,8 +258,8 @@ const Dashboard = (props) => {
     const fetchData = () => {
         fetchMentorDetail()
         fetchMentorConnRequests()
+        fetchMessages()
     }
-
 
     //Home Component
     function HomeScreen() {
@@ -609,21 +635,119 @@ const Dashboard = (props) => {
         );
     }
 
+
+
     const handleSignOut = () => {
         // Call the props.logout function here
         Alert.alert(
-            "Logout!", // Specify the desired title here
-            `Are you sure, you want to Sign Out?`,
-            [{ text: "No"},{ text: "Yes", onPress: () => props.logout() }],
-          );
+            "Sign Out?", // Specify the desired title here
+            `Are you sure, you want to sign out?`,
+            [{ text: "No" }, { text: "Yes", onPress: () => props.logout() }],
+        );
     };
 
     function CustomDrawerContent(props) {
         return (
             <DrawerContentScrollView {...props}>
                 <DrawerItemList {...props} />
-                <DrawerItem label="LOG OUT" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
+                <DrawerItem label="Sign Out" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
             </DrawerContentScrollView>
+        );
+    }
+
+
+    function ChatScreen({ route, navigation }) {
+        // const { mentorDetail, data } = route.params;
+        const data = chatMsgs;
+
+
+        const updateChat = async () => {
+            try {
+                const response = await fetch(api.apiUrl + `/getMessages?sender=1&receiver=${props.userId}`, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                });
+
+                const data = await response.json();
+                //setMessage('');
+
+                setMsgs(data)
+
+            } catch (error) {
+                console.error('Error:', error);
+                // Handle error
+            }
+        }
+
+
+        // const postMessage = async () => {
+
+        //   fetch(api.apiUrl + `/admin/addMessage`, {
+        //     method: 'POST',
+        //     headers: {
+        //       Accept: 'application/json',
+        //       'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //       adminId,
+        //       mentorId: mentorDetail.id,
+        //       message
+        //     })
+        //   })
+        //     .then(() => updateChat())
+
+        // };
+
+        return (
+            <View style={styles.linearGradient}>
+                <View style={styles.container}>
+                    {/* <View style={styles.header}>
+            <Text style={styles.headerText}>Chat With Admin</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate("Home")}>
+              <Image source={icons.cancel_icon} style={styles.closeIcon} />
+            </TouchableOpacity>
+          </View> */}
+                    {/* <View style={styles.line} /> */}
+
+                    <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
+                        {data && data.map((item, index) => (
+                            <View
+                                key={index}
+                                style={[
+                                    styles.messageBubble,
+                                    item.sender === props.userId && item.receiver === 1 ? styles.sentBubble : styles.receivedBubble,
+                                ]}
+                            >
+                                <Text style={styles.messageText}>
+                                    {item.content} {/* Assuming 'content' is the property containing the message */}
+                                </Text>
+                            </View>
+                        ))}
+                    </ScrollView>
+
+                </View>
+
+                <View style={styles.bottomContainer}>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="Type your message..."
+                            placeholderTextColor={COLORS.tertiary}
+                        //   value={message}
+                        //   onChangeText={value => setMessage(value)}
+                        />
+                        <TouchableOpacity style={styles.sendButton}
+                        // onPress={postMessage}
+                        >
+                            <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20} /></Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+
         );
     }
 
@@ -637,13 +761,13 @@ const Dashboard = (props) => {
                     },
                     drawerActiveBackgroundColor: COLORS.primary,
                     drawerLabelStyle: {
-                        color: '#fff'
+                        color: COLORS.white
                     }
                 }}
                 drawerContent={props => <CustomDrawerContent {...props} />}
             >
                 <Drawer.Screen name="Home" component={HomeScreen} options={{
-                    title: 'SAMARITAN',
+                    title: 'Home',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
@@ -654,7 +778,7 @@ const Dashboard = (props) => {
                     ),
                 }} />
                 <Drawer.Screen name="Profile" component={ProfileScreen} options={{
-                    title: 'PROFILE',
+                    title: 'Profile',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
@@ -666,7 +790,19 @@ const Dashboard = (props) => {
                 }} />
 
                 <Drawer.Screen name="ConnRequests" component={ConnectionRequestsScreen} options={{
-                    title: 'REQUESTS',
+                    title: 'Requests',
+                    headerTitleAlign: 'center',
+                    headerTintColor: COLORS.secondary,
+                    headerTitleStyle: styles.dashboardHeading,
+                    headerRight: () => (
+                        <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+                            <Image source={icons.bell_icon}></Image>
+                        </TouchableOpacity >
+                    ),
+                }} />
+
+                <Drawer.Screen name="Chat" component={ChatScreen} options={{
+                    title: 'Chat With Us',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
@@ -679,7 +815,7 @@ const Dashboard = (props) => {
 
                 <Drawer.Screen name="Service" component={ServiceScreen}
                     options={{
-                        title: 'SERVICES',
+                        title: 'Services',
                         headerTitleAlign: 'center',
                         headerTintColor: COLORS.secondary,
                         headerTitleStyle: styles.dashboardHeading,
@@ -692,7 +828,7 @@ const Dashboard = (props) => {
                     }} />
 
                 <Drawer.Screen name="Payment" component={PaymentScreen} options={{
-                    title: 'PAYMENTS',
+                    title: 'Payments',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
@@ -703,6 +839,7 @@ const Dashboard = (props) => {
                         </TouchableOpacity >
                     ),
                 }} />
+
 
 
             </Drawer.Navigator>

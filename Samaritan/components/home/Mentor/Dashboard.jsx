@@ -89,38 +89,38 @@ const Dashboard = (props) => {
             id: '1',
             name: 'Jes John',
             service: 'Accomodation',
-            status: 'In Progress'
+            status: 'PENDING'
         },
         {
             id: '2',
             name: 'Mary Brown',
             service: 'Job',
-            status: 'Completed'
+            status: 'COMPLETED'
         },
 
         {
             id: '3',
             name: 'Ed John',
             service: 'Accomodation',
-            status: 'In Progress'
+            status: 'PENDING'
         },
         {
             id: '4',
             name: 'Tej John',
             service: 'Job',
-            status: 'In Progress'
+            status: 'PENDING'
         },
         {
             id: '5',
             name: 'Jake Brown',
             service: 'Accomodation',
-            status: 'In Progress'
+            status: 'PENDING'
         },
         {
             id: '6',
             name: 'Joel Cullen',
             service: 'Job',
-            status: 'Completed'
+            status: 'COMPLETED'
         }
     ];
 
@@ -235,7 +235,7 @@ const Dashboard = (props) => {
               status
             })
           })
-            .then(() => fetchMentorConnRequests());
+            .then(() => fetchData());
             
 
     };
@@ -327,9 +327,9 @@ const Dashboard = (props) => {
                 <TouchableOpacity onPress={() => navigation.navigate("Service", { serviceDetail: service })}>
                     <View style={styles.listView}>
                         <View style={styles.item}>
-                            <Text style={styles.title}>{service.seeker.fname} {service.seeker.lname}</Text>
-                            <Text style={styles.title}>{service.type}</Text>
-                            <Text style={service.status == "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{service.status}</Text>
+                            <Text style={styles.title}>{service?.seeker?.fname} {service.seeker?.lname}</Text>
+                            <Text style={styles.title}>{service?.type}</Text>
+                            <Text style={service.status == "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{service?.status}</Text>
                         </View>
 
                     </View>

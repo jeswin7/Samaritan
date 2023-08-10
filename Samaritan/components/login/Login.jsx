@@ -125,14 +125,14 @@ const styles = StyleSheet.create({
   },
   emailTextField: {
     paddingVertical: 12,
-    backgroundColor: COLORS.tertiary2,
+    backgroundColor: COLORS.tertiary,
     fontSize: SIZES.medium,
     padding: SIZES.small,
     borderRadius: SIZES.small,
   },
   passwordTextField: {
     paddingVertical: 12,
-    backgroundColor: COLORS.tertiary2,
+    backgroundColor: COLORS.tertiary,
     fontSize: SIZES.medium,
     padding: SIZES.small,
     borderRadius: SIZES.small,
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.large,
   },
   forgotPwdText: {
-    color: COLORS.secondary,
+    color: COLORS.primary,
     fontSize: SIZES.large,
     fontWeight: 'bold'
   },

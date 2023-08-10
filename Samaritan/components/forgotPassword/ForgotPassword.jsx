@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     },
     emailTextField: {
         paddingVertical: 12,
-        backgroundColor: COLORS.tertiary,
+        backgroundColor: COLORS.tertiary2,
         fontSize: SIZES.medium,
         padding: SIZES.small,
         borderRadius: SIZES.small,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     forgotPasswordButton: {
         marginVertical: 40,
         elevation: 8,
-        backgroundColor: COLORS.primary,
+        backgroundColor: COLORS.secondary,
         borderRadius: 10,
         paddingVertical: 12,
         paddingHorizontal: 12

@@ -83,19 +83,21 @@ const Login = (props) => {
             style={styles.emailTextField}
             placeholder={strings.email}
             value={email}
+            placeholderTextColor={COLORS.secondary}
             onChangeText={handleCheckEmail}
           />
           {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
           <TextInput
             style={styles.passwordTextField}
             placeholder={strings.password}
+            placeholderTextColor={COLORS.secondary}
             secureTextEntry
             value={password}
             onChangeText={setPassword}
           />
           <TouchableOpacity onPress={handleForgotPassword}
             style={styles.forgotPasswordTextField}>
-            <Text style={styles.signUpText}>{strings.forgotPassword}</Text>
+            <Text style={styles.forgotPwdText}>{strings.forgotPassword}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={handleLogin} style={styles.signInButton}>
@@ -123,18 +125,18 @@ const styles = StyleSheet.create({
   },
   emailTextField: {
     paddingVertical: 12,
-    backgroundColor: COLORS.tertiary,
-    fontSize: SIZES.medium,
-    padding: SIZES.small,
-    borderRadius: SIZES.small
-  },
-  passwordTextField: {
-    paddingVertical: 12,
-    backgroundColor: COLORS.tertiary,
+    backgroundColor: COLORS.tertiary2,
     fontSize: SIZES.medium,
     padding: SIZES.small,
     borderRadius: SIZES.small,
-    marginTop: SIZES.medium
+  },
+  passwordTextField: {
+    paddingVertical: 12,
+    backgroundColor: COLORS.tertiary2,
+    fontSize: SIZES.medium,
+    padding: SIZES.small,
+    borderRadius: SIZES.small,
+    marginTop: SIZES.medium,
   },
   forgotPasswordTextField: {
     flex: 1,
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
   signInButton: {
     marginVertical: 40,
     elevation: 8,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.secondary,
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 12
@@ -165,6 +167,11 @@ const styles = StyleSheet.create({
   newToText: {
     color: COLORS.secondary,
     fontSize: SIZES.large,
+  },
+  forgotPwdText: {
+    color: COLORS.secondary,
+    fontSize: SIZES.large,
+    fontWeight: 'bold'
   },
   signUpText: {
     color: COLORS.primary,

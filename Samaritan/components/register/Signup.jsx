@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { COLORS, FONT, SIZES, strings, api } from '../../constants';
+import { color } from 'react-native-reanimated';
 
 
 const SignUp = (props) => {
@@ -23,6 +24,7 @@ const SignUp = (props) => {
   const [checkValidContactNumber, setCheckContactNumber] = useState(false);
   const [checkValidCountry, setCheckValidCountry] = useState(false);
   const [checkValidLocation, setCheckValidLocation] = useState(false);
+  const [checkValidAddress, setCheckValidAddress] = useState(false);
   const [checkValidPassword, setCheckValidPassword] = useState(false);
   const [checkPasswordMatch, setCheckPasswordMatch] = useState(false);
 
@@ -82,6 +84,18 @@ const SignUp = (props) => {
     }
   }
 
+  //address validation
+  const handleCheckAddress = text => {
+    let locationRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
+    setAddress(text);
+    if (locationRegex.test(text)) {
+      setCheckValidAddress(false);
+    }
+    else {
+      setCheckValidAddress(true);
+    }
+  }
+
   //email validation
   const handleCheckEmail = text => {
     let reg = /\S+@\S+\.\S+/;
@@ -132,7 +146,7 @@ const SignUp = (props) => {
 
       else {
         // POST API
-        fetch(api.apiUrl+'/addseeker', {
+        fetch(api.apiUrl + '/addseeker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -149,7 +163,7 @@ const SignUp = (props) => {
             password,
           })
         })
-          .then(() => setMessage("Seeker registered!!!!"));
+          .then(() => console.log("Seeker registered!!!!"));
 
       }
 
@@ -167,7 +181,7 @@ const SignUp = (props) => {
 
       else {
         // POST API
-        fetch(api.apiUrl+'/addmentor', {
+        fetch(api.apiUrl + '/addmentor', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -180,13 +194,20 @@ const SignUp = (props) => {
             email
           })
         })
-          .then(() => setMessage("Mentor registered!!!!"));
+          .then(() => console.log("Mentor registered!!!!"));
       }
 
 
 
     }
-    props.registered();
+    Alert.alert(
+      'Successfully Registered!', // Specify the desired title here
+      ``,
+      [
+        { text: 'Done', onPress: () =>  props.registered()}
+      ]
+    );
+   
   };
 
   return (
@@ -222,6 +243,7 @@ const SignUp = (props) => {
               placeholder={strings.firstName}
               value={firstName}
               onChangeText={handleCheckFname}
+              placeholderTextColor={COLORS.secondary}
               style={styles.TextField}
             />
             {checkValidFname ? (<Text style={styles.invalidText}>{strings.fnameError}</Text>) : (<Text></Text>)}
@@ -229,6 +251,7 @@ const SignUp = (props) => {
               placeholder={strings.lastName}
               value={lastName}
               onChangeText={handleCheckLname}
+              placeholderTextColor={COLORS.secondary}
               style={styles.TextField}
             />
             {checkValidLname ? (<Text style={styles.invalidText}>{strings.lnameError}</Text>) : (<Text></Text>)}
@@ -236,32 +259,47 @@ const SignUp = (props) => {
               placeholder={strings.contactNumber}
               value={contactNumber}
               onChangeText={handleCheckContactnumber}
+              placeholderTextColor={COLORS.secondary}
               style={styles.TextField}
             />
             {checkValidContactNumber ? (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>) : (<Text></Text>)}
             {userType === 'seeker' && (
 
-              <SelectList data={countrylist} setCountry={setCountry}
-                boxStyles={styles.TextField}
-                value={country}
-                onChangeText={handleCheckCountry}
+              <SelectList
+                data={countrylist}
+                setSelected={(val) => setCountry(val)}
+                search={false}
+                boxStyles={styles.dropdownbox}
                 dropdownStyles={styles.dropdownbox}
+                dropdownTextStyles={styles.dropdowntext}
+                placeholderTextColor={COLORS.secondary}
                 placeholder={strings.country}
-                dropdownTextStyles={styles.dropdowntext} />
+              />
             )}
             {checkValidCountry ? (<Text style={styles.invalidText}>{strings.countryError}</Text>) : (<Text></Text>)}
             {userType === 'seeker' && (
               <TextInput
                 placeholder={strings.location}
                 value={location}
+                placeholderTextColor={COLORS.secondary}
                 onChangeText={handleCheckLocation}
                 style={styles.TextField}
               />
             )}
             {checkValidLocation ? (<Text style={styles.invalidText}>{strings.locationError}</Text>) : (<Text></Text>)}
             <TextInput
+              placeholder={strings.address}
+              value={address}
+              placeholderTextColor={COLORS.secondary}
+              onChangeText={handleCheckAddress}
+              style={styles.TextField}
+            />
+
+            {checkValidLocation ? (<Text style={styles.invalidText}>{strings.addressError}</Text>) : (<Text></Text>)}
+            <TextInput
               placeholder={strings.email}
               value={email}
+              placeholderTextColor={COLORS.secondary}
               onChangeText={handleCheckEmail}
               style={styles.TextField}
             />
@@ -272,6 +310,7 @@ const SignUp = (props) => {
                 placeholder={strings.password}
                 secureTextEntry={true}
                 value={password}
+                placeholderTextColor={COLORS.secondary}
                 onChangeText={handleCheckPassword}
                 style={styles.TextField}
               />
@@ -281,6 +320,7 @@ const SignUp = (props) => {
                 placeholder={strings.confirmPassword}
                 secureTextEntry
                 value={confirmPassword}
+                placeholderTextColor={COLORS.secondary}
                 onChangeText={handleCheckConfirmpassword}
                 style={styles.TextField}
               />
@@ -304,17 +344,16 @@ const SignUp = (props) => {
 const styles = StyleSheet.create({
   TextField: {
     paddingVertical: 12,
-    backgroundColor: COLORS.tertiary,
+    backgroundColor: COLORS.tertiary2,
     fontSize: SIZES.medium,
     padding: SIZES.small,
     borderRadius: SIZES.small,
     marginTop: SIZES.medium,
-    borderColor: COLORS.tertiary,
   },
   signUpButton: {
     marginVertical: 40,
     elevation: 8,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.secondary,
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 12
@@ -337,19 +376,22 @@ const styles = StyleSheet.create({
   },
 
   dropdownbox: {
-    backgroundColor: COLORS.tertiary,
-    borderColor: COLORS.tertiary,
-    maxHeight: 200,
+    backgroundColor: COLORS.tertiary2,
+    borderColor: COLORS.tertiary2,
+    //height: 50,
+    maxHeight: 200
   },
   dropdowntext: {
-    color: COLORS.gray,
+    color: COLORS.secondary,
+    fontSize: 14,
+    fontWeight: 'bold'
   },
 
   invalidText: {
     color: COLORS.red,
     paddingVertical: 5,
     paddingLeft: 8
-  },
+  }
 });
 
 export default SignUp;

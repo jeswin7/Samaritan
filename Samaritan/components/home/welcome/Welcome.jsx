@@ -31,6 +31,8 @@ const Welcome = (props) => {
 
   const [filterName, setFilterName] = useState('');
   const [filterValue, setFilterValue] = useState(1);
+  const [showPicker, setShowPicker] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
 
   useEffect(() => {
@@ -130,9 +132,12 @@ const Welcome = (props) => {
 
 
   // search handle
-  const handleSearchClick = () => {
+  const handleSearchClick = (text) => {
     // Perform search button click here
-    console.log('Search button click...');
+    if(text){
+      console.log('Search button click...', text);
+      setSearchTerm(text);
+    }
   };
 
   // Fetch Connection requests of logged in seeker
@@ -143,7 +148,6 @@ const Welcome = (props) => {
       const data = await response.json();
       console.log('Fetched data:', data);
       setMentorsList(data);
-
     } catch (error) {
       console.log('Error fetching data:', error);
     }
@@ -154,14 +158,14 @@ const Welcome = (props) => {
   // filter handle
   const handleFilterClick = () => {
     console.log('@ handle filter----')
-    fetchMentorsFiltered('serviceOffered', filterValue)
+    setShowPicker(true);
   };
 
 
 
 
   //Home Component
-  function HomeScreen({ searchTerm, setSearchTerm, handleSearchClick }) {
+  function HomeScreen({ searchTerm, setSearchTerm }) {
     const navigation = useNavigation();
 
     const renderHomeItem = ({ item }) => <HomeItem item={item} />
@@ -195,89 +199,92 @@ const Welcome = (props) => {
 
 
     return (
-
-
-
-
-      
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={{ flex: 1 }}>
-      <View style={styles.homeContainer}>
-        <View style={styles.homeSubContainer}>
-          <View style={styles.searchContainer}>
-            <View style={styles.searchWrapper}>
-              <TextInput
-                style={styles.searchInput}
-                value={searchTerm}
-                onChangeText={(text) => setSearchTerm(text)}
-                placeholder={strings.searchHintText}
-              />
-            </View>
+        <View style={{ flex: 1 }}>
+          <View style={styles.homeContainer}>
+            <View style={styles.homeSubContainer}>
+              <View style={styles.searchContainer}>
+                <View style={styles.searchWrapper}>
+                  <TextInput
+                    style={styles.searchInput}
+                    value={searchTerm}
+                    onChangeText={(text) => handleSearchClick(text)}
+                    placeholder={strings.searchHintText}
+                  />
+                </View>
 
-            <TouchableOpacity style={styles.searchBtn} onPress={handleSearchClick}>
-              <Image
-                source={icons.search_icon}
-                style={styles.searchBtnImage}
-              />
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.searchBtn} >
+                  <Image
+                    source={icons.search_icon}
+                    style={styles.searchBtnImage}
+                  />
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.filterBtn} onPress={handleFilterClick}>
-              <Image
-                source={icons.filter_icon}
-                style={styles.searchBtnImage}
-              />
-            </TouchableOpacity>
-          </View>
-          <View>
-
-      <Picker onValueChange={(value) => {
-        setFilterName('serviceOffered')
-        setFilterValue(value)
-      }} selectedValue={filterValue}>
-
-        <Picker.Item label="Accommodation" value="1" />
-        <Picker.Item label="Part-Time Job" value="2" />
-      </Picker>
-
-
-      <Picker onValueChange={(value) => {
-        setFilterName('currentLocation')
-        setFilterValue(value)
-      }} selectedValue={filterValue}>
-
-        <Picker.Item label="Waterloo" value="2" />
-        <Picker.Item label="Kitchener" value="3" />
-
-        <Picker.Item label="Toronto" value="4" />
-        <Picker.Item label="Ottawa" value="5" />
-        <Picker.Item label="Hamilton" value="6" />
-        <Picker.Item label="London" value="7" />
-        <Picker.Item label="Mississauga" value="8" />
-        <Picker.Item label="Brampton" value="9" />
-        <Picker.Item label="Markham" value="10" />
-      </Picker>
-    </View>
-
-
-
-          {
-            mentorsList.length > 0 ?
-              <View style={styles.tabsContainer}>
-                <FlatList
-                  data={mentorsList}
-                  renderItem={renderHomeItem}
-                  ItemSeparatorComponent={ItemSeparatorView}
-                  keyExtractor={item => item.id}
-                  showsVerticalScrollIndicator={false}
-                />
+                <TouchableOpacity style={styles.filterBtn} onPress={handleFilterClick}>
+                  <Image
+                    source={icons.filter_icon}
+                    style={styles.searchBtnImage}
+                  />
+                </TouchableOpacity>
               </View>
-              :
-              <Text>Loading...</Text>
-          }
+              <View>
+                {showPicker ?
+                  (<View><Picker onValueChange={(value) => {
+                    console.log('drop down change services--')
+                    setFilterName('serviceOffered')
+                    setFilterValue(value)
+                    fetchMentorsFiltered('serviceOffered', value)
+                    setShowPicker(false)
+                  }} selectedValue={filterValue}>
 
+                    <Picker.Item label="Accommodation" value="1" />
+                    <Picker.Item label="Part-Time Job" value="2" />
+                  </Picker>
+
+
+                    <Picker onValueChange={(value) => {
+                      console.log('drop down change location--')
+                      setFilterName('currentLocation')
+                      setFilterValue(value)
+                      fetchMentorsFiltered('currentLocation', value)
+                      setShowPicker(false)
+                    }} selectedValue={filterValue}>
+
+                      <Picker.Item label="Waterloo" value="2" />
+                      <Picker.Item label="Kitchener" value="3" />
+
+                      <Picker.Item label="Toronto" value="4" />
+                      <Picker.Item label="Ottawa" value="5" />
+                      <Picker.Item label="Hamilton" value="6" />
+                      <Picker.Item label="London" value="7" />
+                      <Picker.Item label="Mississauga" value="8" />
+                      <Picker.Item label="Brampton" value="9" />
+                      <Picker.Item label="Markham" value="10" />
+                    </Picker></View>) : null
+                }
+
+              </View>
+
+
+
+              {
+                mentorsList.length > 0 ?
+                  <View style={styles.tabsContainer}>
+                    <FlatList
+                      data={mentorsList}
+                      renderItem={renderHomeItem}
+                      ItemSeparatorComponent={ItemSeparatorView}
+                      keyExtractor={item => item.id}
+                      showsVerticalScrollIndicator={false}
+                    />
+                  </View>
+                  :
+                  <Text>Loading...</Text>
+              }
+
+            </View>
+          </View>
         </View>
-      </View>
-      </View>
       </ScrollView>
 
     );
@@ -415,7 +422,7 @@ const Welcome = (props) => {
     Alert.alert(
       "Logout!", // Specify the desired title here
       `Are you sure, you want to Sign Out?`,
-      [{ text: "No"},{ text: "Yes", onPress: () => props.logout() }],
+      [{ text: "No" }, { text: "Yes", onPress: () => props.logout() }],
     );
   };
 

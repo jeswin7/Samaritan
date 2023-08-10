@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tabsContainer: {
-    height: '80%',
     marginTop: SIZES.medium,
+    marginBottom:SIZES.medium
   },
   listView: {
     backgroundColor: COLORS.tertiary,
@@ -119,14 +119,11 @@ const styles = StyleSheet.create({
   },
   homeContainer: {
     backgroundColor: '#fff',
-    height: '100%',
-    justifyContent: 'center',
     alignItems: 'center'
   },
   homeSubContainer: {
     backgroundColor: '#fff',
     width: '90%',
-    margin: -40
   },
   starContainer: {
     flexDirection: 'row',

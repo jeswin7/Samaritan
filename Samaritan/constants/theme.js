@@ -3,14 +3,11 @@ const COLORS = {
   primary: "#50A4AB",
   secondary: "#242948",
   tertiary: "#E8F6F7",
-<<<<<<< HEAD
   quad: '#008080',
   red: "#ff4d4d",
-=======
   tertiary2: "#CFF4F7",
   red: "#FF0000",
   gold:'gold',
->>>>>>> fb7ab7025a3b3dbe1340e051687fbef884c9a5d3
 
   gray: "#83829A",
   gray2: "#C1C0C8",

@@ -221,19 +221,23 @@ const Dashboard = (props) => {
 
 
     // 6. Fetch Connection Requests
-    const updateMentorConnRequestStatus = async (id, status) => {
-        try {
-            // Make API requests here
-            const response = await fetch(api.apiUrl + `/updateConnection?id=${id}&status=${status}`);
-            const data = await response.json();
-            console.log("Conn Status Upd:", data)
-            fetchMentorConnRequests()
-            // Handle the API response and update component state
-            // ...
+    const updateMentorConnRequestStatus = async (connection, status) => {
+        console.log("--------@ final", api.apiUrl+'/updateConnection', status)
+        const { id, seekerId, mentorId, service } = connection
+        fetch(api.apiUrl+'/updateConnection', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id, seekerId, mentorId, service,
+              status
+            })
+          })
+            .then(() => fetchMentorConnRequests());
+            
 
-        } catch (error) {
-            console.log(error);
-        }
     };
 
     // 7. get chat messages
@@ -451,8 +455,9 @@ const Dashboard = (props) => {
     //Connection requests component
     function ConnectionRequestsScreen() {
 
-        const updateStatus = (id, status) => {
-            updateMentorConnRequestStatus(id, status)
+        const updateStatus = (item, status) => {
+            console.log("--------@ upd". item, status)
+            updateMentorConnRequestStatus(item, status)
         }
 
         return (
@@ -488,8 +493,8 @@ const Dashboard = (props) => {
                                             justifyContent: 'space-between',
                                             marginTop: 10
                                         }}>
-                                            <Button title="Accept" color={COLORS.primary} onPress={() => updateStatus(item.id, 'ACCEPTED')} />
-                                            <Button title="Decline" color={COLORS.red} onPress={() => updateStatus(item.id, 'DECLINED')} />
+                                            <Button title="Accept" color={COLORS.primary} onPress={() => updateStatus(item, 'ACCEPTED')} />
+                                            <Button title="Decline" color={COLORS.red} onPress={() => updateStatus(item, 'DECLINED')} />
                                         </View>
                                         :
                                         <View>

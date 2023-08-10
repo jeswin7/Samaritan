@@ -677,7 +677,7 @@ const AdminDashboard = (props) => {
         });
 
         const data = await response.json();
-        console.log("000000000000000000", data)
+        setMessage('');
 
         navigation.navigate("mentorchat", { mentorDetail, data })
 
@@ -717,21 +717,22 @@ const AdminDashboard = (props) => {
         </View>
         <View style={styles.line} />
 
-        <View style={styles.messageContainer}>
-          {data && data.map((item, index) => (
-            <View
-              key={index}
-              style={[
-                styles.messageBubble,
-                item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
-              ]}
-            >
-              <Text style={styles.messageText}>
-                {item.content} {/* Assuming 'content' is the property containing the message */}
-              </Text>
-            </View>
-          ))}
-        </View>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
+  {data && data.map((item, index) => (
+    <View
+      key={index}
+      style={[
+        styles.messageBubble,
+        item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
+      ]}
+    >
+      <Text style={styles.messageText}>
+        {item.content} {/* Assuming 'content' is the property containing the message */}
+      </Text>
+    </View>
+  ))}
+</ScrollView>
+
       </View>
 
       <View style={styles.bottomContainer}>
@@ -846,7 +847,6 @@ const AdminDashboard = (props) => {
         });
 
         const data = await response.json();
-        console.log("000000000000000000", data)
         navigation.navigate("mentorchat", { mentorDetail, data })
 
 

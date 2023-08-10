@@ -3,7 +3,7 @@ const COLORS = {
   secondary: "#242948",
   tertiary: "#E8F6F7",
   quad: '#008080',
-  red: "#FF0000",
+  red: "#ff4d4d",
 
   gray: "#83829A",
   gray2: "#C1C0C8",
@@ -11,7 +11,7 @@ const COLORS = {
   white: "#FFFFFF",
   lightWhite: "#FAFAFC",
   yellow: '#FFBF00',
-  green: '#2f9c49'
+  green: '#85e085'
 };
 
 const FONT = {

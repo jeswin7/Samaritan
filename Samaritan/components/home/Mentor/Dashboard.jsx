@@ -446,50 +446,44 @@ const Dashboard = (props) => {
                         connReqs.map((item, index) => {
                             return <View key={index} style={{
                                 margin: 15,
-                                backgroundColor: COLORS.tertiary,
-                                padding: 15
+                                backgroundColor: COLORS.secondary,
+                                padding: 15,
+                                borderRadius: SIZES.medium
                             }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                                        <Text style={{ fontSize: 20, color: COLORS.tertiary, marginRight: 5 }}>{item.seekerName}</Text>
                                     </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                                 </View>
-                                <View style={{ marginBottom: 30 }}>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.seekerName}</Text>
-                                </View>
+      
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                                        <Text style={{ fontSize: 20, color: COLORS.tertiary, marginRight: 5  }}>{SERVICE_MAP[item.service]}</Text>
                                     </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                                 </View>
-                                <View style={{ marginBottom: 30 }}>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{SERVICE_MAP[item.serviceId]}</Text>
-                                </View>
+
 
                                 {
                                     item.status === 'PENDING' ?
                                         <View style={{
                                             flexDirection: 'row',
                                             flexWrap: 'wrap',
-                                            justifyContent: 'space-between'
+                                            justifyContent: 'space-between',
+                                            marginTop: 10
                                         }}>
-                                            <Button title="Accept" color={COLORS.primary} onPress={() => updateStatus(item.id, 'ACCEPTED')} />
+                                            <Button title="Accept" color={COLORS.secondary} onPress={() => updateStatus(item.id, 'ACCEPTED')} />
                                             <Button title="Decline" color={COLORS.red} onPress={() => updateStatus(item.id, 'DECLINED')} />
                                         </View>
                                         :
                                         <View>
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <View>
-                                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Connection Status</Text>
-                                                </View>
-                                                <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                                                    <Text style={{ fontSize: 20, color: item.status === 'ACCEPTED' ? COLORS.primary : COLORS.red, marginRight: 5 }}>{item.status}</Text>
+                                                </View>                                         
+                                            
                                             </View>
-                                            <View style={{ marginBottom: 30 }}>
-                                                <Text style={{ fontSize: 20, color: item.status === 'ACCEPTED' ? 'green' : 'red', marginRight: 5, fontWeight: 5 }}>{item.status}</Text>
-                                            </View>
+
                                         </View>
 
                                 }

@@ -535,22 +535,33 @@ const Dashboard = (props) => {
 
         // Update Service Status API
         const updateServiceStatus = async () => {
-            try {
-                // Make API requests here
-                const response = await fetch(api.apiUrl + `/mentor/updateService?serviceId=${serviceDetail.id}&status=${status}`);
-                const data = await response.json();
 
-                Alert.alert(
+
+            const { id } = serviceDetail
+            const service = serviceDetail.type
+            const seekerId  = serviceDetail.seeker.id
+            const mentorId = serviceDetail.mentor.id
+
+            console.log(serviceDetail)
+            fetch(api.apiUrl+'/mentor/updateService', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                 seekerId, mentorId, service, 
+                 serviceId : id,
+                status
+                })
+              })
+                .then(Alert.alert(
                     'Status Updated!', // Specify the desired title here
                     `Your status updated successfully!`,
                     [
-                      { text: 'Done', onPress: () => fetchMentorServices() }
+                      { text: 'Done', onPress: () => fetchData() }
                     ]
-                  );
-
-            } catch (error) {
-                console.log(error);
-            }
+                  ));
 
         }
 

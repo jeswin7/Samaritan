@@ -611,7 +611,11 @@ const Dashboard = (props) => {
 
     const handleSignOut = () => {
         // Call the props.logout function here
-        props.logout();
+        Alert.alert(
+            "Logout!", // Specify the desired title here
+            `Are you sure, you want to Sign Out?`,
+            [{ text: "No"},{ text: "Yes", onPress: () => props.logout() }],
+          );
     };
 
     function CustomDrawerContent(props) {

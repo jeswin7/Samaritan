@@ -47,6 +47,12 @@ const AdminDashboard = (props) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [chatScreen, setChatScreen] = useState(null);
 
+  const [adminId, setId] = useState(null);
+
+  useEffect(() => {
+    setId(props.userId)
+  }, [props])
+
   const statuslist = [
     { key: "COMPLETED", value: "Completed" },
     { key: "PENDING", value: "Pending" },
@@ -858,7 +864,7 @@ const AdminDashboard = (props) => {
 
   const getMessages = async (mentorDetail) => {
     try {
-      const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=1`, {
+      const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=${adminId}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -888,7 +894,7 @@ const AdminDashboard = (props) => {
           key={index}
           style={[
             styles.messageBubble,
-            item.sender === 1 && item.receiver === 8 ? styles.sentBubble : styles.receivedBubble,
+            item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
           ]}
         >
           <Text style={styles.messageText}>

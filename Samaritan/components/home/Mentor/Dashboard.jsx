@@ -29,6 +29,7 @@ const Dashboard = (props) => {
 
     const [mentorDetail, setDetail] = useState({});
     const [connReqs, setConnReqs] = useState(null);
+    const [services, setServices] = useState(null);
     const [chatMsgs, setMsgs] = useState([]);
 
     const SERVICE_MAP = {
@@ -191,7 +192,17 @@ const Dashboard = (props) => {
 
 
     // 4. Update Service Status API
+    const fetchMentorServices = async () => {
+        try {
+            // Make API requests here
+            const response = await fetch(api.apiUrl + `/mentor/viewServices?mentorId=${props.userId}`);
+            const data = await response.json();
+            setServices(data);
 
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     // 5. Fetch Connection Requests
     const fetchMentorConnRequests = async () => {
@@ -258,6 +269,7 @@ const Dashboard = (props) => {
     const fetchData = () => {
         fetchMentorDetail()
         fetchMentorConnRequests()
+        fetchMentorServices()
         fetchMessages()
     }
 
@@ -278,7 +290,7 @@ const Dashboard = (props) => {
                         <View style={styles.item}>
                             <Text style={styles.title}>{payment.name}</Text>
                             <Text style={styles.title}>{payment.service}</Text>
-                            <Text style={payment.status == "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{payment.status}</Text>
+                            <Text style={payment.status == "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{payment.status}</Text>
                         </View>
 
                     </View>
@@ -303,16 +315,15 @@ const Dashboard = (props) => {
 
 
         const ServiceItem = ({ service }) => {
-            const servicesList = []
-            servicesList.push(service)
+
 
             return (
-                <TouchableOpacity onPress={() => navigation.navigate("Service", { servicesList })}>
+                <TouchableOpacity onPress={() => navigation.navigate("Service", { serviceDetail: service })}>
                     <View style={styles.listView}>
                         <View style={styles.item}>
-                            <Text style={styles.title}>{service.name}</Text>
-                            <Text style={styles.title}>{service.service}</Text>
-                            <Text style={service.status == "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{service.status}</Text>
+                            <Text style={styles.title}>{service.seeker.fname} {service.seeker.lname}</Text>
+                            <Text style={styles.title}>{service.type}</Text>
+                            <Text style={service.status == "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{service.status}</Text>
                         </View>
 
                     </View>
@@ -362,15 +373,18 @@ const Dashboard = (props) => {
                         </View>
                         <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                     </View>
-                    <View style={styles.rowContainer}>
+                    {
+                        services && <View style={styles.rowContainer}>
                         <FlatList
-                            data={SERVICES_API}
+                            data={services}
                             renderItem={renderServiceItem}
                             keyExtractor={(item, index) => index.toString()}
                             ItemSeparatorComponent={Separator}
                             horizontal
                         />
                     </View>
+                    }
+
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View>
@@ -504,8 +518,9 @@ const Dashboard = (props) => {
 
     //Profile component
     function ServiceScreen({ route, navigation }) {
-        const { servicesList } = route.params;
-        const [status, setServiceStatus] = useState(servicesList[0].status);
+        const { serviceDetail } = route.params;
+        const [status, setServiceStatus] = useState(serviceDetail.status);
+        const item = serviceDetail;
         const STATUS_MAP = {
             'done': 'Completed',
             'pending': 'In Progress'
@@ -516,10 +531,8 @@ const Dashboard = (props) => {
 
                 <View style={styles.homeSubContainer}>
 
-                    {
-                        servicesList.map((item, index) => {
 
-                            return <View key={index}>
+                         <View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <View>
                                         <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
@@ -527,7 +540,7 @@ const Dashboard = (props) => {
                                     <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.name}</Text>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.seeker.fname} {item.seeker.lname}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -537,7 +550,7 @@ const Dashboard = (props) => {
                                     <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.service}</Text>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.type}</Text>
                                 </View>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -547,7 +560,7 @@ const Dashboard = (props) => {
                                     <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
-                                    <Text style={item.status === "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                                    <Text style={item.status === "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <View>
@@ -562,8 +575,8 @@ const Dashboard = (props) => {
                                 </Picker>
                                 <Button title="Update Status" color={COLORS.secondary} />
                             </View>
-                        })
-                    }
+           
+                    
 
 
 
@@ -811,7 +824,7 @@ const Dashboard = (props) => {
 
                 <Drawer.Screen name="Service" component={ServiceScreen}
                     options={{
-                        title: 'Services',
+                        title: 'Service Detail',
                         headerTitleAlign: 'center',
                         headerTintColor: COLORS.secondary,
                         headerTitleStyle: styles.dashboardHeading,

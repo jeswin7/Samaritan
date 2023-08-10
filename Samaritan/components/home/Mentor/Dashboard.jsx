@@ -191,7 +191,7 @@ const Dashboard = (props) => {
     // 3. Fetch Payments list API
 
 
-    // 4. Update Service Status API
+    // 4. Fetch Service Detail API
     const fetchMentorServices = async () => {
         try {
             // Make API requests here
@@ -236,7 +236,7 @@ const Dashboard = (props) => {
         }
     };
 
-    // 7. get cht messages
+    // 7. get chat messages
     const fetchMessages = async () => {
 
         try {
@@ -256,6 +256,8 @@ const Dashboard = (props) => {
             // Handle error
         }
     };
+
+
 
 
     useEffect(() => {
@@ -375,14 +377,14 @@ const Dashboard = (props) => {
                     </View>
                     {
                         services && <View style={styles.rowContainer}>
-                        <FlatList
-                            data={services}
-                            renderItem={renderServiceItem}
-                            keyExtractor={(item, index) => index.toString()}
-                            ItemSeparatorComponent={Separator}
-                            horizontal
-                        />
-                    </View>
+                            <FlatList
+                                data={services}
+                                renderItem={renderServiceItem}
+                                keyExtractor={(item, index) => index.toString()}
+                                ItemSeparatorComponent={Separator}
+                                horizontal
+                            />
+                        </View>
                     }
 
 
@@ -469,11 +471,11 @@ const Dashboard = (props) => {
                                         <Text style={{ fontSize: 20, color: COLORS.tertiary, marginRight: 5 }}>{item.seekerName}</Text>
                                     </View>
                                 </View>
-      
+
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.tertiary, marginRight: 5  }}>{SERVICE_MAP[item.service]}</Text>
+                                        <Text style={{ fontSize: 20, color: COLORS.tertiary, marginRight: 5 }}>{SERVICE_MAP[item.service]}</Text>
                                     </View>
                                 </View>
 
@@ -494,8 +496,8 @@ const Dashboard = (props) => {
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <View>
                                                     <Text style={{ fontSize: 20, color: item.status === 'ACCEPTED' ? COLORS.primary : COLORS.red, marginRight: 5 }}>{item.status}</Text>
-                                                </View>                                         
-                                            
+                                                </View>
+
                                             </View>
 
                                         </View>
@@ -526,57 +528,78 @@ const Dashboard = (props) => {
             'pending': 'In Progress'
         }
 
+        // Update Service Status API
+        const updateServiceStatus = async () => {
+            try {
+                // Make API requests here
+                const response = await fetch(api.apiUrl + `/mentor/updateService?serviceId=${serviceDetail.id}&status=${status}`);
+                const data = await response.json();
+
+                Alert.alert(
+                    'Status Updated!', // Specify the desired title here
+                    `Your status updated successfully!`,
+                    [
+                      { text: 'Done', onPress: () => fetchMentorServices() }
+                    ]
+                  );
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+
         return (
             <View style={styles.homeContainer}>
 
                 <View style={styles.homeSubContainer}>
 
 
-                         <View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
-                                    </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                                </View>
-                                <View style={{ marginBottom: 30 }}>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.seeker.fname} {item.seeker.lname}</Text>
-                                </View>
-
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
-                                    </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                                </View>
-                                <View style={{ marginBottom: 30 }}>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.type}</Text>
-                                </View>
-
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
-                                    </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                                </View>
-                                <View style={{ marginBottom: 30 }}>
-                                    <Text style={item.status === "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Update Service Status</Text>
-                                    </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
-                                </View>
-                                <Picker onValueChange={(value) => setServiceStatus(value)} selectedValue={status}>
-
-                                    <Picker.Item label="Completed" value="done" />
-                                    <Picker.Item label="In Progress" value="pending" />
-                                </Picker>
-                                <Button title="Update Status" color={COLORS.secondary} />
+                    <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
                             </View>
-           
-                    
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View style={{ marginBottom: 30 }}>
+                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.seeker.fname} {item.seeker.lname}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View style={{ marginBottom: 30 }}>
+                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.type}</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <View style={{ marginBottom: 30 }}>
+                            <Text style={item.status === "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Update Service Status</Text>
+                            </View>
+                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        </View>
+                        <Picker onValueChange={(value) => setServiceStatus(value)} selectedValue={status}>
+
+                            <Picker.Item label="Completed" value="COMPLETED" />
+                            <Picker.Item label="In Progress" value="PENDING" />
+                        </Picker>
+                        <Button title="Update Status" color={COLORS.secondary} onPress={updateServiceStatus} />
+                    </View>
+
+
 
 
 
@@ -694,19 +717,19 @@ const Dashboard = (props) => {
         const postMessage = async () => {
             const adminId = 1;
 
-          fetch(api.apiUrl + `/mentor/addMessage`, {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              adminId,
-              mentorId: props.userId,
-              message
+            fetch(api.apiUrl + `/mentor/addMessage`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    adminId,
+                    mentorId: props.userId,
+                    message
+                })
             })
-          })
-            .then(() => updateChat())
+                .then(() => updateChat())
 
         };
 
@@ -745,11 +768,11 @@ const Dashboard = (props) => {
                             style={styles.inputText}
                             placeholder="Type your message..."
                             placeholderTextColor={COLORS.tertiary}
-                          value={message}
-                          onChangeText={value => setMessage(value)}
+                            value={message}
+                            onChangeText={value => setMessage(value)}
                         />
                         <TouchableOpacity style={styles.sendButton}
-                        onPress={postMessage}
+                            onPress={postMessage}
                         >
                             <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20} /></Text>
                         </TouchableOpacity>

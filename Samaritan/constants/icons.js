@@ -16,6 +16,8 @@ import bell_icon from '../assets/icons/bell_icon.png'
 import filter_icon from '../assets/icons/filter_icon.png'
 import cheveron_icon from '../assets/icons/cheveron_icon.png'
 import search_icon from '../assets/icons/search_icon.png'
+import add_icon from '../assets/icons/addIcon.png'
+import cancel_icon from '../assets/icons/Iconcancel.png'
 
 export default {
   heart,
@@ -35,5 +37,7 @@ export default {
   bell_icon,
   filter_icon,
   cheveron_icon,
-  search_icon
+  search_icon,
+  add_icon,
+  cancel_icon
 };

@@ -6,6 +6,8 @@ const strings = {
     signIn : 'Sign In',
     newTo: 'New to Samaritan? ',
     signUp: 'Sign Up',
+    save: 'Save',
+    update: 'Update',
     emailError: 'Email is required!',
     passwordError: 'Please enter a valid password! Characters between 8 to 20, at least one letter and one number.',
     fnameError: 'Please enter valid First Name!',
@@ -25,13 +27,18 @@ const strings = {
     location: 'Location',
     email: 'Email',
     password: 'Password',
+    city: 'City',
+    province: 'Province',
+    services: 'Services',
+    organization: 'Organization Name',
+    orgType: 'Oraganization Type',
     confirmPassword: 'Confirm Password',
     emptyfieldError: 'All fields are required',
     contactformatError: 'Contact number should contain numbers only',
     pwdmatchError: 'passwords do not match',
     country: 'Country',
     searchHintText: 'What are you looking for?',
-    dendConnectionRequest: 'Send Connection Request'
+    dendConnectionRequest: 'Send Connection Request',
   };
 
   export default strings;

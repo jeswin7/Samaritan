@@ -45,7 +45,6 @@ const AdminDashboard = (props) => {
 
 
   const [showNotifications, setShowNotifications] = useState(false);
-  const [chatScreen, setChatScreen] = useState(null);
 
   const [adminId, setId] = useState(null);
 
@@ -657,6 +656,52 @@ const AdminDashboard = (props) => {
     );
   }
 
+  function ChatComponent ({route, navigation}) {
+
+    const { mentorDetail, data } = route.params;
+
+    return <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]} style={styles.linearGradient}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>{mentorDetail.fname} {mentorDetail.lname}</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate("mentors")}>
+            <Image source={icons.cancel_icon} style={styles.closeIcon} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.line} />
+    
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
+          {data && data.map((item, index) => (
+            <View
+              key={index}
+              style={[
+                styles.messageBubble,
+                item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
+              ]}
+            >
+              <Text style={styles.messageText}>
+                {item.content} {/* Assuming 'content' is the property containing the message */}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    
+      <View style={styles.bottomContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputText}
+            placeholder="Type your message..."
+            placeholderTextColor={COLORS.secondary}
+          />
+          <TouchableOpacity style={styles.sendButton}>
+            <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20}/></Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </LinearGradient>
+  }
+
   function UpdateMentorStatusScreen({ route, navigation }) {
     const { mentor } = route.params;
     SERVICE_TEXT_MAP = {
@@ -733,6 +778,35 @@ const AdminDashboard = (props) => {
         console.log(error);
       }
     };
+
+    // Chat 
+
+
+  
+    const getMessages = async () => {
+
+      try {
+        const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=${adminId}`, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+        });
+    
+        const data = await response.json();
+        console.log("000000000000000000", data)
+  
+        navigation.navigate("mentorchat", {mentorDetail, data})
+  
+    
+  
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle error
+      }
+    };
+
 
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
@@ -812,7 +886,7 @@ const AdminDashboard = (props) => {
                 <Text style={styles.saveText}>{strings.update}</Text>
               </TouchableOpacity>
             </ScrollView>
-            <TouchableOpacity style={styles.chatContainer} onPress={() => chatScreenToggle(mentorDetail)}>
+            <TouchableOpacity style={styles.chatContainer} onPress={getMessages}>
               <Ionicons name="chatbox-ellipses" size={40} color={COLORS.secondary}/>
             </TouchableOpacity>
           </View>
@@ -866,81 +940,8 @@ const AdminDashboard = (props) => {
     );
   };
 
-  const getMessages = async (mentorDetail) => {
-    try {
-      const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=${adminId}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-      });
-  
-      const data = await response.json();
-      console.log("000000000000000000", data)
-  
-      setChatScreen(
 
 
-<LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]} style={styles.linearGradient}>
-  <View style={styles.container}>
-    <View style={styles.header}>
-      <Text style={styles.headerText}>{mentorDetail.fname} {mentorDetail.lname}</Text>
-      <TouchableOpacity style={styles.closeButton} onPress={() => setChatScreen(null)}>
-        <Image source={icons.cancel_icon} style={styles.closeIcon} />
-      </TouchableOpacity>
-    </View>
-    <View style={styles.line} />
-
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
-      {data && data.map((item, index) => (
-        <View
-          key={index}
-          style={[
-            styles.messageBubble,
-            item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
-          ]}
-        >
-          <Text style={styles.messageText}>
-            {item.content} {/* Assuming 'content' is the property containing the message */}
-          </Text>
-        </View>
-      ))}
-    </ScrollView>
-  </View>
-
-  <View style={styles.bottomContainer}>
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.inputText}
-        placeholder="Type your message..."
-        placeholderTextColor={COLORS.secondary}
-      />
-      <TouchableOpacity style={styles.sendButton}>
-        <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20}/></Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-</LinearGradient>
-
-      
-      );
-    } catch (error) {
-      console.error('Error:', error);
-      // Handle error
-    }
-  };
-  
-  // Chat Screen
-  const chatScreenToggle = async (mentorDetail) => {
-    await getMessages(mentorDetail);
-  };
-  
-
-  const ChatScreenModal = (mentorDetail) => {
-    console.log('mentorDetail---', mentorDetail)
-
-  };
 
   function CustomDrawerContent(props) {
     return (
@@ -954,9 +955,7 @@ const AdminDashboard = (props) => {
   return (
     <NavigationContainer independent={true}>
       {showNotifications && <NotificationsModal />}
-      {chatScreen}
-      {
-        !chatScreen && <Drawer.Navigator
+<Drawer.Navigator
           initialRouteName="Home"
           screenOptions={{
             drawerStyle: {
@@ -1193,8 +1192,32 @@ const AdminDashboard = (props) => {
             }}
           />
 
+<Drawer.Screen
+            name="mentorchat"
+            component={ChatComponent}
+            options={{
+              title: "",
+              drawerLabel: () => null,
+              headerTitleAlign: "center",
+              headerTintColor: COLORS.secondary,
+              headerTitleStyle: styles.dashboardHeading,
+              headerStyle: {
+                backgroundColor: "#458592",
+              },
+              drawerItemStyle: { height: 0 },
+              headerRight: () => (
+                <TouchableOpacity
+                  style={styles.buttonBellStyle}
+                  onPress={toggleNotifications}
+                >
+                  <Image source={icons.bell_icon}></Image>
+                </TouchableOpacity>
+              ),
+            }}
+          />
+
         </Drawer.Navigator>
-      }
+      
 
     </NavigationContainer>
   );

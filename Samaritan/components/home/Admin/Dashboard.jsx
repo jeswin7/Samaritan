@@ -726,7 +726,7 @@ const AdminDashboard = (props) => {
         item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
       ]}
     >
-      <Text style={styles.messageText}>
+      <Text style={item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentText : styles.receivedText}>
         {item.content} {/* Assuming 'content' is the property containing the message */}
       </Text>
     </View>
@@ -866,7 +866,7 @@ const AdminDashboard = (props) => {
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 5 }}>
-                <View style={{ backgroundColor: '#458592', opacity: 0.9 }}>
+                <View style={{ backgroundColor: COLORS.secondary, opacity: 0.9, borderRadius: SIZES.medium }}>
                   <Text style={styles.headingText}>
                     {mentorDetail?.fname} {mentorDetail?.lname}
                   </Text>
@@ -950,8 +950,8 @@ const AdminDashboard = (props) => {
   const handleSignOut = () => {
     // Call the props.logout function here
     Alert.alert(
-      "Logout!", // Specify the desired title here
-      `Are you sure, you want to Sign Out?`,
+      "Sign Out?", // Specify the desired title here
+      `Are you sure, you want to sign out?`,
       [{ text: "No" }, { text: "Yes", onPress: () => props.logout() }],
     );
   };

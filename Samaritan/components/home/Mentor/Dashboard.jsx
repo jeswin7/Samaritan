@@ -566,7 +566,7 @@ const Dashboard = (props) => {
                                     <Picker.Item label="Completed" value="done" />
                                     <Picker.Item label="In Progress" value="pending" />
                                 </Picker>
-                                <Button title="Update Status" color={COLORS.primary} />
+                                <Button title="Update Status" color={COLORS.secondary} />
                             </View>
                         })
                     }
@@ -659,6 +659,7 @@ const Dashboard = (props) => {
     function ChatScreen({ route, navigation }) {
         // const { mentorDetail, data } = route.params;
         const data = chatMsgs;
+        const [message, setMessage] = useState('');
 
 
         const updateChat = async () => {
@@ -683,23 +684,24 @@ const Dashboard = (props) => {
         }
 
 
-        // const postMessage = async () => {
+        const postMessage = async () => {
+            const adminId = 1;
 
-        //   fetch(api.apiUrl + `/admin/addMessage`, {
-        //     method: 'POST',
-        //     headers: {
-        //       Accept: 'application/json',
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //       adminId,
-        //       mentorId: mentorDetail.id,
-        //       message
-        //     })
-        //   })
-        //     .then(() => updateChat())
+          fetch(api.apiUrl + `/mentor/addMessage`, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              adminId,
+              mentorId: props.userId,
+              message
+            })
+          })
+            .then(() => updateChat())
 
-        // };
+        };
 
         return (
             <View style={styles.linearGradient}>
@@ -736,11 +738,11 @@ const Dashboard = (props) => {
                             style={styles.inputText}
                             placeholder="Type your message..."
                             placeholderTextColor={COLORS.tertiary}
-                        //   value={message}
-                        //   onChangeText={value => setMessage(value)}
+                          value={message}
+                          onChangeText={value => setMessage(value)}
                         />
                         <TouchableOpacity style={styles.sendButton}
-                        // onPress={postMessage}
+                        onPress={postMessage}
                         >
                             <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20} /></Text>
                         </TouchableOpacity>

@@ -430,19 +430,28 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     maxWidth: '70%', // Adjust this value to limit the chat bubble width
+    flexDirection: 'row', // Add this to align bubbles correctly
   },
   sentBubble: {
     alignSelf: 'flex-end',
     backgroundColor: COLORS.tertiary,
-    color: COLORS.secondary
+    borderTopRightRadius: 0, // Add this to adjust the border radius for the sent bubble
+    marginLeft: 'auto', // Add this to push the sent bubble to the right
   },
   receivedBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: COLORS.primary,
-    color: COLORS.tertiary
+    backgroundColor: COLORS.secondary,
+    borderTopLeftRadius: 0, // Add this to adjust the border radius for the received bubble
+    marginRight: 'auto', // Add this to push the received bubble to the left
   },
   message: {
     fontSize: 16,
+  },
+  sentText:{
+    color: COLORS.secondary
+  },
+  receivedText: {
+    color: COLORS.tertiary
   },
 
 
@@ -474,7 +483,7 @@ const styles = StyleSheet.create({
       width: 20,
       height: 20,
       resizeMode: 'contain',
-      tintColor: COLORS.white,
+      tintColor: COLORS.tertiary,
     },
     line: {
       height: 1,

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: SIZES.medium,
   },
   listView: {
-    backgroundColor: COLORS.tertiary,
+    backgroundColor: COLORS.secondary,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     borderRadius: SIZES.medium,
@@ -103,23 +103,21 @@ const styles = StyleSheet.create({
     width: 15,
   },
   title: {
-    fontSize: SIZES.large,
-    color: COLORS.primary,
+    fontSize: SIZES.medium,
+    color: COLORS.white,
     paddingVertical: 5,
   },
   statusDoneStyle: {
-    fontSize: SIZES.large,
+    fontSize: SIZES.medium,
     fontWeight: 'bold',
-    color: 'green',
+    color: COLORS.primary,
     paddingVertical: 5,
-    border: '1px solid red'
   },  
   statusPendingStyle: {
-    fontSize: SIZES.large,
+    fontSize: SIZES.medium,
     fontWeight: 'bold',
-    color: 'orange',
+    color: 'gold',
     paddingVertical: 5,
-    border: '1px solid red'
   },
   seperatorStyle: {
     height: 30, 
@@ -257,6 +255,14 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontWeight: 'bold',
   },
+
+
+  headingText: {
+    fontSize: 20,
+    color: COLORS.white,
+    margin: 5,
+    fontWeight: 'bold',
+  }
 
 
 

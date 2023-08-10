@@ -237,7 +237,7 @@ const Welcome = (props) => {
               </View>
               <View>
                 {showPicker ?
-                  (<View><Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:10,color:COLORS.white}} onValueChange={(value) => {
+                  (<View><Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:10,color:COLORS.white }} onValueChange={(value) => {
                     setFilterName('serviceOffered')
                     setFilterValue(value)
                     fetchMentorsFiltered('serviceOffered', value)
@@ -467,7 +467,7 @@ const Welcome = (props) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="LOG OUT" labelStyle={{ color: COLORS.white }} onPress={() => handleSignOut()} />
+        <DrawerItem label="Sign Out" labelStyle={{ color: COLORS.white }} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }
@@ -488,7 +488,7 @@ const Welcome = (props) => {
         drawerContent={props => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen name="Home" component={HomeScreen} options={{
-          title: 'SAMARITAN',
+          title: 'Home',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
@@ -503,7 +503,7 @@ const Welcome = (props) => {
         }} />
 
         <Drawer.Screen name="Requests" component={RequestComponent} options={{
-          title: 'REQUESTS',
+          title: 'Requests',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,

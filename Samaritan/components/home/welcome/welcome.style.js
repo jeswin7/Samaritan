@@ -113,13 +113,13 @@ const styles = StyleSheet.create({
     width: 15,
   },
   titleNameStyle: {
-    fontSize: SIZES.xLarge,
+    fontSize: SIZES.medium,
     color: COLORS.white,
     paddingVertical: 5,
     fontWeight:'bold'
   },
   title: {
-    fontSize: SIZES.large,
+    fontSize: SIZES.medium,
     color: COLORS.white,
     paddingVertical: 5,
     fontWeight:'bold'
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   star: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'gold'
   },
   profileView: {

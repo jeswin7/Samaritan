@@ -28,7 +28,9 @@ import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
 import SeekerTable from "./SeekerTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { set } from "react-native-reanimated";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const AdminDashboard = (props) => {
   const router = useRouter();

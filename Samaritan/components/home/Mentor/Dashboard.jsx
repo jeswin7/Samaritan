@@ -30,6 +30,7 @@ const Dashboard = (props) => {
     const [mentorDetail, setDetail] = useState({});
     const [connReqs, setConnReqs] = useState(null);
     const [services, setServices] = useState(null);
+    const [payments, setPayments] = useState(null);
     const [chatMsgs, setMsgs] = useState([]);
 
     const SERVICE_MAP = {
@@ -261,6 +262,28 @@ const Dashboard = (props) => {
         }
     };
 
+    // 8. get Payments
+    const fetchMentorPayments = async () => {
+
+        try {
+            const response = await fetch(api.apiUrl + `/mentor/getPayments?mentorId=${props.userId}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            const data = await response.json();
+            setPayments(data)
+
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle error
+        }
+    };
+    
+
 
 
 
@@ -276,6 +299,7 @@ const Dashboard = (props) => {
         fetchMentorDetail()
         fetchMentorConnRequests()
         fetchMentorServices()
+        fetchMentorPayments()
         fetchMessages()
     }
 
@@ -294,8 +318,8 @@ const Dashboard = (props) => {
                 <TouchableOpacity onPress={() => navigation.navigate("Payment", { paymentsList })}>
                     <View style={styles.listView}>
                         <View style={styles.item}>
-                            <Text style={styles.title}>{payment.name}</Text>
-                            <Text style={styles.title}>{payment.service}</Text>
+                            <Text style={styles.title}>{payment?.seeker?.fname} {payment?.seeker?.lname}</Text>
+                            <Text style={styles.title}>{payment?.service}</Text>
                             <Text style={payment.status == "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{payment.status}</Text>
                         </View>
 
@@ -399,15 +423,15 @@ const Dashboard = (props) => {
                         <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
                     </View>
 
-                    <View style={styles.rowContainer}>
+                   { payments && <View style={styles.rowContainer}>
                         <FlatList
-                            data={PAYMENT_API}
+                            data={payments}
                             renderItem={renderPaymentItem}
                             keyExtractor={(item, index) => index.toString()}
                             ItemSeparatorComponent={Separator}
                             horizontal
                         />
-                    </View>
+                    </View>} 
 
                     {/* Rating */}
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>

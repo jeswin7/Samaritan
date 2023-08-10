@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     flex: 1,
-    backgroundColor: COLORS.tertiary,
+    backgroundColor: COLORS.primary,
     marginRight: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
@@ -57,6 +57,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     paddingHorizontal: SIZES.medium,
+    color: COLORS.white,
+    fontWeight:'bold',
+    fontSize:16
   },
   searchBtn: {
     width: 50,
@@ -82,12 +85,13 @@ const styles = StyleSheet.create({
     marginBottom:SIZES.medium
   },
   listView: {
-    backgroundColor: COLORS.tertiary,
+    backgroundColor: COLORS.primary,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     borderRadius: SIZES.medium,
   }, 
   detailView: {
+    backgroundColor:COLORS.primary,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     borderRadius: SIZES.medium,
@@ -108,10 +112,17 @@ const styles = StyleSheet.create({
     height: 25,
     width: 15,
   },
+  titleNameStyle: {
+    fontSize: SIZES.xLarge,
+    color: COLORS.white,
+    paddingVertical: 5,
+    fontWeight:'bold'
+  },
   title: {
     fontSize: SIZES.large,
-    color: COLORS.secondary,
-    paddingVertical: 5
+    color: COLORS.white,
+    paddingVertical: 5,
+    fontWeight:'bold'
   },
   seperatorStyle: {
     height: 30,
@@ -140,7 +151,7 @@ const styles = StyleSheet.create({
   },
   // Request Component style
   requestContainer: {
-    height: '90%',
+    //height: '90%',
     marginTop: SIZES.medium,
   },
   statusView: {
@@ -157,11 +168,12 @@ const styles = StyleSheet.create({
   statusTitle: {
     fontSize: SIZES.large,
     color: COLORS.secondary,
-    marginLeft: 10
+    fontWeight:'bold'
+    //marginLeft: 10
   },
   //mentorDetails
   mentorDetailsContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     height: '100%'
   },
   mentorDetailsSubContainer: {
@@ -179,7 +191,7 @@ const styles = StyleSheet.create({
   sendConnectionButton: {
     marginVertical: 40,
     elevation: 8,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.secondary,
     borderRadius: 10,
     paddingVertical: 12,
     paddingHorizontal: 12,
@@ -190,6 +202,57 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontWeight: "bold",
     alignSelf: "center",
+  },
+  //notification Screen
+  //Notifications
+  containernotification: {
+   height: '100%', 
+    alignItems: 'center',
+    marginTop: 30,
+    width:'100%'
+
+  },
+  textContainer: {
+    fontSize: 18,
+    color: COLORS.secondary,
+    margin: 10,
+  },
+  subContainer: {
+    width: '90%',
+  },
+  notificationheader: {
+    width: '100%',
+    color: COLORS.tertiary,
+    paddingVertical: 10,
+    //paddingHorizontal: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  headertext: {
+    color: COLORS.secondary,
+    fontSize: SIZES.xLarge,
+    fontWeight: 'bold',
+    paddingLeft: 120,
+  },
+  notificationline: {
+    backgroundColor: COLORS.secondary,
+    //height: 1,
+    //width: "100%",
+  },
+  notificationcardContainer:{
+   // width: '100%',
+    margin:5,
+    padding:5,
+    backgroundColor:COLORS.primary, 
+    //opacity:0.8, 
+    borderRadius:10,
+    marginTop:20,
+  },
+  closeButton:{
+    maxWidth: 50,
+    alignSelf: 'flex-end',
+    paddingRight: 8,
   },
 });
 

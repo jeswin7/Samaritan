@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  Button,
   Alert
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -18,7 +17,10 @@ import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNaviga
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from "react-native-gesture-handler";
-
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
 const Welcome = (props) => {
@@ -33,6 +35,8 @@ const Welcome = (props) => {
   const [filterValue, setFilterValue] = useState(1);
   const [showPicker, setShowPicker] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showNotifications, setShowNotifications] = useState(false);
+
 
 
   useEffect(() => {
@@ -134,8 +138,7 @@ const Welcome = (props) => {
   // search handle
   const handleSearchClick = (text) => {
     // Perform search button click here
-    if(text){
-      console.log('Search button click...', text);
+    if (text) {
       setSearchTerm(text);
     }
   };
@@ -146,7 +149,7 @@ const Welcome = (props) => {
       // Make API requests here
       const response = await fetch(`${api.apiUrl}/mentors/filter?filterName=${encodeURIComponent(filterName)}&filterValue=${encodeURIComponent(filterValue)}`);
       const data = await response.json();
-      console.log('Fetched data:', data);
+      //console.log('Fetched data:', data);
       setMentorsList(data);
     } catch (error) {
       console.log('Error fetching data:', error);
@@ -157,8 +160,11 @@ const Welcome = (props) => {
 
   // filter handle
   const handleFilterClick = () => {
-    console.log('@ handle filter----')
-    setShowPicker(true);
+    if(!showPicker){
+      setShowPicker(true);
+    }else{
+      setShowPicker(false);
+    }
   };
 
 
@@ -175,24 +181,25 @@ const Welcome = (props) => {
     const HomeItem = ({ item }) => (
       <TouchableOpacity onPress={() => {
         setFocussedMentor(item);
+        setShowPicker(false);
         navigation.navigate("Details", { item });
       }
       }>
-        <View style={styles.listView}>
-          <View style={styles.item}>
-            <Text style={styles.title}>{item.fname} {item.lname}</Text>
-            <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
-            <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
-            <Text style={styles.title}> {[...Array(5)].map((_, index) => (
-              <Text key={index} style={styles.star}>
-                {index < Math.floor(item.rating) ? '★' : '☆'}
-              </Text>
-            ))}</Text>
+          <View style={styles.listView}>
+            <View style={styles.item}>
+              <Text style={styles.titleNameStyle}>{item.fname} {item.lname}</Text>
+              <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]} | {ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+              <Text style={styles.title}> {[...Array(5)].map((_, index) => (
+                <Text key={index} style={styles.star}>
+                  {index < Math.floor(item.rating) ? '★' : '☆'}
+                </Text>
+              ))}</Text>
+            </View>
+            <View style={styles.cheveronView}>
+              {/* <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image> */}
+              <Ionicons size={34} style={{color:COLORS.white}} name="chevron-forward-outline"></Ionicons>
+            </View>
           </View>
-          <View style={styles.cheveronView}>
-            <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image>
-          </View>
-        </View>
       </TouchableOpacity>
 
     );
@@ -204,14 +211,15 @@ const Welcome = (props) => {
           <View style={styles.homeContainer}>
             <View style={styles.homeSubContainer}>
               <View style={styles.searchContainer}>
-                <View style={styles.searchWrapper}>
-                  <TextInput
-                    style={styles.searchInput}
-                    value={searchTerm}
-                    onChangeText={(text) => handleSearchClick(text)}
-                    placeholder={strings.searchHintText}
-                  />
-                </View>
+                  <View style={styles.searchWrapper}>
+                    <TextInput
+                      style={styles.searchInput}
+                      value={searchTerm}
+                      onChangeText={(text) => handleSearchClick(text)}
+                      placeholder={strings.searchHintText}
+                      placeholderTextColor={COLORS.white}
+                    />
+                  </View>
 
                 <TouchableOpacity style={styles.searchBtn} >
                   <Image
@@ -229,8 +237,7 @@ const Welcome = (props) => {
               </View>
               <View>
                 {showPicker ?
-                  (<View><Picker onValueChange={(value) => {
-                    console.log('drop down change services--')
+                  (<View><Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:10,color:COLORS.white}} onValueChange={(value) => {
                     setFilterName('serviceOffered')
                     setFilterValue(value)
                     fetchMentorsFiltered('serviceOffered', value)
@@ -242,8 +249,7 @@ const Welcome = (props) => {
                   </Picker>
 
 
-                    <Picker onValueChange={(value) => {
-                      console.log('drop down change location--')
+                    <Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:2, color:COLORS.white,borderRadius:10}} onValueChange={(value) => {
                       setFilterName('currentLocation')
                       setFilterValue(value)
                       fetchMentorsFiltered('currentLocation', value)
@@ -298,16 +304,15 @@ const Welcome = (props) => {
       const response = await fetch(`${api.apiUrl}/seeker/connectionRequests?user_id=${props.userId}`);
       const data = await response.json();
       setConnReqs(data);
-
     } catch (error) {
       console.log(error);
     }
   };
 
   //Request Component
-  function RequestComponent({ navigation, searchTerm, setSearchTerm, handleSearchClick }) {
+  function RequestComponent({ }) {
 
-    fetchSeekerConnRequests()
+    //fetchSeekerConnRequests()
 
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
@@ -315,11 +320,10 @@ const Welcome = (props) => {
       <TouchableOpacity>
         <View style={styles.listView}>
           <View style={styles.item}>
-            <Text style={styles.title}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
-            <Text style={styles.title}>{SERVICE_MAP[item.connection.serviceId]}</Text>
+            <Text style={styles.titleNameStyle}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
+            <Text style={styles.title}>{SERVICE_MAP[item.connection.service]}</Text>
             <View style={styles.statusView}>
-              <View style={[styles.statusIcon, { backgroundColor: item.connection.status === 'DECLINED' ? COLORS.red : item.connection.status === 'ACCEPTED' ? COLORS.green : COLORS.yellow }]}></View>
-              <Text style={styles.statusTitle}>{item.connection.status}</Text>
+              <Text style={[styles.statusTitle,{color:item.connection.status === 'DECLINED' ? COLORS.red : item.connection.status === 'ACCEPTED' ? COLORS.secondary : COLORS.gold}]}>{item.connection.status}</Text>
             </View>
 
           </View>
@@ -348,21 +352,54 @@ const Welcome = (props) => {
     );
   }
 
-  //Notification component
-  function ProfileScreen({ navigation }) {
+  // Notification modal component
+
+  const toggleNotifications = () => {
+    setShowPicker(false);
+    setShowNotifications(!showNotifications);
+  };
+
+  const NotificationsModal = () => {
     return (
-      <View style={styles.profileView}>
-        <Button onPress={() => navigation.goBack()} title="Go back home" />
-      </View>
+        <View style={styles.containernotification}>
+          <View style={styles.notificationheader}>
+            <Text style={styles.headertext}>Notifications</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setShowNotifications(false)}
+            >
+              <Image source={icons.cancel_icon}></Image>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.notificationline}></View>
+
+          <View style={styles.subContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.notificationcardContainer}>
+                <Text style={styles.textContainer}>
+                  Your Connection request for Accommodation has been sent Successfully!
+                </Text>
+              </View>
+              <View style={styles.notificationcardContainer}>
+                <Text style={styles.textContainer}>
+                  Your Connection request for Part time job has been sent Successfully!
+                </Text>
+              </View>
+              <View style={styles.notificationcardContainer}>
+                <Text style={styles.textContainer}>
+                  Your Connection request for Part time job has been sent Accepted by Mentor!
+                </Text>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
     );
-  }
-
-
+  };
 
   //Mentor Details Screen
   function MentorDetailsScreen({ route }) {
     const { item } = route.params;
-    console.log('metor list', item);
+    //console.log('metor list', item);
     const [requestSent, setrequestSent] = useState(false);
 
     // Send Connection request API initiate
@@ -394,17 +431,17 @@ const Welcome = (props) => {
     return (
       <View style={styles.mentorDetailsContainer}>
         <View style={styles.mentorDetailsSubContainer}>
-          <View style={styles.detailView}>
-            <View style={styles.item}>
-              <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
-              <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
-              <Text style={styles.title}>{[...Array(5)].map((_, index) => (
-                <Text key={index} style={styles.star}>
-                  {index < Math.floor(item.rating) ? '★' : '☆'}
-                </Text>
-              ))}</Text>
+            <View style={styles.detailView}>
+              <View style={styles.item}>
+                <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+                <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
+                <Text style={styles.title}>{[...Array(5)].map((_, index) => (
+                  <Text key={index} style={styles.star}>
+                    {index < Math.floor(item.rating) ? '★' : '☆'}
+                  </Text>
+                ))}</Text>
+              </View>
             </View>
-          </View>
         </View>
         {
           !requestSent &&
@@ -420,8 +457,8 @@ const Welcome = (props) => {
   const handleSignOut = () => {
     // Call the props.logout function here
     Alert.alert(
-      "Logout!", // Specify the desired title here
-      `Are you sure, you want to Sign Out?`,
+      "Sign Out?", // Specify the desired title here
+      `Are you sure, you want to sign out?`,
       [{ text: "No" }, { text: "Yes", onPress: () => props.logout() }],
     );
   };
@@ -437,6 +474,7 @@ const Welcome = (props) => {
 
   return (
     <NavigationContainer independent={true}>
+      {showNotifications && <NotificationsModal />}
       <Drawer.Navigator initialRouteName="Home"
         screenOptions={{
           drawerStyle: {
@@ -454,34 +492,28 @@ const Welcome = (props) => {
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
+          headerStyle: {
+            backgroundColor: COLORS.white
+          },
           headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+            <TouchableOpacity style={styles.buttonBellStyle} onPress={toggleNotifications}>
               <Image source={icons.bell_icon}></Image>
             </TouchableOpacity >
           ),
         }} />
+
         <Drawer.Screen name="Requests" component={RequestComponent} options={{
           title: 'REQUESTS',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
           headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+            <TouchableOpacity style={styles.buttonBellStyle} onPress={toggleNotifications}>
               <Image source={icons.bell_icon}></Image>
             </TouchableOpacity >
           ),
         }} />
-        <Drawer.Screen name="Profile" component={ProfileScreen} options={{
-          title: 'PROFILE',
-          headerTitleAlign: 'center',
-          headerTintColor: COLORS.secondary,
-          headerTitleStyle: styles.dashboardHeading,
-          headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
-              <Image source={icons.bell_icon}></Image>
-            </TouchableOpacity >
-          ),
-        }} />
+
         <Drawer.Screen name="Details" component={MentorDetailsScreen} options={{
           title: focussedMentor ? `${focussedMentor.fname} ${focussedMentor.lname}` : 'DETAILS',
           headerTitleAlign: 'center',
@@ -489,7 +521,7 @@ const Welcome = (props) => {
           headerTitleStyle: styles.dashboardHeading,
           drawerItemStyle: { height: 0 },
           headerRight: () => (
-            <TouchableOpacity style={styles.buttonBellStyle} onPress={() => alert('notification')}>
+            <TouchableOpacity style={styles.buttonBellStyle} onPress={toggleNotifications}>
               <Image source={icons.bell_icon}></Image>
             </TouchableOpacity >
           ),

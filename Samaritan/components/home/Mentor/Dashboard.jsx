@@ -839,7 +839,7 @@ const Dashboard = (props) => {
                 drawerContent={props => <CustomDrawerContent {...props} />}
             >
                 <Drawer.Screen name="Home" component={HomeScreen} options={{
-                    title: 'Home',
+                    title: 'Dashboard',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,

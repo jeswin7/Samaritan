@@ -163,7 +163,13 @@ const SignUp = (props) => {
             password,
           })
         })
-          .then(() => console.log("Seeker registered!!!!"));
+          .then(() =>     Alert.alert(
+            'Successfully Registered!', // Specify the desired title here
+            ``,
+            [
+              { text: 'Done', onPress: () =>  props.registered()}
+            ]
+          ));
 
       }
 
@@ -194,19 +200,19 @@ const SignUp = (props) => {
             email
           })
         })
-          .then(() => console.log("Mentor registered!!!!"));
+          .then(() =>     Alert.alert(
+            'Successfully Registered!', // Specify the desired title here
+            ``,
+            [
+              { text: 'Done', onPress: () =>  props.registered()}
+            ]
+          ));
       }
 
 
 
     }
-    Alert.alert(
-      'Successfully Registered!', // Specify the desired title here
-      ``,
-      [
-        { text: 'Done', onPress: () =>  props.registered()}
-      ]
-    );
+
    
   };
 
@@ -246,7 +252,7 @@ const SignUp = (props) => {
               placeholderTextColor={COLORS.secondary}
               style={styles.TextField}
             />
-            {checkValidFname ? (<Text style={styles.invalidText}>{strings.fnameError}</Text>) : (<Text></Text>)}
+            {checkValidFname && (<Text style={styles.invalidText}>{strings.fnameError}</Text>)}
             <TextInput
               placeholder={strings.lastName}
               value={lastName}
@@ -254,7 +260,7 @@ const SignUp = (props) => {
               placeholderTextColor={COLORS.secondary}
               style={styles.TextField}
             />
-            {checkValidLname ? (<Text style={styles.invalidText}>{strings.lnameError}</Text>) : (<Text></Text>)}
+            {checkValidLname && (<Text style={styles.invalidText}>{strings.lnameError}</Text>)}
             <TextInput
               placeholder={strings.contactNumber}
               value={contactNumber}
@@ -262,7 +268,7 @@ const SignUp = (props) => {
               placeholderTextColor={COLORS.secondary}
               style={styles.TextField}
             />
-            {checkValidContactNumber ? (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>) : (<Text></Text>)}
+            {checkValidContactNumber && (<Text style={styles.invalidText}>{strings.contactnumberError}</Text>)}
             {userType === 'seeker' && (
 
               <SelectList
@@ -276,7 +282,7 @@ const SignUp = (props) => {
                 placeholder={strings.country}
               />
             )}
-            {checkValidCountry ? (<Text style={styles.invalidText}>{strings.countryError}</Text>) : (<Text></Text>)}
+            {checkValidCountry && (<Text style={styles.invalidText}>{strings.countryError}</Text>)}
             {userType === 'seeker' && (
               <TextInput
                 placeholder={strings.location}
@@ -286,7 +292,7 @@ const SignUp = (props) => {
                 style={styles.TextField}
               />
             )}
-            {checkValidLocation ? (<Text style={styles.invalidText}>{strings.locationError}</Text>) : (<Text></Text>)}
+            {checkValidLocation && (<Text style={styles.invalidText}>{strings.locationError}</Text>)}
             <TextInput
               placeholder={strings.address}
               value={address}
@@ -295,7 +301,7 @@ const SignUp = (props) => {
               style={styles.TextField}
             />
 
-            {checkValidLocation ? (<Text style={styles.invalidText}>{strings.addressError}</Text>) : (<Text></Text>)}
+            {checkValidLocation && (<Text style={styles.invalidText}>{strings.addressError}</Text>)}
             <TextInput
               placeholder={strings.email}
               value={email}
@@ -303,7 +309,7 @@ const SignUp = (props) => {
               onChangeText={handleCheckEmail}
               style={styles.TextField}
             />
-            {checkValidEmail ? (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>) : (<Text></Text>)}
+            {checkValidEmail && (<Text style={styles.invalidText}>{strings.invalidEmail}</Text>)}
 
             {userType === 'seeker' && <>
               <TextInput
@@ -314,7 +320,7 @@ const SignUp = (props) => {
                 onChangeText={handleCheckPassword}
                 style={styles.TextField}
               />
-              {checkValidPassword ? (<Text style={styles.invalidText}>{strings.passwordError}</Text>) : (<Text></Text>)}
+              {checkValidPassword && (<Text style={styles.invalidText}>{strings.passwordError}</Text>)}
 
               <TextInput
                 placeholder={strings.confirmPassword}
@@ -324,7 +330,7 @@ const SignUp = (props) => {
                 onChangeText={handleCheckConfirmpassword}
                 style={styles.TextField}
               />
-              {checkPasswordMatch ? (<Text style={styles.invalidText}>{strings.pwdmatchError}</Text>) : (<Text></Text>)}
+              {checkPasswordMatch && (<Text style={styles.invalidText}>{strings.pwdmatchError}</Text>)}
 
             </>}
 
@@ -344,11 +350,11 @@ const SignUp = (props) => {
 const styles = StyleSheet.create({
   TextField: {
     paddingVertical: 12,
-    backgroundColor: COLORS.tertiary2,
+    backgroundColor: COLORS.tertiary,
     fontSize: SIZES.medium,
     padding: SIZES.small,
     borderRadius: SIZES.small,
-    marginTop: SIZES.medium,
+    marginTop: SIZES.large
   },
   signUpButton: {
     marginVertical: 40,
@@ -376,10 +382,11 @@ const styles = StyleSheet.create({
   },
 
   dropdownbox: {
-    backgroundColor: COLORS.tertiary2,
-    borderColor: COLORS.tertiary2,
+    backgroundColor: COLORS.tertiary,
+    borderColor: COLORS.tertiary,
     //height: 50,
-    maxHeight: 200
+    maxHeight: 200,
+    marginTop: SIZES.large
   },
   dropdowntext: {
     color: COLORS.secondary,

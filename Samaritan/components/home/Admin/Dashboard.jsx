@@ -28,7 +28,9 @@ import PaymentTable from "./PaymentTable";
 import MentorTable from "./MentorTable";
 import SeekerTable from "./SeekerTable";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { set } from "react-native-reanimated";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const AdminDashboard = (props) => {
   const router = useRouter();
@@ -45,7 +47,14 @@ const AdminDashboard = (props) => {
 
 
   const [showNotifications, setShowNotifications] = useState(false);
-  const [chatScreen, setChatScreen] = useState(null);
+
+  const [adminId, setId] = useState(null);
+
+  const [selMentor, setSelMentor] = useState(null);
+
+  useEffect(() => {
+    setId(props.userId)
+  }, [props])
 
   const statuslist = [
     { key: "COMPLETED", value: "Completed" },
@@ -651,6 +660,102 @@ const AdminDashboard = (props) => {
     );
   }
 
+  const [message, setMessage] = useState('');
+
+
+
+  function ChatComponent({ route, navigation }) {
+    const { mentorDetail, data } = route.params;
+
+
+    const updateChat = async () => {
+      try {
+        const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=${adminId}`, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+        });
+
+        const data = await response.json();
+        setMessage('');
+
+        navigation.navigate("mentorchat", { mentorDetail, data })
+
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle error
+      }
+    }
+
+
+    const postMessage = async () => {
+
+      fetch(api.apiUrl + `/admin/addMessage`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          adminId,
+          mentorId: mentorDetail.id,
+          message
+        })
+      })
+        .then(() => updateChat())
+
+    };
+
+    return (
+      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]} style={styles.linearGradient}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>{mentorDetail.fname} {mentorDetail.lname}</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate("mentors")}>
+            <Image source={icons.cancel_icon} style={styles.closeIcon} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.line} />
+
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
+  {data && data.map((item, index) => (
+    <View
+      key={index}
+      style={[
+        styles.messageBubble,
+        item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
+      ]}
+    >
+      <Text style={item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentText : styles.receivedText}>
+        {item.content} {/* Assuming 'content' is the property containing the message */}
+      </Text>
+    </View>
+  ))}
+</ScrollView>
+
+      </View>
+
+      <View style={styles.bottomContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputText}
+            placeholder="Type your message..."
+            placeholderTextColor={COLORS.secondary}
+            value={message}
+            onChangeText={value => setMessage(value)}
+          />
+          <TouchableOpacity style={styles.sendButton} onPress={postMessage}>
+            <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20} /></Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </LinearGradient>
+    );
+  }
+
+
   function UpdateMentorStatusScreen({ route, navigation }) {
     const { mentor } = route.params;
     SERVICE_TEXT_MAP = {
@@ -728,13 +833,42 @@ const AdminDashboard = (props) => {
       }
     };
 
+    // Chat 
+
+
+
+    const getMessages = async () => {
+
+      try {
+        const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=${adminId}`, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+        });
+
+        const data = await response.json();
+        navigation.navigate("mentorchat", { mentorDetail, data })
+
+
+
+
+
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle error
+      }
+    };
+
+
     return (
       <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{ marginBottom: 5 }}>
-                <View style={{ backgroundColor: '#458592', opacity: 0.9 }}>
+                <View style={{ backgroundColor: COLORS.secondary, opacity: 0.9, borderRadius: SIZES.medium }}>
                   <Text style={styles.headingText}>
                     {mentorDetail?.fname} {mentorDetail?.lname}
                   </Text>
@@ -806,8 +940,8 @@ const AdminDashboard = (props) => {
                 <Text style={styles.saveText}>{strings.update}</Text>
               </TouchableOpacity>
             </ScrollView>
-            <TouchableOpacity style={styles.chatContainer} onPress={() => chatScreenToggle(mentorDetail)}>
-              <Ionicons name="chatbox-ellipses" size={40} color={COLORS.secondary}/>
+            <TouchableOpacity style={styles.chatContainer} onPress={getMessages}>
+              <Ionicons name="chatbox-ellipses" size={40} color={COLORS.secondary} />
             </TouchableOpacity>
           </View>
         </View>
@@ -818,9 +952,9 @@ const AdminDashboard = (props) => {
   const handleSignOut = () => {
     // Call the props.logout function here
     Alert.alert(
-      "Logout!", // Specify the desired title here
-      `Are you sure, you want to Sign Out?`,
-      [{ text: "No"},{ text: "Yes", onPress: () => props.logout() }],
+      "Sign Out?", // Specify the desired title here
+      `Are you sure, you want to sign out?`,
+      [{ text: "No" }, { text: "Yes", onPress: () => props.logout() }],
     );
   };
 
@@ -860,76 +994,8 @@ const AdminDashboard = (props) => {
     );
   };
 
-  const getMessages = async (mentorDetail) => {
-    try {
-      const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=1`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-      });
-  
-      const data = await response.json();
-      console.log("000000000000000000", data)
-  
-      setChatScreen(
-        <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
-          <View style={styles.containernotification}>
-            <View style={styles.notificationheader}>
-              <Text style={styles.headertext}> {mentorDetail.fname} {mentorDetail.lname}</Text>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setChatScreen(null)}
-              >
-                <Image source={icons.cancel_icon}></Image>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.notificationline}></View>
-  
-            <View style={styles.subContainer}>
-              <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:10}}>
-                {data && data.map((item, index) => (
-                  
-                  <View
-                    key={index} // Add a unique key for each element in the array
-                    style={[styles.msgcontainer,
-                      (item.sender === 1 && item.receiver === 8)?
-                       styles.sentBubble
-                       :
-                       styles.receivedBubble
-
-                    ]}
-                  >
-                    <Text style={styles.textContainer}>
-                      {item.content} {/* Assuming 'content' is the property containing the message */}
-                    </Text>
-                  </View>
-                ))}
 
 
-
-              </ScrollView>
-            </View>
-          </View>
-        </LinearGradient>
-      );
-    } catch (error) {
-      console.error('Error:', error);
-      // Handle error
-    }
-  };
-  
-  // Chat Screen
-  const chatScreenToggle = async (mentorDetail) => {
-    await getMessages(mentorDetail);
-  };
-  
-
-  const ChatScreenModal = (mentorDetail) => {
-    console.log('mentorDetail---', mentorDetail)
-
-  };
 
   function CustomDrawerContent(props) {
     return (
@@ -943,44 +1009,42 @@ const AdminDashboard = (props) => {
   return (
     <NavigationContainer independent={true}>
       {showNotifications && <NotificationsModal />}
-      {chatScreen}
-      {
-        !chatScreen && <Drawer.Navigator
-          initialRouteName="Home"
-          screenOptions={{
-            drawerStyle: {
-              backgroundColor: COLORS.secondary,
-            },
-            drawerActiveBackgroundColor: COLORS.primary,
-            drawerLabelStyle: {
-              color: "#fff",
-            },
+      <Drawer.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          drawerStyle: {
+            backgroundColor: COLORS.secondary,
+          },
+          drawerActiveBackgroundColor: COLORS.primary,
+          drawerLabelStyle: {
+            color: "#fff",
+          },
 
+        }}
+        drawerContent={props => <CustomDrawerContent {...props} />}
+      >
+        <Drawer.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: "Dashboard",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
           }}
-          drawerContent={props => <CustomDrawerContent {...props} />}
-        >
-          <Drawer.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              title: "Dashboard",
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          {/* <Drawer.Screen
+        />
+        {/* <Drawer.Screen
           name="Profile"
           component={ProfileScreen}
           options={{
@@ -1002,188 +1066,212 @@ const AdminDashboard = (props) => {
           }}
         /> */}
 
-          <Drawer.Screen
-            name="mentors"
-            component={MentorsScreen}
-            options={{
-              title: "Mentors",
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
-
-          <Drawer.Screen
-            name="seekers"
-            component={SeekersScreen}
-            options={{
-              title: "Seekers",
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
+        <Drawer.Screen
+          name="mentors"
+          component={MentorsScreen}
+          options={{
+            title: "Mentors",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
         <Drawer.Screen
-            name="ConnRequests"
-            component={ConnectionRequestsScreen}
-            options={{
-              title: "Connections",
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
+          name="seekers"
+          component={SeekersScreen}
+          options={{
+            title: "Seekers",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-          <Drawer.Screen
-            name="services"
-            component={ServiceScreen}
-            options={{
-              title: "Services",
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Drawer.Screen
-            name="Payment"
-            component={PaymentScreen}
-            options={{
-              title: "Payments",
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Drawer.Screen
-            name="addmentor"
-            component={AddmentorScreen}
-            options={{
-              title: "Add Collaborator",
-              drawerLabel: () => null,
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              drawerItemStyle: { height: 0 },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
+        <Drawer.Screen
+          name="ConnRequests"
+          component={ConnectionRequestsScreen}
+          options={{
+            title: "Connections",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-          <Drawer.Screen
-            name="updatePayment"
-            component={UpdatePaymentStatusScreen}
-            options={{
-              title: "Payment Detail",
-              drawerLabel: () => null,
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary, 
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              drawerItemStyle: { height: 0 },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
+        <Drawer.Screen
+          name="services"
+          component={ServiceScreen}
+          options={{
+            title: "Services",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Payment"
+          component={PaymentScreen}
+          options={{
+            title: "Payments",
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="addmentor"
+          component={AddmentorScreen}
+          options={{
+            title: "Add Collaborator",
+            drawerLabel: () => null,
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            drawerItemStyle: { height: 0 },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-          <Drawer.Screen
-            name="updatementor"
-            component={UpdateMentorStatusScreen}
-            options={{
-              title: "Mentor Detail",
-              drawerLabel: () => null,
-              headerTitleAlign: "center",
-              headerTintColor: COLORS.secondary,
-              headerTitleStyle: styles.dashboardHeading,
-              headerStyle: {
-                backgroundColor: "#458592",
-              },
-              drawerItemStyle: { height: 0 },
-              headerRight: () => (
-                <TouchableOpacity
-                  style={styles.buttonBellStyle}
-                  onPress={toggleNotifications}
-                >
-                  <Image source={icons.bell_icon}></Image>
-                </TouchableOpacity>
-              ),
-            }}
-          />
+        <Drawer.Screen
+          name="updatePayment"
+          component={UpdatePaymentStatusScreen}
+          options={{
+            title: "Payment Detail",
+            drawerLabel: () => null,
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            drawerItemStyle: { height: 0 },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
 
-        </Drawer.Navigator>
-      }
+        <Drawer.Screen
+          name="updatementor"
+          component={UpdateMentorStatusScreen}
+          options={{
+            title: "Mentor Detail",
+            drawerLabel: () => null,
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            drawerItemStyle: { height: 0 },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+
+        <Drawer.Screen
+          name="mentorchat"
+          component={ChatComponent}
+          options={{
+            title: "",
+            drawerLabel: () => null,
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.secondary,
+            headerTitleStyle: styles.dashboardHeading,
+            headerStyle: {
+              backgroundColor: "#458592",
+            },
+            drawerItemStyle: { height: 0 },
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.buttonBellStyle}
+                onPress={toggleNotifications}
+              >
+                <Image source={icons.bell_icon}></Image>
+              </TouchableOpacity>
+            ),
+          }}
+        />
+
+      </Drawer.Navigator>
+
 
     </NavigationContainer>
   );

@@ -3,6 +3,8 @@ const COLORS = {
   primary: "#50A4AB",
   secondary: "#242948",
   tertiary: "#E8F6F7",
+  quad: '#008080',
+  red: "#ff4d4d",
   tertiary2: "#CFF4F7",
   red: "#FF0000",
   gold:'gold',
@@ -13,7 +15,7 @@ const COLORS = {
   white: "#FFFFFF",
   lightWhite: "#FAFAFC",
   yellow: '#FFBF00',
-  green: '#2f9c49'
+  green: '#85e085'
 };
 
 const FONT = {

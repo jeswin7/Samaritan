@@ -59,64 +59,6 @@ const Welcome = (props) => {
 
   const Drawer = createDrawerNavigator();
 
-  const DATAHome = [
-    {
-      id: '1',
-      name: 'First Name',
-      location: 'Waterloo',
-      service: 'Accomodation',
-      rating: '3'
-    },
-    {
-      id: '2',
-      name: 'Second Name',
-      location: 'Waterloo',
-      service: 'Accomodation',
-      rating: '4'
-    },
-    {
-      id: '3',
-      name: 'Third Name',
-      location: 'Waterloo',
-      service: 'Accomodation',
-      rating: '4'
-    },
-    {
-      id: '4',
-      name: 'Fourth Name',
-      location: 'Waterloo',
-      service: 'Accomodation',
-      rating: '4'
-    },
-  ];
-
-  const DATARequest = [
-    {
-      id: '1',
-      name: 'First Name',
-      service: 'Accomodation',
-      status: 'Requested'
-    },
-    {
-      id: '2',
-      name: 'Second Name',
-      service: 'Accomodation',
-      status: 'Accepted'
-    },
-    {
-      id: '3',
-      name: 'Third Name',
-      service: 'Accomodation',
-      status: 'Declined'
-    },
-    {
-      id: '4',
-      name: 'Fourth Name',
-      service: 'Accomodation',
-      status: 'Declined'
-    }
-  ];
-
   const ONTARIO_CITIES_MAP = {
     2: 'Waterloo',
     3: 'Kitchener',
@@ -197,7 +139,7 @@ const Welcome = (props) => {
             </View>
             <View style={styles.cheveronView}>
               {/* <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image> */}
-              <Ionicons size={34} style={{color:COLORS.white}} name="chevron-forward-outline"></Ionicons>
+              <Ionicons size={34} style={{color:COLORS.primary}} name="chevron-forward-outline"></Ionicons>
             </View>
           </View>
       </TouchableOpacity>
@@ -217,7 +159,7 @@ const Welcome = (props) => {
                       value={searchTerm}
                       onChangeText={(text) => handleSearchClick(text)}
                       placeholder={strings.searchHintText}
-                      placeholderTextColor={COLORS.white}
+                      placeholderTextColor={COLORS.primary}
                     />
                   </View>
 
@@ -237,7 +179,7 @@ const Welcome = (props) => {
               </View>
               <View>
                 {showPicker ?
-                  (<View><Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:10,color:COLORS.white}} onValueChange={(value) => {
+                  (<View><Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.primary, marginTop:10,color:COLORS.white }} onValueChange={(value) => {
                     setFilterName('serviceOffered')
                     setFilterValue(value)
                     fetchMentorsFiltered('serviceOffered', value)
@@ -249,7 +191,7 @@ const Welcome = (props) => {
                   </Picker>
 
 
-                    <Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:2, color:COLORS.white,borderRadius:10}} onValueChange={(value) => {
+                    <Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:3, color:COLORS.white }} onValueChange={(value) => {
                       setFilterName('currentLocation')
                       setFilterValue(value)
                       fetchMentorsFiltered('currentLocation', value)
@@ -467,7 +409,7 @@ const Welcome = (props) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="LOG OUT" labelStyle={{ color: COLORS.white }} onPress={() => handleSignOut()} />
+        <DrawerItem label="Sign Out" labelStyle={{ color: COLORS.white }} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }
@@ -503,7 +445,7 @@ const Welcome = (props) => {
         }} />
 
         <Drawer.Screen name="Requests" component={RequestComponent} options={{
-          title: 'REQUESTS',
+          title: 'Requests',
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,

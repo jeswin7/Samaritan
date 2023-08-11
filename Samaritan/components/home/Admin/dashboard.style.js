@@ -430,19 +430,107 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     maxWidth: '70%', // Adjust this value to limit the chat bubble width
+    flexDirection: 'row', // Add this to align bubbles correctly
   },
   sentBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.tertiary,
+    borderTopRightRadius: 0, // Add this to adjust the border radius for the sent bubble
+    marginLeft: 'auto', // Add this to push the sent bubble to the right
   },
   receivedBubble: {
     alignSelf: 'flex-start',
     backgroundColor: COLORS.secondary,
+    borderTopLeftRadius: 0, // Add this to adjust the border radius for the received bubble
+    marginRight: 'auto', // Add this to push the received bubble to the left
   },
   message: {
-    color: '#FFFFFF', // Text color for sent messages
     fontSize: 16,
   },
+  sentText:{
+    color: COLORS.secondary
+  },
+  receivedText: {
+    color: COLORS.tertiary
+  },
+
+
+
+    linearGradient: {
+      flex: 1,
+    },
+    container: {
+      flex: 1,
+      padding: 25,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 10,
+      marginTop: 10,
+    },
+    headerText: {
+      fontSize: 25,
+      fontWeight: 'bold',
+      color: COLORS.white,
+    },
+    closeButton: {
+      padding: 5,
+      fontSize:20
+    },
+    closeIcon: {
+      width: 20,
+      height: 20,
+      resizeMode: 'contain',
+      tintColor: COLORS.tertiary,
+    },
+    line: {
+      height: 1,
+      backgroundColor: COLORS.white,
+      marginBottom: 10,
+    },
+    messageContainer: {
+      marginBottom: 20,
+    },
+    messageBubble: {
+      padding: 10,
+      borderRadius: 10,
+      marginBottom: 10,
+    },
+
+
+    bottomContainer: {
+      paddingHorizontal: 20,
+      paddingBottom: 20,
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: COLORS.lightGray,
+      borderRadius: 30,
+      paddingHorizontal: 15,
+    },
+    inputText: {
+      flex: 1,
+      paddingVertical: 10,
+      color: COLORS.secondary,
+    },
+    sendButton: {
+      marginLeft: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      backgroundColor: COLORS.primary,
+      borderRadius: 20,
+    },
+    sendButtonText: {
+      color: COLORS.white,
+      fontWeight: 'bold',
+    },
+
+  
+
+  
 });
 
 export default styles;

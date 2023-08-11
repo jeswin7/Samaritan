@@ -46,20 +46,22 @@ const styles = StyleSheet.create({
   },
   searchWrapper: {
     flex: 1,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.tertiary,
     marginRight: SIZES.small,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: SIZES.medium,
     height: "100%",
+    
   },
   searchInput: {
     width: "100%",
     height: "100%",
     paddingHorizontal: SIZES.medium,
-    color: COLORS.white,
+    color: COLORS.primary,
     fontWeight:'bold',
-    fontSize:16
+    fontSize:16,
+    borderColor: COLORS.primary
   },
   searchBtn: {
     width: 50,
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
   searchBtnImage: {
     width: "50%",
     height: "50%",
+    color: COLORS.primary
   },
   filterBtn: {
     width: 50,
@@ -85,13 +88,13 @@ const styles = StyleSheet.create({
     marginBottom:SIZES.medium
   },
   listView: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.tertiary,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     borderRadius: SIZES.medium,
   }, 
   detailView: {
-    backgroundColor:COLORS.primary,
+    backgroundColor:COLORS.tertiary,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     borderRadius: SIZES.medium,
@@ -114,13 +117,13 @@ const styles = StyleSheet.create({
   },
   titleNameStyle: {
     fontSize: SIZES.medium,
-    color: COLORS.white,
+    color: COLORS.primary,
     paddingVertical: 5,
     fontWeight:'bold'
   },
   title: {
     fontSize: SIZES.medium,
-    color: COLORS.white,
+    color: COLORS.primary,
     paddingVertical: 5,
     fontWeight:'bold'
   },
@@ -206,7 +209,7 @@ const styles = StyleSheet.create({
   //notification Screen
   //Notifications
   containernotification: {
-   height: '100%', 
+    height: '100%', 
     alignItems: 'center',
     marginTop: 30,
     width:'100%'
@@ -244,7 +247,7 @@ const styles = StyleSheet.create({
    // width: '100%',
     margin:5,
     padding:5,
-    backgroundColor:COLORS.primary, 
+    backgroundColor:COLORS.tertiary, 
     //opacity:0.8, 
     borderRadius:10,
     marginTop:20,

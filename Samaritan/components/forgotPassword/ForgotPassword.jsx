@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     },
     emailTextField: {
         paddingVertical: 12,
-        backgroundColor: COLORS.tertiary2,
+        backgroundColor: COLORS.tertiary,
         fontSize: SIZES.medium,
         padding: SIZES.small,
         borderRadius: SIZES.small,

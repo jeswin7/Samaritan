@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+    backgroundColor: COLORS.secondary
   },
   emailTextField: {
     paddingVertical: 12,

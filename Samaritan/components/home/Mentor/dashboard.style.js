@@ -262,7 +262,25 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     margin: 5,
     fontWeight: 'bold',
+  },
+
+
+  rowContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center'
+  },
+  detailTitle:{
+    fontSize: 20, 
+    color: COLORS.primary, 
+    marginRight: 5, 
+    fontWeight: 5 
+  },
+  dividerStyle: {
+    flex: 1, 
+    height: 1, 
+    backgroundColor: COLORS.primary
   }
+
 
 
 

@@ -86,7 +86,7 @@ const strings = {
     mentor: 'Mentor:',
     seeker: 'Seeker:',
     service: 'Service:',
-    patmentStatus: 'Payment Status:',
+    paymentStatus: 'Payment Status:',
     updatePaymentStatus: 'Update Payment Status:',
     typeHere: 'Type your message...',
     onBoardStatus: 'Onboard Status Updated!',

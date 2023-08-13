@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     //textAlign: 'center'
   },
-  paymentValusText: {
+  paymentValueText: {
     fontSize: 15,
     color: COLORS.white,
     margin: 5,
@@ -538,7 +538,7 @@ const styles = StyleSheet.create({
     marginBottomstyle: {
        marginBottom: 5 
     },
-  chatContainer: { 
+  mentorDetailContainer: { 
     backgroundColor: COLORS.secondary, 
     opacity: 0.9, 
     borderRadius: SIZES.medium 

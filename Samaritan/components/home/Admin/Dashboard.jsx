@@ -548,23 +548,23 @@ const AdminDashboard = (props) => {
               <View style={styles.messageContainer}>
                 <View style={styles.rowContainer}>
                   <Text style={styles.paymentDetailText}>{strings.mentor}</Text>
-                  <Text style={styles.paymentValusText}>
+                  <Text style={styles.paymentValueText}>
                     {item.mentor.fname} {item.mentor.lname}
                   </Text>
                 </View>
                 <View style={styles.rowContainer}>
                   <Text style={styles.paymentDetailText}>{strings.seeker}</Text>
-                  <Text style={styles.paymentValusText}>
+                  <Text style={styles.paymentValueText}>
                     {item.seeker.fname} {item.seeker.lname}
                   </Text>
                 </View>
                 <View style={styles.rowContainer}>
                   <Text style={styles.paymentDetailText}>{strings.service}</Text>
-                  <Text style={styles.paymentValusText}>{item.type}</Text>
+                  <Text style={styles.paymentValueText}>{item.type}</Text>
                 </View>
                 <View style={styles.rowContainer}>
-                  <Text style={styles.paymentDetailText}>{patmentStatus}</Text>
-                  <Text style={styles.paymentValusText}>
+                  <Text style={styles.paymentDetailText}>{strings.paymentStatus}</Text>
+                  <Text style={styles.paymentValueText}>
                     {paymentDetail?.status}
                   </Text>
                 </View>
@@ -793,7 +793,7 @@ const AdminDashboard = (props) => {
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.marginBottomstyle}>
-                <View style={styles.chatContainer}>
+                <View style={styles.mentorDetailContainer}>
                   <Text style={styles.headingText}>
                     {mentorDetail?.fname} {mentorDetail?.lname}
                   </Text>
@@ -907,7 +907,7 @@ const AdminDashboard = (props) => {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.notificationcardContainer}>
                 <Text style={styles.textContainer}>
-                  { strings.adminNotification}
+                  {strings.adminNotification}
                 </Text>
               </View>
             </ScrollView>

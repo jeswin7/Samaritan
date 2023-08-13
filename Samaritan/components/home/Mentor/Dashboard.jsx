@@ -839,7 +839,7 @@ const Dashboard = (props) => {
                 drawerContent={props => <CustomDrawerContent {...props} />}
             >
                 <Drawer.Screen name="Home" component={HomeScreen} options={{
-                    title: 'Home',
+                    title: 'Dashboard',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
                     headerTitleStyle: styles.dashboardHeading,
@@ -849,7 +849,7 @@ const Dashboard = (props) => {
                         </TouchableOpacity >
                     ),
                 }} />
-                <Drawer.Screen name="Profile" component={ProfileScreen} options={{
+                {/* <Drawer.Screen name="Profile" component={ProfileScreen} options={{
                     title: 'Profile',
                     headerTitleAlign: 'center',
                     headerTintColor: COLORS.secondary,
@@ -859,7 +859,7 @@ const Dashboard = (props) => {
                             <Image source={icons.bell_icon}></Image>
                         </TouchableOpacity >
                     ),
-                }} />
+                }} /> */}
 
                 <Drawer.Screen name="ConnRequests" component={ConnectionRequestsScreen} options={{
                     title: 'Requests',

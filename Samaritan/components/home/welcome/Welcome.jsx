@@ -179,19 +179,23 @@ const Welcome = (props) => {
               </View>
               <View>
                 {showPicker ?
-                  (<View><Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.primary, marginTop:10,color:COLORS.white }} onValueChange={(value) => {
+                  (<View style={{ backgroundColor: COLORS.primary, borderRadius: SIZES.medium, margin: 10 }}>
+                    <Picker dropdownIconColor={COLORS.tertiary} 
+                    style={{ color: COLORS.tertiary }}
+                    onValueChange={(value) => {
                     setFilterName('serviceOffered')
                     setFilterValue(value)
                     fetchMentorsFiltered('serviceOffered', value)
                     setShowPicker(false)
-                  }} selectedValue={filterValue}>
+                  }} selectedValue={filterValue}
+                  >
 
                     <Picker.Item label="Accommodation" value="1" />
                     <Picker.Item label="Part-Time Job" value="2" />
                   </Picker>
 
 
-                    <Picker dropdownIconColor={COLORS.white} style={{backgroundColor:COLORS.secondary, marginTop:3, color:COLORS.white }} onValueChange={(value) => {
+                    <Picker dropdownIconColor={COLORS.tertiary} style={{ color:COLORS.tertiary}} onValueChange={(value) => {
                       setFilterName('currentLocation')
                       setFilterValue(value)
                       fetchMentorsFiltered('currentLocation', value)
@@ -259,8 +263,8 @@ const Welcome = (props) => {
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
     const RequestItem = ({ item }) => (
-      <TouchableOpacity>
-        <View style={styles.listView}>
+
+<View style={styles.listView}>
           <View style={styles.item}>
             <Text style={styles.titleNameStyle}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
             <Text style={styles.title}>{SERVICE_MAP[item.connection.service]}</Text>
@@ -270,7 +274,7 @@ const Welcome = (props) => {
 
           </View>
         </View>
-      </TouchableOpacity>
+
     )
 
 

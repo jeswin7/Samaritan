@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor:'#fff'
   },
   dashboardHeading: {
     color: COLORS.secondary,
@@ -212,12 +213,12 @@ const styles = StyleSheet.create({
     height: '100%', 
     alignItems: 'center',
     marginTop: 30,
-    width:'100%'
-
+    width:'100%',
+    backgroundColor: COLORS.tertiary
   },
   textContainer: {
     fontSize: 18,
-    color: COLORS.secondary,
+    color: COLORS.tertiary,
     margin: 10,
   },
   subContainer: {
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
    // width: '100%',
     margin:5,
     padding:5,
-    backgroundColor:COLORS.tertiary, 
+    backgroundColor:COLORS.primary, 
     //opacity:0.8, 
     borderRadius:10,
     marginTop:20,

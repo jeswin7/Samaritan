@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { COLORS, FONT, SIZES, strings, api } from '../../constants';
-import { color } from 'react-native-reanimated';
+import { COLORS, SIZES, strings, api } from '../../constants';
 
 
 const SignUp = (props) => {
   const [userType, setUserType] = useState('seeker');
-
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
@@ -19,7 +17,6 @@ const SignUp = (props) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [checkValidEmail, setCheckValidEmail] = useState(false);
   const [checkValidFname, setCheckValidFname] = useState(false);
-
   const [checkValidLname, setCheckValidLname] = useState(false);
   const [checkValidContactNumber, setCheckContactNumber] = useState(false);
   const [checkValidCountry, setCheckValidCountry] = useState(false);
@@ -39,6 +36,7 @@ const SignUp = (props) => {
       setCheckValidFname(true);
     }
   }
+
   //lname validation
   const handleCheckLname = text => {
     let nameRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
@@ -62,16 +60,6 @@ const SignUp = (props) => {
     }
   }
 
-  //country validation
-  const handleCheckCountry = text => {
-    setCountry(text);
-    if (text) {
-      setCheckValidCountry(false);
-    }
-    else {
-      setCheckValidCountry(true);
-    }
-  }
   //location validation
   const handleCheckLocation = text => {
     let locationRegex = /^[a-zA-Z]+[a-zA-Z]+$/;
@@ -163,11 +151,11 @@ const SignUp = (props) => {
             password,
           })
         })
-          .then(() =>     Alert.alert(
+          .then(() => Alert.alert(
             'Successfully Registered!', // Specify the desired title here
             ``,
             [
-              { text: 'Done', onPress: () =>  props.registered()}
+              { text: 'Done', onPress: () => props.registered() }
             ]
           ));
 
@@ -200,11 +188,11 @@ const SignUp = (props) => {
             email
           })
         })
-          .then(() =>     Alert.alert(
+          .then(() => Alert.alert(
             'Successfully Registered!', // Specify the desired title here
             ``,
             [
-              { text: 'Done', onPress: () =>  props.registered()}
+              { text: 'Done', onPress: () => props.registered() }
             ]
           ));
       }
@@ -213,38 +201,28 @@ const SignUp = (props) => {
 
     }
 
-   
+
   };
 
   return (
-    <View style={{ height: '80%', justifyContent: 'center', alignItems: 'center' }}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ width: '90%' }}>
-        <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: 'row' }}>
+    <View style={styles.mainContainer}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+        <View style={styles.container}>
+          <View style={styles.rowView}>
             <TouchableOpacity
-              style={{
-                flex: 1,
-                backgroundColor: userType === 'seeker' ? COLORS.primary : 'white',
-                paddingVertical: 10,
-                alignItems: 'center',
-              }}
+              style={[styles.seekerTab, { backgroundColor: userType === 'seeker' ? COLORS.primary : 'white', }]}
               onPress={() => setUserType('seeker')}
             >
               <Text style={{ color: userType === 'seeker' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Seeker</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{
-                flex: 1,
-                backgroundColor: userType === 'mentor' ? COLORS.primary : COLORS.white,
-                paddingVertical: 10,
-                alignItems: 'center',
-              }}
+              style={[styles.mentorTab, { backgroundColor: userType === 'mentor' ? COLORS.primary : COLORS.white }]}
               onPress={() => setUserType('mentor')}
             >
               <Text style={{ color: userType === 'mentor' ? COLORS.white : COLORS.secondary, fontSize: SIZES.large }}>Mentor</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+          <View style={styles.headerView}>
             <TextInput
               placeholder={strings.firstName}
               value={firstName}
@@ -334,7 +312,6 @@ const SignUp = (props) => {
 
             </>}
 
-
             <TouchableOpacity onPress={handleSignUp} style={styles.signUpButton}>
               <Text style={styles.signUpText}>{strings.signUp}</Text>
             </TouchableOpacity>
@@ -348,6 +325,34 @@ const SignUp = (props) => {
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  scrollView: {
+    width: '90%'
+  },
+  container: {
+    flex: 1
+  },
+  rowView: {
+    flexDirection: 'row'
+  },
+  seekerTab: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  mentorTab: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  headerView: {
+    paddingHorizontal: 20,
+    paddingVertical: 20
+  },
   TextField: {
     paddingVertical: 12,
     backgroundColor: COLORS.tertiary,

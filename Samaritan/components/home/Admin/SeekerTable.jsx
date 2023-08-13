@@ -6,15 +6,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { COLORS, api } from "../../../constants";
+import { COLORS, api, strings } from "../../../constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
 
 const Table = ({ data, refresh }) => {
-  const navigation = useNavigation();
   const renderRow = ({ item }) => {
-    console.log("mentors data----", item);
-
     SERVICE_TYPE_ICON = {
       1: "bed-outline",
       2: "construct-outline",
@@ -24,18 +20,6 @@ const Table = ({ data, refresh }) => {
       APPLIED: "Applied",
       INVITED: "Invited",
       APPROVED: "Approved",
-    };
-
-    const ONTARIO_CITIES_MAP = {
-      2: 'Waterloo',
-      3: 'Kitchener',
-      4: 'Toronto',
-      5: 'Ottawa',
-      6: 'Hamilton',
-      7: 'London',
-      8: 'Mississauga',
-      9: 'Brampton',
-      10: 'Markham',
     };
 
     const handleDelete = async (id) => {
@@ -48,8 +32,6 @@ const Table = ({ data, refresh }) => {
         console.log(error);
       }
     }
-
-
 
     return (
       <View>
@@ -87,16 +69,16 @@ const Table = ({ data, refresh }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.headerCell}>Name</Text>
-        <Text style={styles.headerCell}>Phone</Text>
-        <Text style={styles.headerCell}>Target City</Text>
-        <Text style={styles.headerCell}>Action</Text>
+        <Text style={styles.headerCell}>{strings.nameLbl}</Text>
+        <Text style={styles.headerCell}>{strings.phoneLbl}</Text>
+        <Text style={styles.headerCell}>{strings.targetCityLbl}</Text>
+        <Text style={styles.headerCell}>{strings.actionLbl}</Text>
 
       </View>
       <FlatList
         data={data}
         renderItem={renderRow}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(index) => index.toString()}
       />
     </View>
   );

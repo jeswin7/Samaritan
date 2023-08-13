@@ -5,18 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  FlatList,
-  Button,
   Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
 import { SelectList } from "react-native-dropdown-select-list";
-import { Picker } from "@react-native-picker/picker";
 import styles from "./dashboard.style";
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
-import DropDownPicker from "react-native-dropdown-picker";
 import {
   NavigationContainer
 } from "@react-navigation/native";
@@ -33,8 +28,6 @@ LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const AdminDashboard = (props) => {
-  const router = useRouter();
-  const navigation = useNavigation();
   const Drawer = createDrawerNavigator();
   const [adminDetail, setDetail] = useState({});
   const [connReqs, setConnReqs] = useState(null);
@@ -42,15 +35,8 @@ const AdminDashboard = (props) => {
   const [payments, setPayments] = useState(null);
   const [mentors, setMentors] = useState(null);
   const [seekers, setSeekers] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-
   const [showNotifications, setShowNotifications] = useState(false);
-
   const [adminId, setId] = useState(null);
-
-  const [selMentor, setSelMentor] = useState(null);
 
   useEffect(() => {
     setId(props.userId)
@@ -141,22 +127,6 @@ const AdminDashboard = (props) => {
     }
   };
 
-  // 5. Fetch Connection Requests
-  // const updateMentorConnRequestStatus = async (id, status) => {
-  //     try {
-  //         // Make API requests here
-  //         const response = await fetch(api.apiUrl+`/updateConnection?id=${id}&status=${status}`);
-  //         const data = await response.json();
-  //         console.log("Conn Status Upd:", data)
-  //         fetchMentorConnRequests()
-  //         // Handle the API response and update component state
-  //         // ...
-
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-  // };
-
   useEffect(() => {
     // Fetch API data here
     fetchDashboardData();
@@ -169,12 +139,6 @@ const AdminDashboard = (props) => {
 
   //Home Component
   function HomeScreen() {
-    const navigation = useNavigation();
-
-    const Separator = () => {
-      return <View style={styles.separator} />;
-    };
-
     const ItemSeparatorView = () => {
       return (
         //Item Separator
@@ -183,33 +147,33 @@ const AdminDashboard = (props) => {
     };
 
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.homeContainer}>
           <View style={styles.subContainer}>
             <View>
-              <Text style={styles.welcomeMsg}>Welcome Admin!</Text>
+              <Text style={styles.welcomeMsg}>{strings.welcomeMsg}</Text>
             </View>
             <ItemSeparatorView />
             <View style={styles.cardContainer}>
-              <View style={{ flexDirection: "row" }}>
+              <View style={styles.rowContainer}>
                 <View>
-                  <Text style={styles.headingMsg}>Users Analytics</Text>
+                  <Text style={styles.headingMsg}>{strings.userAnalytics}</Text>
                 </View>
               </View>
-              <View style={{ flexDirection: "row" }}>
+              <View style={styles.rowContainer}>
                 <View
-                  style={{ marginBottom: 10, flex: 1, flexDirection: "column" }}
+                  style={styles.analyticsContainer}
                 >
-                  <Text style={styles.textContainer}>Seekers</Text>
+                  <Text style={styles.textContainer}>{strings.seekers}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.seekerCount}
                   </Text>
                 </View>
                 <View style={styles.seperatorViewStyles}></View>
                 <View
-                  style={{ marginBottom: 10, flex: 1, flexDirection: "column" }}
+                  style={styles.analyticsContainer}
                 >
-                  <Text style={styles.textContainer}>Mentors</Text>
+                  <Text style={styles.textContainer}>{strings.mentors}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorCount}
                   </Text>
@@ -217,26 +181,26 @@ const AdminDashboard = (props) => {
               </View>
             </View>
             <View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={styles.serviceAnalytics}>
                 <View>
-                  <Text style={styles.headingMsg}>Services Analytics</Text>
+                  <Text style={styles.headingMsg}>{strings.serviceAnalytics}</Text>
                 </View>
               </View>
-              <View style={{ flexDirection: "row" }}>
+              <View style={styles.rowContainer}>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>Ongoing</Text>
+                  <Text style={styles.textContainer}>{strings.ongoing}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.service?.ongoing}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>Completed</Text>
+                  <Text style={styles.textContainer}>{strings.completed}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.service?.completed}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>Failed</Text>
+                  <Text style={styles.textContainer}>{strings.failed}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.service?.failed}
                   </Text>
@@ -245,26 +209,26 @@ const AdminDashboard = (props) => {
             </View>
 
             <View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={styles.serviceAnalytics}>
                 <View>
-                  <Text style={styles.headingMsg}>Mentor Status</Text>
+                  <Text style={styles.headingMsg}>{strings.mentorStatus}</Text>
                 </View>
               </View>
-              <View style={{ flexDirection: "row" }}>
+              <View style={styles.rowContainer}>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>Applied</Text>
+                  <Text style={styles.textContainer}>{strings.applied}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorsStatus?.applied}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>Invited</Text>
+                  <Text style={styles.textContainer}>{strings.invited}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorsStatus?.invited}
                   </Text>
                 </View>
                 <View style={styles.dashboardSubCardStyles}>
-                  <Text style={styles.textContainer}>Approved</Text>
+                  <Text style={styles.textContainer}>{strings.approved}</Text>
                   <Text style={styles.textCountStyle}>
                     {adminDetail.mentorsStatus?.approved}
                   </Text>
@@ -277,24 +241,10 @@ const AdminDashboard = (props) => {
     );
   }
 
-  //Profile component
-  // function ProfileScreen() {
-  //   const navigation = useNavigation();
-  //   return (
-  //     <View style={styles.profileView}>
-  //       <Text>Profile Screen!</Text>
-  //       <Button
-  //         onPress={() => navigation.navigate("Home")}
-  //         title="Go back home"
-  //       />
-  //     </View>
-  //   );
-  // }
-
   //Connection requests component
   function ConnectionRequestsScreen() {
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -310,7 +260,7 @@ const AdminDashboard = (props) => {
   function MentorsScreen() {
     const navigation = useNavigation();
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <TouchableOpacity
             style={styles.addIcon}
@@ -332,7 +282,7 @@ const AdminDashboard = (props) => {
   function SeekersScreen() {
     const navigation = useNavigation();
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -348,7 +298,6 @@ const AdminDashboard = (props) => {
   function AddmentorScreen({ route, navigation }) {
     const [mentorServiceType, setmentorServiceType] = useState(null);
     const [mentorOrgType, setmentorOrgType] = useState(null);
-
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [contactNumber, setContactNumber] = useState("");
@@ -411,15 +360,15 @@ const AdminDashboard = (props) => {
         })
       })
         .then(() => Alert.alert(
-          "Added!", // Specify the desired title here
+          strings.addedTitle, // Specify the desired title here
           `Collaborator ${firstName} ${lastName} is added as mentor!`,
-          [{ text: "Done", onPress: () => navigation.navigate("mentors") }]
+          [{ text: strings.done, onPress: () => navigation.navigate("mentors") }]
         ));
 
     }
 
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -450,7 +399,6 @@ const AdminDashboard = (props) => {
                   value={contactNumber}
                 />
               </View>
-              {/* <View style={styles.inputTextFieldContainer}> */}
               <SelectList
                 data={ONTARIO_CITIES_MAP}
                 setSelected={(val) => setCity(val)}
@@ -461,18 +409,6 @@ const AdminDashboard = (props) => {
                 placeholderTextColor={COLORS.secondary}
                 placeholder="City"
               />
-              {/* </View> */}
-              {/* <View style={styles.inputTextFieldContainer}>
-                <TextInput
-                  placeholderTextColor={COLORS.secondary}
-                  style={styles.inputTextField}
-                  placeholder="Ontario"
-                  // onChangeText={(value) => setProvince(value)}
-                  // value={province}
-                  editable={false}
-                />
-              </View> */}
-
               <View style={styles.inputTextFieldContainer}>
                 <TextInput
                   placeholderTextColor={COLORS.secondary}
@@ -489,9 +425,8 @@ const AdminDashboard = (props) => {
                   search={false}
                   boxStyles={styles.inputTextFieldContainer}
                   dropdownStyles={styles.inputTextFieldContainer}
-                  //dropdownTextStyles={styles.inputTextField}
                   placeholderTextColor={COLORS.secondary}
-                  placeholder="Organization Type"
+                  placeholder={strings.organizationType}
                 />
               </View>
 
@@ -504,7 +439,7 @@ const AdminDashboard = (props) => {
                   dropdownStyles={styles.inputTextFieldContainer}
                   dropdownTextStyles={styles.dropdowntext}
                   placeholderTextColor={COLORS.secondary}
-                  placeholder="Service"
+                  placeholder={strings.serviceLbl}
                 />
               </View>
               <View style={styles.inputTextFieldContainer}>
@@ -516,7 +451,6 @@ const AdminDashboard = (props) => {
                   value={orgEmail}
                 />
               </View>
-
               <TouchableOpacity style={styles.saveButton} onPress={handleSignUp}>
                 <Text style={styles.saveText}>{strings.save}</Text>
               </TouchableOpacity>
@@ -528,9 +462,9 @@ const AdminDashboard = (props) => {
   }
 
   //Service component
-  function ServiceScreen({ route, navigation }) {
+  function ServiceScreen() {
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -543,9 +477,9 @@ const AdminDashboard = (props) => {
   }
 
   //Payment component
-  function PaymentScreen({ route, navigation }) {
+  function PaymentScreen() {
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainer}>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -558,11 +492,11 @@ const AdminDashboard = (props) => {
   }
 
   //Payment details
-  function UpdatePaymentStatusScreen({ route, navigation }) {
+  function UpdatePaymentStatusScreen({ route }) {
     const { item } = route.params;
     STATUS_MAP = {
-      PENDING: "Pending",
-      COMPLETED: "Completed",
+      PENDING: strings.pending,
+      COMPLETED: strings.completed,
     };
 
     const [paymentDetail, setPaymentDetail] = useState(null);
@@ -597,9 +531,9 @@ const AdminDashboard = (props) => {
         );
         const data = await response.json();
         Alert.alert(
-          "Payment Status Updated!", // Specify the desired title here
+          strings.paymentStatusUpdated, // Specify the desired title here
           `${item.mentor.fname} ${item.mentor.lname}'s payment status updated successfully!`,
-          [{ text: "Done", onPress: () => fetchPaymentDetail() }]
+          [{ text: strings.done, onPress: () => fetchPaymentDetail() }]
         );
       } catch (error) {
         console.log(error);
@@ -607,36 +541,36 @@ const AdminDashboard = (props) => {
     };
 
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={{ marginBottom: 10 }}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.paymentDetailText}>Mentor:</Text>
+              <View style={styles.messageContainer}>
+                <View style={styles.rowContainer}>
+                  <Text style={styles.paymentDetailText}>{strings.mentor}</Text>
                   <Text style={styles.paymentValusText}>
                     {item.mentor.fname} {item.mentor.lname}
                   </Text>
                 </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.paymentDetailText}>Seeker:</Text>
+                <View style={styles.rowContainer}>
+                  <Text style={styles.paymentDetailText}>{strings.seeker}</Text>
                   <Text style={styles.paymentValusText}>
                     {item.seeker.fname} {item.seeker.lname}
                   </Text>
                 </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.paymentDetailText}>Service: </Text>
+                <View style={styles.rowContainer}>
+                  <Text style={styles.paymentDetailText}>{strings.service}</Text>
                   <Text style={styles.paymentValusText}>{item.type}</Text>
                 </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.paymentDetailText}>Payment Status: </Text>
+                <View style={styles.rowContainer}>
+                  <Text style={styles.paymentDetailText}>{patmentStatus}</Text>
                   <Text style={styles.paymentValusText}>
                     {paymentDetail?.status}
                   </Text>
                 </View>
               </View>
               <Text style={styles.paymentDetailText}>
-                Update Payment Status:
+                {strings.updatePaymentStatus}
               </Text>
               <SelectList
                 data={statuslist}
@@ -709,49 +643,49 @@ const AdminDashboard = (props) => {
     };
 
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]} style={styles.linearGradient}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>{mentorDetail.fname} {mentorDetail.lname}</Text>
-          <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate("mentors")}>
-            <Image source={icons.cancel_icon} style={styles.closeIcon} />
-          </TouchableOpacity>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]} style={styles.linearGradient}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>{mentorDetail.fname} {mentorDetail.lname}</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate("mentors")}>
+              <Image source={icons.cancel_icon} style={styles.closeIcon} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.line} />
+
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
+            {data && data.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.messageBubble,
+                  item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
+                ]}
+              >
+                <Text style={item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentText : styles.receivedText}>
+                  {item.content} {/* Assuming 'content' is the property containing the message */}
+                </Text>
+              </View>
+            ))}
+          </ScrollView>
+
         </View>
-        <View style={styles.line} />
 
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.messageContainer}>
-  {data && data.map((item, index) => (
-    <View
-      key={index}
-      style={[
-        styles.messageBubble,
-        item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentBubble : styles.receivedBubble,
-      ]}
-    >
-      <Text style={item.sender === adminId && item.receiver === mentorDetail.id ? styles.sentText : styles.receivedText}>
-        {item.content} {/* Assuming 'content' is the property containing the message */}
-      </Text>
-    </View>
-  ))}
-</ScrollView>
-
-      </View>
-
-      <View style={styles.bottomContainer}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.inputText}
-            placeholder="Type your message..."
-            placeholderTextColor={COLORS.secondary}
-            value={message}
-            onChangeText={value => setMessage(value)}
-          />
-          <TouchableOpacity style={styles.sendButton} onPress={postMessage}>
-            <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20} /></Text>
-          </TouchableOpacity>
+        <View style={styles.bottomContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.inputText}
+              placeholder={strings.typeHere}
+              placeholderTextColor={COLORS.secondary}
+              value={message}
+              onChangeText={value => setMessage(value)}
+            />
+            <TouchableOpacity style={styles.sendButton} onPress={postMessage}>
+              <Text style={styles.sendButtonText}><Ionicons name="send-outline" size={20} /></Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </LinearGradient>
+      </LinearGradient>
     );
   }
 
@@ -824,9 +758,9 @@ const AdminDashboard = (props) => {
         );
         const data = await response.json();
         Alert.alert(
-          "Onboard Status Updated!", // Specify the desired title here
+          strings.onBoardStatus, // Specify the desired title here
           `${mentor.fname} ${mentor.lname}'s onboard status updated successfully!`,
-          [{ text: "Done", onPress: () => fetchMentorDetail() }]
+          [{ text: strings.done, onPress: () => fetchMentorDetail() }]
         );
       } catch (error) {
         console.log(error);
@@ -834,11 +768,7 @@ const AdminDashboard = (props) => {
     };
 
     // Chat 
-
-
-
     const getMessages = async () => {
-
       try {
         const response = await fetch(api.apiUrl + `/getMessages?sender=${mentorDetail.id}&receiver=${adminId}`, {
           method: 'GET',
@@ -850,11 +780,6 @@ const AdminDashboard = (props) => {
 
         const data = await response.json();
         navigation.navigate("mentorchat", { mentorDetail, data })
-
-
-
-
-
       } catch (error) {
         console.error('Error:', error);
         // Handle error
@@ -863,12 +788,12 @@ const AdminDashboard = (props) => {
 
 
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.connectionContainer}>
           <View style={styles.subContainermentor}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={{ marginBottom: 5 }}>
-                <View style={{ backgroundColor: COLORS.secondary, opacity: 0.9, borderRadius: SIZES.medium }}>
+              <View style={styles.marginBottomstyle}>
+                <View style={styles.chatContainer}>
                   <Text style={styles.headingText}>
                     {mentorDetail?.fname} {mentorDetail?.lname}
                   </Text>
@@ -878,7 +803,7 @@ const AdminDashboard = (props) => {
                   <Text style={styles.subHeadingText}>{mentorDetail?.email}</Text>
                 </View>
                 <Text style={styles.detailText}>
-                  Service: <Ionicons
+                  {strings.service} <Ionicons
                     name={SERVICE_TYPE_ICON[mentorDetail?.serviceOffered]}
                     size={20}
                   />
@@ -886,27 +811,27 @@ const AdminDashboard = (props) => {
                   {SERVICE_TEXT_MAP[mentorDetail?.serviceOffered]}
                 </Text>
                 <Text style={styles.detailText}>
-                  Location: {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}
+                  {strings.location} {ONTARIO_CITIES_MAP[mentorDetail?.currentLocation]}
                 </Text>
                 {/* Status */}
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.serviceAnalytics}>
                 </View>
                 <Text style={styles.detailText}>
-                  Onboard Status: {STATUS_MAP[mentorDetail?.onboardStatus]}
+                  {strings.onBoard} {STATUS_MAP[mentorDetail?.onboardStatus]}
                 </Text>
                 <Text style={styles.detailText}>
-                  Visa Status: {mentorDetail?.visaStatus}
+                  {strings.visaStatus} {mentorDetail?.visaStatus}
                 </Text>
                 {/* Strike Count */}
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.serviceAnalytics}>
                   <View>
-                    <Text style={styles.detailText}>Strike Count: {mentorDetail?.strikeCount}/5</Text>
+                    <Text style={styles.detailText}>{strings.strikeCount} {mentorDetail?.strikeCount}/5</Text>
                   </View>
                 </View>
                 {/* Rating */}
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={styles.detailText}>Rating: </Text>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.serviceAnalytics}>
+                  <Text style={styles.detailText}>{strings.rating} </Text>
+                  <View style={styles.serviceAnalytics}>
                     {[...Array(5)].map((_, index) => (
                       <Text key={index} style={styles.star}>
                         {index < Math.floor(mentorDetail?.rating) ? "★" : "☆"}
@@ -917,10 +842,10 @@ const AdminDashboard = (props) => {
 
               </View>
               {/* Update Mentor Onboard Status */}
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={styles.serviceAnalytics}>
                 <View>
                   <Text style={styles.detailText}>
-                    Update Mentor Status:
+                    {strings.updateMentorStatus}
                   </Text>
                 </View>
               </View>
@@ -952,24 +877,23 @@ const AdminDashboard = (props) => {
   const handleSignOut = () => {
     // Call the props.logout function here
     Alert.alert(
-      "Sign Out?", // Specify the desired title here
-      `Are you sure, you want to sign out?`,
-      [{ text: "No" }, { text: "Yes", onPress: () => props.logout() }],
+      strings.signOutTitle, // Specify the desired title here
+      strings.signOutMsg,
+      [{ text: strings.no }, { text: strings.yes, onPress: () => props.logout() }],
     );
   };
 
   // Notification modal component
-
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
 
   const NotificationsModal = () => {
     return (
-      <LinearGradient colors={["#458592", "#50A4AB", "#CFF4F7"]}>
+      <LinearGradient colors={[COLORS.primaryDark, COLORS.primary, COLORS.primaryLight]}>
         <View style={styles.containernotification}>
           <View style={styles.notificationheader}>
-            <Text style={styles.headertext}>Notifications</Text>
+            <Text style={styles.headertext}>{strings.notification}</Text>
             <TouchableOpacity
               style={styles.closeButton}
               onPress={() => setShowNotifications(false)}
@@ -983,8 +907,7 @@ const AdminDashboard = (props) => {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.notificationcardContainer}>
                 <Text style={styles.textContainer}>
-                  { }
-                  This is a static notification message.
+                  { strings.adminNotification}
                 </Text>
               </View>
             </ScrollView>
@@ -1001,7 +924,7 @@ const AdminDashboard = (props) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="Sign out" labelStyle={{ marginTop: -18, color: COLORS.white }} onPress={() => handleSignOut()} />
+        <DrawerItem label={strings.signOut} labelStyle={styles.signOutLbl} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }
@@ -1017,7 +940,7 @@ const AdminDashboard = (props) => {
           },
           drawerActiveBackgroundColor: COLORS.primary,
           drawerLabelStyle: {
-            color: "#fff",
+            color: COLORS.white,
           },
 
         }}
@@ -1027,13 +950,11 @@ const AdminDashboard = (props) => {
           name="Home"
           component={HomeScreen}
           options={{
-            title: "Dashboard",
+            title: strings.dashboard,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
+            headerStyle: styles.headerStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1044,39 +965,16 @@ const AdminDashboard = (props) => {
             ),
           }}
         />
-        {/* <Drawer.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            title: "PROFILE",
-            headerTitleAlign: "center",
-            headerTintColor: COLORS.secondary,
-            headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.buttonBellStyle}
-                onPress={toggleNotifications}
-              >
-                <Image source={icons.bell_icon}></Image>
-              </TouchableOpacity>
-            ),
-          }}
-        /> */}
 
         <Drawer.Screen
           name="mentors"
           component={MentorsScreen}
           options={{
-            title: "Mentors",
+            title: strings.mentors,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
+            headerStyle: styles.headerStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1092,13 +990,11 @@ const AdminDashboard = (props) => {
           name="seekers"
           component={SeekersScreen}
           options={{
-            title: "Seekers",
+            title: strings.seekers,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
+            headerStyle: styles.headerStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1114,13 +1010,11 @@ const AdminDashboard = (props) => {
           name="ConnRequests"
           component={ConnectionRequestsScreen}
           options={{
-            title: "Connections",
+            title: strings.connections,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
+            headerStyle: styles.headerStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1136,13 +1030,11 @@ const AdminDashboard = (props) => {
           name="services"
           component={ServiceScreen}
           options={{
-            title: "Services",
+            title: strings.services,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
+            headerStyle: styles.headerStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1157,13 +1049,11 @@ const AdminDashboard = (props) => {
           name="Payment"
           component={PaymentScreen}
           options={{
-            title: "Payments",
+            title: strings.payments,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
+            headerStyle: styles.headerStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1178,15 +1068,13 @@ const AdminDashboard = (props) => {
           name="addmentor"
           component={AddmentorScreen}
           options={{
-            title: "Add Collaborator",
+            title: strings.addCollaborator,
             drawerLabel: () => null,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            drawerItemStyle: { height: 0 },
+            headerStyle: styles.headerStyle,
+            drawerItemStyle: styles.drawerItemStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1202,15 +1090,13 @@ const AdminDashboard = (props) => {
           name="updatePayment"
           component={UpdatePaymentStatusScreen}
           options={{
-            title: "Payment Detail",
+            title: strings.paymentDetails,
             drawerLabel: () => null,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            drawerItemStyle: { height: 0 },
+            headerStyle: styles.headerStyle,
+            drawerItemStyle: styles.drawerItemStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1226,15 +1112,13 @@ const AdminDashboard = (props) => {
           name="updatementor"
           component={UpdateMentorStatusScreen}
           options={{
-            title: "Mentor Detail",
+            title: strings.mentorDetails,
             drawerLabel: () => null,
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            drawerItemStyle: { height: 0 },
+            headerStyle: styles.headerStyle,
+            drawerItemStyle: styles.drawerItemStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}
@@ -1255,10 +1139,8 @@ const AdminDashboard = (props) => {
             headerTitleAlign: "center",
             headerTintColor: COLORS.secondary,
             headerTitleStyle: styles.dashboardHeading,
-            headerStyle: {
-              backgroundColor: "#458592",
-            },
-            drawerItemStyle: { height: 0 },
+            headerStyle: styles.headerStyle,
+            drawerItemStyle: styles.drawerItemStyle,
             headerRight: () => (
               <TouchableOpacity
                 style={styles.buttonBellStyle}

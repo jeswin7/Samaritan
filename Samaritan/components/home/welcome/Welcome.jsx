@@ -8,7 +8,6 @@ import {
   FlatList,
   Alert
 } from "react-native";
-import { useRouter } from "expo-router";
 import { Picker } from '@react-native-picker/picker';
 
 import styles from "./welcome.style";
@@ -24,26 +23,19 @@ LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
 const Welcome = (props) => {
-  const router = useRouter();
-  const navigation = useNavigation();
-
   const [mentorsList, setMentorsList] = useState([]);
   const [focussedMentor, setFocussedMentor] = useState(null);
   const [connReqs, setConnReqs] = useState([]);
-
   const [filterName, setFilterName] = useState('');
   const [filterValue, setFilterValue] = useState(1);
   const [showPicker, setShowPicker] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
 
-
-
   useEffect(() => {
     fetchMentors()
     fetchSeekerConnRequests()
   }, [])
-
 
   const fetchMentors = async () => {
     try {
@@ -98,19 +90,14 @@ const Welcome = (props) => {
     }
   };
 
-
-
   // filter handle
   const handleFilterClick = () => {
-    if(!showPicker){
+    if (!showPicker) {
       setShowPicker(true);
-    }else{
+    } else {
       setShowPicker(false);
     }
   };
-
-
-
 
   //Home Component
   function HomeScreen({ searchTerm, setSearchTerm }) {
@@ -127,41 +114,39 @@ const Welcome = (props) => {
         navigation.navigate("Details", { item });
       }
       }>
-          <View style={styles.listView}>
-            <View style={styles.item}>
-              <Text style={styles.titleNameStyle}>{item.fname} {item.lname}</Text>
-              <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]} | {ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
-              <Text style={styles.title}> {[...Array(5)].map((_, index) => (
-                <Text key={index} style={styles.star}>
-                  {index < Math.floor(item.rating) ? '★' : '☆'}
-                </Text>
-              ))}</Text>
-            </View>
-            <View style={styles.cheveronView}>
-              {/* <Image source={icons.cheveron_icon} style={styles.cheveronIcon}></Image> */}
-              <Ionicons size={34} style={{color:COLORS.primary}} name="chevron-forward-outline"></Ionicons>
-            </View>
+        <View style={styles.listView}>
+          <View style={styles.item}>
+            <Text style={styles.titleNameStyle}>{item.fname} {item.lname}</Text>
+            <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]} | {ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+            <Text style={styles.title}> {[...Array(5)].map((_, index) => (
+              <Text key={index} style={styles.star}>
+                {index < Math.floor(item.rating) ? '★' : '☆'}
+              </Text>
+            ))}</Text>
           </View>
+          <View style={styles.cheveronView}>
+            <Ionicons size={34} style={{ color: COLORS.primary }} name="chevron-forward-outline"></Ionicons>
+          </View>
+        </View>
       </TouchableOpacity>
 
     );
 
-
     return (
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.homeMainContainer}>
+        <View style={styles.homeInnerContainer}>
           <View style={styles.homeContainer}>
             <View style={styles.homeSubContainer}>
               <View style={styles.searchContainer}>
-                  <View style={styles.searchWrapper}>
-                    <TextInput
-                      style={styles.searchInput}
-                      value={searchTerm}
-                      onChangeText={(text) => handleSearchClick(text)}
-                      placeholder={strings.searchHintText}
-                      placeholderTextColor={COLORS.primary}
-                    />
-                  </View>
+                <View style={styles.searchWrapper}>
+                  <TextInput
+                    style={styles.searchInput}
+                    value={searchTerm}
+                    onChangeText={(text) => handleSearchClick(text)}
+                    placeholder={strings.searchHintText}
+                    placeholderTextColor={COLORS.primary}
+                  />
+                </View>
 
                 <TouchableOpacity style={styles.searchBtn} >
                   <Image
@@ -180,22 +165,21 @@ const Welcome = (props) => {
               <View>
                 {showPicker ?
                   (<View style={{ backgroundColor: COLORS.primary, borderRadius: SIZES.medium, margin: 10 }}>
-                    <Picker dropdownIconColor={COLORS.tertiary} 
-                    style={{ color: COLORS.tertiary }}
-                    onValueChange={(value) => {
-                    setFilterName('serviceOffered')
-                    setFilterValue(value)
-                    fetchMentorsFiltered('serviceOffered', value)
-                    setShowPicker(false)
-                  }} selectedValue={filterValue}
-                  >
+                    <Picker dropdownIconColor={COLORS.tertiary}
+                      style={{ color: COLORS.tertiary }}
+                      onValueChange={(value) => {
+                        setFilterName('serviceOffered')
+                        setFilterValue(value)
+                        fetchMentorsFiltered('serviceOffered', value)
+                        setShowPicker(false)
+                      }} selectedValue={filterValue}
+                    >
+                      <Picker.Item label="Accommodation" value="1" />
+                      <Picker.Item label="Part-Time Job" value="2" />
+                    </Picker>
 
-                    <Picker.Item label="Accommodation" value="1" />
-                    <Picker.Item label="Part-Time Job" value="2" />
-                  </Picker>
 
-
-                    <Picker dropdownIconColor={COLORS.tertiary} style={{ color:COLORS.tertiary}} onValueChange={(value) => {
+                    <Picker dropdownIconColor={COLORS.tertiary} style={{ color: COLORS.tertiary }} onValueChange={(value) => {
                       setFilterName('currentLocation')
                       setFilterValue(value)
                       fetchMentorsFiltered('currentLocation', value)
@@ -216,9 +200,6 @@ const Welcome = (props) => {
                 }
 
               </View>
-
-
-
               {
                 mentorsList.length > 0 ?
                   <View style={styles.tabsContainer}>
@@ -231,17 +212,14 @@ const Welcome = (props) => {
                     />
                   </View>
                   :
-                  <Text>Loading...</Text>
+                  <Text>{strings.loading}</Text>
               }
-
             </View>
           </View>
         </View>
       </ScrollView>
-
     );
   }
-
 
   // Fetch Connection requests of logged in seeker
   const fetchSeekerConnRequests = async () => {
@@ -257,30 +235,21 @@ const Welcome = (props) => {
 
   //Request Component
   function RequestComponent({ }) {
-
     //fetchSeekerConnRequests()
-
     const ItemSeparatorView = () => <View style={styles.seperatorStyle} />
 
     const RequestItem = ({ item }) => (
-
-<View style={styles.listView}>
-          <View style={styles.item}>
-            <Text style={styles.titleNameStyle}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
-            <Text style={styles.title}>{SERVICE_MAP[item.connection.service]}</Text>
-            <View style={styles.statusView}>
-              <Text style={[styles.statusTitle,{color:item.connection.status === 'DECLINED' ? COLORS.red : item.connection.status === 'ACCEPTED' ? COLORS.secondary : COLORS.gold}]}>{item.connection.status}</Text>
-            </View>
-
+      <View style={styles.listView}>
+        <View style={styles.item}>
+          <Text style={styles.titleNameStyle}>{item.mentor[0].fname} {item.mentor[0].lname}</Text>
+          <Text style={styles.title}>{SERVICE_MAP[item.connection.service]}</Text>
+          <View style={styles.statusView}>
+            <Text style={[styles.statusTitle, { color: item.connection.status === 'DECLINED' ? COLORS.red : item.connection.status === 'ACCEPTED' ? COLORS.secondary : COLORS.gold }]}>{item.connection.status}</Text>
           </View>
         </View>
-
+      </View>
     )
-
-
     const renderRequestItem = ({ item }) => <RequestItem item={item} />;
-
-
     return (
       <View style={styles.homeContainer}>
         <View style={styles.homeSubContainer}>
@@ -299,7 +268,6 @@ const Welcome = (props) => {
   }
 
   // Notification modal component
-
   const toggleNotifications = () => {
     setShowPicker(false);
     setShowNotifications(!showNotifications);
@@ -307,45 +275,43 @@ const Welcome = (props) => {
 
   const NotificationsModal = () => {
     return (
-        <View style={styles.containernotification}>
-          <View style={styles.notificationheader}>
-            <Text style={styles.headertext}>Notifications</Text>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowNotifications(false)}
-            >
-              <Image source={icons.cancel_icon}></Image>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.notificationline}></View>
-
-          <View style={styles.subContainer}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View style={styles.notificationcardContainer}>
-                <Text style={styles.textContainer}>
-                  Your Connection request for Accommodation has been sent Successfully!
-                </Text>
-              </View>
-              <View style={styles.notificationcardContainer}>
-                <Text style={styles.textContainer}>
-                  Your Connection request for Part time job has been sent Successfully!
-                </Text>
-              </View>
-              <View style={styles.notificationcardContainer}>
-                <Text style={styles.textContainer}>
-                  Your Connection request for Part time job has been sent Accepted by Mentor!
-                </Text>
-              </View>
-            </ScrollView>
-          </View>
+      <View style={styles.containernotification}>
+        <View style={styles.notificationheader}>
+          <Text style={styles.headertext}>{strings.notification}</Text>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setShowNotifications(false)}
+          >
+            <Image source={icons.cancel_icon}></Image>
+          </TouchableOpacity>
         </View>
+        <View style={styles.notificationline}></View>
+        <View style={styles.subContainer}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.notificationcardContainer}>
+              <Text style={styles.textContainer}>
+                {strings.notificationServiceAcc}
+              </Text>
+            </View>
+            <View style={styles.notificationcardContainer}>
+              <Text style={styles.textContainer}>
+                {strings.notificationServiceJob}
+              </Text>
+            </View>
+            <View style={styles.notificationcardContainer}>
+              <Text style={styles.textContainer}>
+                {strings.notificationMsg}
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+      </View>
     );
   };
 
   //Mentor Details Screen
   function MentorDetailsScreen({ route }) {
     const { item } = route.params;
-    //console.log('metor list', item);
     const [requestSent, setrequestSent] = useState(false);
 
     // Send Connection request API initiate
@@ -365,10 +331,10 @@ const Welcome = (props) => {
       })
         .then(() => {
           Alert.alert(
-            'Request Sent!', // Specify the desired title here
+            strings.requestSent, // Specify the desired title here
             `Your Connection Request to ${item.fname} ${item.lname} Sent Successfully!`,
             [
-              { text: 'Done', onPress: () => setrequestSent(true) }
+              { text: strings.done, onPress: () => setrequestSent(true) }
             ]
           );
         });
@@ -377,17 +343,17 @@ const Welcome = (props) => {
     return (
       <View style={styles.mentorDetailsContainer}>
         <View style={styles.mentorDetailsSubContainer}>
-            <View style={styles.detailView}>
-              <View style={styles.item}>
-                <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
-                <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
-                <Text style={styles.title}>{[...Array(5)].map((_, index) => (
-                  <Text key={index} style={styles.star}>
-                    {index < Math.floor(item.rating) ? '★' : '☆'}
-                  </Text>
-                ))}</Text>
-              </View>
+          <View style={styles.detailView}>
+            <View style={styles.item}>
+              <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
+              <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
+              <Text style={styles.title}>{[...Array(5)].map((_, index) => (
+                <Text key={index} style={styles.star}>
+                  {index < Math.floor(item.rating) ? '★' : '☆'}
+                </Text>
+              ))}</Text>
             </View>
+          </View>
         </View>
         {
           !requestSent &&
@@ -395,7 +361,6 @@ const Welcome = (props) => {
             <Text style={styles.sendConnectionText}>{strings.dendConnectionRequest}</Text>
           </TouchableOpacity>
         }
-
       </View>
     );
   }
@@ -403,9 +368,9 @@ const Welcome = (props) => {
   const handleSignOut = () => {
     // Call the props.logout function here
     Alert.alert(
-      "Sign Out?", // Specify the desired title here
-      `Are you sure, you want to sign out?`,
-      [{ text: "No" }, { text: "Yes", onPress: () => props.logout() }],
+      strings.signOutTitle, // Specify the desired title here
+      strings.signOutMsg,
+      [{ text: strings.no }, { text: strings.yes, onPress: () => props.logout() }],
     );
   };
 
@@ -413,7 +378,7 @@ const Welcome = (props) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="Sign Out" labelStyle={{ color: COLORS.white }} onPress={() => handleSignOut()} />
+        <DrawerItem label={strings.signOut} labelStyle={styles.signOutLbl} onPress={() => handleSignOut()} />
       </DrawerContentScrollView>
     );
   }
@@ -428,13 +393,13 @@ const Welcome = (props) => {
           },
           drawerActiveBackgroundColor: COLORS.primary,
           drawerLabelStyle: {
-            color: '#fff'
+            color: COLORS.white
           }
         }}
         drawerContent={props => <CustomDrawerContent {...props} />}
       >
-        <Drawer.Screen name="Home" component={HomeScreen} options={{
-          title: 'SAMARITAN',
+        <Drawer.Screen name={strings.home} component={HomeScreen} options={{
+          title: strings.appHeader,
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
@@ -448,8 +413,8 @@ const Welcome = (props) => {
           ),
         }} />
 
-        <Drawer.Screen name="Requests" component={RequestComponent} options={{
-          title: 'Requests',
+        <Drawer.Screen name={strings.request} component={RequestComponent} options={{
+          title: strings.request,
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
@@ -460,12 +425,12 @@ const Welcome = (props) => {
           ),
         }} />
 
-        <Drawer.Screen name="Details" component={MentorDetailsScreen} options={{
-          title: focussedMentor ? `${focussedMentor.fname} ${focussedMentor.lname}` : 'DETAILS',
+        <Drawer.Screen name={strings.details} component={MentorDetailsScreen} options={{
+          title: focussedMentor ? `${focussedMentor.fname} ${focussedMentor.lname}` : strings.details,
           headerTitleAlign: 'center',
           headerTintColor: COLORS.secondary,
           headerTitleStyle: styles.dashboardHeading,
-          drawerItemStyle: { height: 0 },
+          drawerItemStyle: styles.drawerItemStyle,
           headerRight: () => (
             <TouchableOpacity style={styles.buttonBellStyle} onPress={toggleNotifications}>
               <Image source={icons.bell_icon}></Image>

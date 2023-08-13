@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { COLORS, FONT, SIZES, strings, api } from '../../constants';
-import { color } from 'react-native-reanimated';
+import { COLORS, SIZES, strings, api } from '../../constants';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const Login = (props) => {
@@ -23,7 +22,6 @@ const Login = (props) => {
   }
 
   const postAPI = async () => {
-    console.log("@postAPI")
     const url = api.apiUrl+`/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
     try {
@@ -36,8 +34,6 @@ const Login = (props) => {
       });
 
       const data = await response.json();
-      console.log('Response data::::::::::::::::::::::::::::::::::', data);
-
       // Process the response data
       if (data.status === 200 && data.userId)
         props.isValid(data.role, data.userId);
@@ -53,7 +49,6 @@ const Login = (props) => {
   const handleLogin = () => {
     props.isValid();
     // Perform login logic here
-    console.log('Logging in...', email, password);
     if (!email && !password) {
       alert(strings.loginError);
     } else if (!email) {
@@ -67,7 +62,6 @@ const Login = (props) => {
 
   const handleForgotPassword = () => {
     // Perform forgot password logic here
-    console.log('Forgot Password...');
     props.forgotPassword();
   };
 
@@ -77,7 +71,7 @@ const Login = (props) => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ flex: 1 }}>
+      <View style={styles.loginContainer}>
         <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
           <TextInput
             style={styles.emailTextField}
@@ -123,6 +117,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
     backgroundColor: COLORS.secondary
+  },
+  loginContainer : { 
+    flex: 1 
   },
   emailTextField: {
     paddingVertical: 12,

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, Alert, StyleSheet, ScrollView } from 'react-native';
-import { COLORS, FONT, SIZES, strings } from '../../constants';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { COLORS, SIZES, strings } from '../../constants';
 
 const ForgotPassword = (props) => {
     const [email, setEmail] = useState('');
@@ -21,7 +21,6 @@ const ForgotPassword = (props) => {
 
     const handleContinue = () => {
         // Perform forgot password here
-        console.log('Continue in...', email);
         if (!email) {
             alert(strings.emailError)
         } else {
@@ -32,9 +31,9 @@ const ForgotPassword = (props) => {
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{ flex: 1 }}>
-                <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
-                    <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+            <View style={styles.forgotPasswordContainer}>
+                <View style={styles.forgotPasswordSubContainer}>
+                    <Text style={styles.forgotPasswordText}>{strings.forgotPasswordHeading}</Text>
                     <TextInput
                         style={styles.emailTextField}
                         placeholder={strings.email}
@@ -56,6 +55,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 16,
+    },
+    forgotPasswordContainer : { 
+        flex: 1 
+    },
+    forgotPasswordSubContainer : { 
+        paddingHorizontal: 20, 
+        paddingVertical: 20 
     },
     forgotPasswordText: {
         color: COLORS.secondary,

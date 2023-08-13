@@ -6,14 +6,13 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { COLORS } from "../../../constants";
+import { COLORS, strings } from "../../../constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
 const Table = ({ data }) => {
   const navigation = useNavigation();
   const renderRow = ({ item }) => {
-    console.log("mentors data----", item);
 
     SERVICE_TYPE_ICON = {
       1: "bed-outline",
@@ -49,11 +48,12 @@ const Table = ({ data }) => {
             {item.rating}
           </Text>
         </View>
+        {/* Future item to be added */}
         {/* <View style={styles.cell}>
           <Text style={styles.textStyle}>
             {item.strikeCount}
           </Text>
-        </View> */}
+        </View> */} 
         <View style={styles.cell}>
           <Text style={styles.textStyle}>{STATUS_ICON[item.onboardStatus]}</Text>
         </View>
@@ -72,17 +72,17 @@ const Table = ({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.headerCell}>Mentor</Text>
-        <Text style={styles.headerCell}>Service</Text>
-        <Text style={styles.headerCell}>Rating</Text>
+        <Text style={styles.headerCell}>{strings.mentorLbl}</Text>
+        <Text style={styles.headerCell}>{strings.serviceLbl}</Text>
+        <Text style={styles.headerCell}>{strings.ratingLbl}</Text>
         {/* <Text style={styles.headerCell}>Strikes</Text> */}
-        <Text style={styles.headerCell}>Status</Text>
-        <Text style={styles.headerCell}>Action</Text>
+        <Text style={styles.headerCell}>{strings.statusLbl}</Text>
+        <Text style={styles.headerCell}>{strings.actionLbl}</Text>
       </View>
       <FlatList
         data={data}
         renderItem={renderRow}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(index) => index.toString()}
       />
     </View>
   );

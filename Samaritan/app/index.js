@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
-import { View, Text, ScrollView, SafeAreaView, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { useState } from "react";
+import { View, Text, SafeAreaView, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Stack } from "expo-router";
 
-import { COLORS, icons, images, SIZES, strings } from '../constants';
-import { Nearbyjobs, Popularjobs, ScreenHeaderBtn, Welcome, Login, Signup, ForgotPassword, Dashboard, AdminDashboard } from '../components';
-
-
-console.log('text:', strings.appHeader)
-
+import { COLORS, icons, SIZES, strings } from '../constants';
+import { Welcome, Login, Signup, ForgotPassword, Dashboard, AdminDashboard } from '../components';
 
 const Home = () => {
-
-    const router = useRouter();
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [isNewUser, setIsNewUser] = useState(false);
     const [backButtonVisible, setBackButtonVisible] = useState(false);
@@ -23,12 +17,10 @@ const Home = () => {
         'seeker': <Welcome userId={userId} logout={() => redirectToLoginScreen()}/>,
         'admin': <AdminDashboard userId={userId} logout={() => redirectToLoginScreen()} />,
         'mentor': <Dashboard userId={userId} logout={() => redirectToLoginScreen()}/>,
-
     }
 
-
+    //get User role
     getConsole = (role) => {
-        console.log("-----------at switch:", role, CONSOLE_MAP[role])
         return CONSOLE_MAP[role];
     }
 
@@ -81,7 +73,6 @@ const Home = () => {
                 isLoggedIn ?
                     userId ?
                         getConsole(userRole)
-
                         :
                         <View style={styles.headerView}>
                             <Image source={icons.logo} style={styles.logo}></Image>
@@ -89,7 +80,7 @@ const Home = () => {
                                 <TouchableOpacity style={styles.buttonStyle} onPress={() => redirectToLoginScreen()}>
                                     {backButtonVisible ? (<Image source={icons.backIcon} style={styles.backIcon}></Image>) : ''}
                                 </TouchableOpacity >
-                                <Text>Unable to fetch request! Server must be down!!</Text>
+                                <Text>{strings.apiError}</Text>
                             </View>
                         </View>
                     :

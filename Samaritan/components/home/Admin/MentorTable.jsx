@@ -49,11 +49,11 @@ const Table = ({ data }) => {
             {item.rating}
           </Text>
         </View>
-        <View style={styles.cell}>
+        {/* <View style={styles.cell}>
           <Text style={styles.textStyle}>
             {item.strikeCount}
           </Text>
-        </View>
+        </View> */}
         <View style={styles.cell}>
           <Text style={styles.textStyle}>{STATUS_ICON[item.onboardStatus]}</Text>
         </View>
@@ -75,7 +75,7 @@ const Table = ({ data }) => {
         <Text style={styles.headerCell}>Mentor</Text>
         <Text style={styles.headerCell}>Service</Text>
         <Text style={styles.headerCell}>Rating</Text>
-        <Text style={styles.headerCell}>Strikes</Text>
+        {/* <Text style={styles.headerCell}>Strikes</Text> */}
         <Text style={styles.headerCell}>Status</Text>
         <Text style={styles.headerCell}>Action</Text>
       </View>

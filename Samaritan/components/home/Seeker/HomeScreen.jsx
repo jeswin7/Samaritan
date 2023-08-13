@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 
-import styles from "./welcome.style";
+import styles from "./home.style";
 import { icons, SIZES, COLORS, strings, api } from "../../../constants";
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -22,7 +22,7 @@ LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
-const Welcome = (props) => {
+const SeekerHome = (props) => {
   const [mentorsList, setMentorsList] = useState([]);
   const [focussedMentor, setFocussedMentor] = useState(null);
   const [connReqs, setConnReqs] = useState([]);
@@ -442,4 +442,4 @@ const Welcome = (props) => {
   );
 };
 
-export default Welcome;
+export default SeekerHome;

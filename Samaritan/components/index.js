@@ -1,7 +1,7 @@
 import ScreenHeaderBtn from "./common/header/ScreenHeaderBtn";
 
 // home screen
-import Welcome from "./home/welcome/Welcome";
+import SeekerHome from "./home/Seeker/HomeScreen";
 import Nearbyjobs from "./home/nearby/Nearbyjobs";
 import Popularjobs from "./home/popular/Popularjobs";
 import Login from "./login/Login";
@@ -22,7 +22,7 @@ import NearbyJobCard from "./common/cards/nearby/NearbyJobCard";
 
 export {
   ScreenHeaderBtn,
-  Welcome,
+  SeekerHome,
   Nearbyjobs,
   Popularjobs,
   Company,

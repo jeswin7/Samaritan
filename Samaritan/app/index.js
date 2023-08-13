@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, Image, StyleSheet, TouchableOpacity } from "r
 import { Stack } from "expo-router";
 
 import { COLORS, icons, SIZES, strings } from '../constants';
-import { Welcome, Login, Signup, ForgotPassword, Dashboard, AdminDashboard } from '../components';
+import { SeekerHome, Login, Signup, ForgotPassword, Dashboard, AdminDashboard } from '../components';
 
 const Home = () => {
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -14,7 +14,7 @@ const Home = () => {
     const [userId, setUserId] = useState(null);
 
     const CONSOLE_MAP = {
-        'seeker': <Welcome userId={userId} logout={() => redirectToLoginScreen()}/>,
+        'seeker': <SeekerHome userId={userId} logout={() => redirectToLoginScreen()}/>,
         'admin': <AdminDashboard userId={userId} logout={() => redirectToLoginScreen()} />,
         'mentor': <Dashboard userId={userId} logout={() => redirectToLoginScreen()}/>,
     }

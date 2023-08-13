@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { COLORS } from "../../../constants";
+import { COLORS, strings } from "../../../constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -64,15 +64,15 @@ const Table = ({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Text style={styles.headerCell}>Seeker</Text>
-        <Text style={styles.headerCell}>Mentor</Text>
-        <Text style={styles.headerCell}>Type</Text>
-        <Text style={styles.headerCell}>Status</Text>
+        <Text style={styles.headerCell}>{strings.seekerLbl}</Text>
+        <Text style={styles.headerCell}>{strings.mentorLbl}</Text>
+        <Text style={styles.headerCell}>{strings.typeLbl}</Text>
+        <Text style={styles.headerCell}>{strings.statusLbl}</Text>
       </View>
       <FlatList
         data={data}
         renderItem={renderRow}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(index) => index.toString()}
       />
     </View>
   );

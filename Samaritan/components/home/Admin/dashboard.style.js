@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { COLORS, FONT, SIZES } from "../../../constants";
-import { color } from "react-native-reanimated";
+import { COLORS, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -171,14 +170,24 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     margin: 10,
-    //backgroundColor: COLORS.primary,
     opacity: 0.8,
     borderRadius: 10,
     backgroundColor: '#458592',
     opacity: 0.9,
     borderColor: '#458592',
     borderWidth: 1,
-    //borderRadius: 20
+  },
+  rowContainer: { 
+    flexDirection: "row" 
+  },
+  analyticsContainer: { 
+    marginBottom: 10, 
+    flex: 1, 
+    flexDirection: "column" 
+  },
+  serviceAnalytics: { 
+    flexDirection: "row", 
+    alignItems: "center" 
   },
   seperatorViewStyles: { 
     height: 60, 
@@ -239,7 +248,6 @@ const styles = StyleSheet.create({
   textCountStyle: {
     fontSize: 40,
     color: COLORS.secondary,
-    //margin:10,
     marginBottom: 10,
     textAlign: 'center'
   },
@@ -396,7 +404,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     //textAlign: 'center'
   },
-  paymentValusText: {
+  paymentValueText: {
     fontSize: 15,
     color: COLORS.white,
     margin: 5,
@@ -527,9 +535,24 @@ const styles = StyleSheet.create({
       color: COLORS.white,
       fontWeight: 'bold',
     },
-
-  
-
+    marginBottomstyle: {
+       marginBottom: 5 
+    },
+  mentorDetailContainer: { 
+    backgroundColor: COLORS.secondary, 
+    opacity: 0.9, 
+    borderRadius: SIZES.medium 
+  },
+  signOutLbl:{ 
+    marginTop: -18, 
+    color: COLORS.white 
+  },
+  headerStyle: {
+    backgroundColor: "#458592"
+  },
+  drawerItemStyle: {
+    height: 0
+  }
   
 });
 

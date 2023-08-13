@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { COLORS, FONT, SIZES } from "../../../constants";
+import { COLORS, SIZES } from "../../../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     color: COLORS.secondary,
     fontSize: SIZES.xLarge,
     fontWeight: 'bold',
+  },
+  drawerItemStyle: {
+    height: 0
   },
   menuIcon: {
     height: 20,
@@ -120,7 +123,8 @@ const styles = StyleSheet.create({
     fontSize: SIZES.medium,
     color: COLORS.primary,
     paddingVertical: 5,
-    fontWeight:'bold'
+    fontWeight:'bold',
+    fontSize:20
   },
   title: {
     fontSize: SIZES.medium,
@@ -131,6 +135,12 @@ const styles = StyleSheet.create({
   seperatorStyle: {
     height: 30,
     width: '100%'
+  },
+  homeMainContainer : { 
+    flexGrow: 1 
+  },
+  homeInnerContainer : { 
+    flex: 1 
   },
   homeContainer: {
     backgroundColor: '#fff',
@@ -155,7 +165,6 @@ const styles = StyleSheet.create({
   },
   // Request Component style
   requestContainer: {
-    //height: '90%',
     marginTop: SIZES.medium,
   },
   statusView: {
@@ -170,10 +179,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   statusTitle: {
-    fontSize: SIZES.large,
+    fontSize: SIZES.medium,
     color: COLORS.secondary,
     fontWeight:'bold'
-    //marginLeft: 10
   },
   //mentorDetails
   mentorDetailsContainer: {
@@ -207,7 +215,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
   },
-  //notification Screen
   //Notifications
   containernotification: {
     height: '100%', 
@@ -228,7 +235,6 @@ const styles = StyleSheet.create({
     width: '100%',
     color: COLORS.tertiary,
     paddingVertical: 10,
-    //paddingHorizontal: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
@@ -240,16 +246,12 @@ const styles = StyleSheet.create({
     paddingLeft: 120,
   },
   notificationline: {
-    backgroundColor: COLORS.secondary,
-    //height: 1,
-    //width: "100%",
+    backgroundColor: COLORS.secondary
   },
   notificationcardContainer:{
-   // width: '100%',
     margin:5,
     padding:5,
     backgroundColor:COLORS.primary, 
-    //opacity:0.8, 
     borderRadius:10,
     marginTop:20,
   },
@@ -258,6 +260,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     paddingRight: 8,
   },
+  signOutLbl : { 
+    color: COLORS.white 
+  }
 });
 
 export default styles;

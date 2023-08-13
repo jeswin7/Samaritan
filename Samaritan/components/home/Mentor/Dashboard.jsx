@@ -45,129 +45,6 @@ const Dashboard = (props) => {
         rating: '4'
     };
 
-    const SERVICES_API = [
-        {
-            id: '1',
-            name: 'Than John',
-            service: 'Accomodation',
-            status: 'Completed'
-        },
-        {
-            id: '2',
-            name: 'Mary Brown',
-            service: 'Job',
-            status: 'In Progress'
-        },
-
-        {
-            id: '3',
-            name: 'Ed John',
-            service: 'Accomodation',
-            status: 'Completed'
-        },
-        {
-            id: '4',
-            name: 'Tej John',
-            service: 'Job',
-            status: 'In Progress'
-        },
-        {
-            id: '5',
-            name: 'Jake Brown',
-            service: 'Accomodation',
-            status: 'Completed'
-        },
-        {
-            id: '6',
-            name: 'Joel Cullen',
-            service: 'Job',
-            status: 'In Progress'
-        }
-    ];
-
-    const PAYMENT_API = [
-        {
-            id: '1',
-            name: 'Jes John',
-            service: 'Accomodation',
-            status: 'PENDING'
-        },
-        {
-            id: '2',
-            name: 'Mary Brown',
-            service: 'Job',
-            status: 'COMPLETED'
-        },
-
-        {
-            id: '3',
-            name: 'Ed John',
-            service: 'Accomodation',
-            status: 'PENDING'
-        },
-        {
-            id: '4',
-            name: 'Tej John',
-            service: 'Job',
-            status: 'PENDING'
-        },
-        {
-            id: '5',
-            name: 'Jake Brown',
-            service: 'Accomodation',
-            status: 'PENDING'
-        },
-        {
-            id: '6',
-            name: 'Joel Cullen',
-            service: 'Job',
-            status: 'COMPLETED'
-        }
-    ];
-
-
-    const CONNECTION_REQUESTS_API = [
-        {
-            id: '1',
-            name: 'Jes John',
-            service: 'Accomodation',
-            status: 'In Progress'
-        },
-        {
-            id: '2',
-            name: 'Mary Brown',
-            service: 'Job',
-            status: 'Completed'
-        },
-
-        {
-            id: '3',
-            name: 'Ed John',
-            service: 'Accomodation',
-            status: 'In Progress'
-        },
-        {
-            id: '4',
-            name: 'Tej John',
-            service: 'Job',
-            status: 'In Progress'
-        },
-        {
-            id: '5',
-            name: 'Jake Brown',
-            service: 'Accomodation',
-            status: 'In Progress'
-        },
-        {
-            id: '6',
-            name: 'Joel Cullen',
-            service: 'Job',
-            status: 'Completed'
-        }
-    ];
-
-
-
     // Dynamic APIS
     // 1. Fetch Mentor Details API
     const fetchMentorDetail = async () => {
@@ -223,21 +100,21 @@ const Dashboard = (props) => {
 
     // 6. Fetch Connection Requests
     const updateMentorConnRequestStatus = async (connection, status) => {
-        console.log("--------@ final", api.apiUrl+'/updateConnection', status)
+        console.log("--------@ final", api.apiUrl + '/updateConnection', status)
         const { id, seekerId, mentorId, service } = connection
-        fetch(api.apiUrl+'/updateConnection', {
+        fetch(api.apiUrl + '/updateConnection', {
             method: 'POST',
             headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 id, seekerId, mentorId, service,
-              status
+                status
             })
-          })
+        })
             .then(() => fetchData());
-            
+
 
     };
 
@@ -282,14 +159,13 @@ const Dashboard = (props) => {
             // Handle error
         }
     };
-    
+
 
 
 
 
     useEffect(() => {
         // Fetch API data here
-        console.log("********NEWWWW**********", props)
         fetchData();
     }, [props]);
 
@@ -305,12 +181,8 @@ const Dashboard = (props) => {
 
     //Home Component
     function HomeScreen() {
-
         const navigation = useNavigation();
-
-
         const PaymentItem = ({ payment }) => {
-
             const paymentsList = []
             paymentsList.push(payment)
 
@@ -322,12 +194,9 @@ const Dashboard = (props) => {
                             <Text style={styles.title}>{payment?.service}</Text>
                             <Text style={payment.status == "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{payment.status}</Text>
                         </View>
-
                     </View>
                 </TouchableOpacity>
-
             );
-
         }
 
         const renderPaymentItem = ({ item }) => {
@@ -338,14 +207,10 @@ const Dashboard = (props) => {
             );
         }
 
-
-
-
         // ________________________________________________________________________________
 
 
         const ServiceItem = ({ service }) => {
-
 
             return (
                 <TouchableOpacity onPress={() => navigation.navigate("Service", { serviceDetail: service })}>
@@ -358,7 +223,6 @@ const Dashboard = (props) => {
 
                     </View>
                 </TouchableOpacity>
-
             );
 
         }
@@ -397,11 +261,11 @@ const Dashboard = (props) => {
                     <ItemSeparatorView />
 
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.rowContainer}>
                         <View>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Services</Text>
+                            <Text style={styles.detailTitle}>Your Services</Text>
                         </View>
-                        <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        <View style={styles.dividerStyle} />
                     </View>
                     {
                         services && <View style={styles.rowContainer}>
@@ -416,14 +280,14 @@ const Dashboard = (props) => {
                     }
 
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.rowContainer}>
                         <View>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Payments</Text>
+                            <Text style={styles.detailTitle}>Your Payments</Text>
                         </View>
-                        <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        <View style={styles.dividerStyle} />
                     </View>
 
-                   { payments && <View style={styles.rowContainer}>
+                    {payments && <View style={styles.rowContainer}>
                         <FlatList
                             data={payments}
                             renderItem={renderPaymentItem}
@@ -431,16 +295,16 @@ const Dashboard = (props) => {
                             ItemSeparatorComponent={Separator}
                             horizontal
                         />
-                    </View>} 
+                    </View>}
 
                     {/* Rating */}
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.rowContainer}>
                         <View>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Rating</Text>
+                            <Text style={styles.detailTitle}>Your Rating</Text>
                         </View>
-                        <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        <View style={styles.dividerStyle} />
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.rowContainer}>
                         {[...Array(5)].map((_, index) => (
                             <Text key={index} style={styles.star}>
                                 {index < Math.floor(mentorDetail.rating) ? '★' : '☆'}
@@ -451,12 +315,12 @@ const Dashboard = (props) => {
                     {/* Strike Count */}
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 15 }}>
                         <View>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Your Strike Count</Text>
+                            <Text style={styles.detailTitle}>Your Strike Count</Text>
                         </View>
-                        <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                        <View style={styles.dividerStyle} />
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{mentorDetail.strikeCount}/5</Text>
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.detailTitle}>{mentorDetail.strikeCount}/5</Text>
                     </View>
 
                 </View>
@@ -466,21 +330,10 @@ const Dashboard = (props) => {
     }
 
 
-    //Profile component
-    function ProfileScreen() {
-        return (
-            <View style={styles.profileView}>
-                <Button onPress={() => navigation.navigate("Home")} title="Go back home" />
-            </View>
-        );
-    }
-
-
     //Connection requests component
     function ConnectionRequestsScreen() {
 
         const updateStatus = (item, status) => {
-            console.log("--------@ upd". item, status)
             updateMentorConnRequestStatus(item, status)
         }
 
@@ -495,14 +348,14 @@ const Dashboard = (props) => {
                                 padding: 15,
                                 borderRadius: SIZES.medium
                             }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={styles.rowContainer}>
                                     <View>
                                         <Text style={{ fontSize: 20, color: COLORS.tertiary, marginRight: 5 }}>{item.seekerName}</Text>
                                     </View>
                                 </View>
 
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={styles.rowContainer}>
                                     <View>
                                         <Text style={{ fontSize: 20, color: COLORS.tertiary, marginRight: 5 }}>{SERVICE_MAP[item.service]}</Text>
                                     </View>
@@ -522,7 +375,7 @@ const Dashboard = (props) => {
                                         </View>
                                         :
                                         <View>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <View style={styles.rowContainer}>
                                                 <View>
                                                     <Text style={{ fontSize: 20, color: item.status === 'ACCEPTED' ? COLORS.primary : COLORS.red, marginRight: 5 }}>{item.status}</Text>
                                                 </View>
@@ -563,29 +416,29 @@ const Dashboard = (props) => {
 
             const { id } = serviceDetail
             const service = serviceDetail.type
-            const seekerId  = serviceDetail.seeker.id
+            const seekerId = serviceDetail.seeker.id
             const mentorId = serviceDetail.mentor.id
 
             console.log(serviceDetail)
-            fetch(api.apiUrl+'/mentor/updateService', {
+            fetch(api.apiUrl + '/mentor/updateService', {
                 method: 'POST',
                 headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json'
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                 seekerId, mentorId, service, 
-                 serviceId : id,
-                status
+                    seekerId, mentorId, service,
+                    serviceId: id,
+                    status
                 })
-              })
+            })
                 .then(Alert.alert(
                     'Status Updated!', // Specify the desired title here
                     `Your status updated successfully!`,
                     [
-                      { text: 'Done', onPress: () => fetchData() }
+                        { text: 'Done', onPress: () => fetchData() }
                     ]
-                  ));
+                ));
 
         }
 
@@ -596,40 +449,40 @@ const Dashboard = (props) => {
 
 
                     <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={styles.rowContainer}>
                             <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                                <Text style={styles.detailTitle}>Service For</Text>
                             </View>
-                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            <View style={styles.dividerStyle} />
                         </View>
                         <View style={{ marginBottom: 30 }}>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.seeker.fname} {item.seeker.lname}</Text>
+                            <Text style={styles.detailTitle}>{item.seeker.fname} {item.seeker.lname}</Text>
                         </View>
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={styles.rowContainer}>
                             <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                                <Text style={styles.detailTitle}>Service Type</Text>
                             </View>
-                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            <View style={styles.dividerStyle} />
                         </View>
                         <View style={{ marginBottom: 30 }}>
-                            <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>{item.type}</Text>
+                            <Text style={styles.detailTitle}>{item.type}</Text>
                         </View>
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={styles.rowContainer}>
                             <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
+                                <Text style={styles.detailTitle}>Service Status</Text>
                             </View>
-                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            <View style={styles.dividerStyle} />
                         </View>
                         <View style={{ marginBottom: 30 }}>
                             <Text style={item.status === "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={styles.rowContainer}>
                             <View>
-                                <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Update Service Status</Text>
+                                <Text style={styles.detailTitle}>Update Service Status</Text>
                             </View>
-                            <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                            <View style={styles.dividerStyle} />
                         </View>
                         <Picker onValueChange={(value) => setServiceStatus(value)} selectedValue={status}>
 
@@ -663,31 +516,31 @@ const Dashboard = (props) => {
                     {
                         paymentsList.map((item, index) => {
                             return <View key={index}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={styles.rowContainer}>
                                     <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service For</Text>
+                                        <Text style={styles.detailTitle}>Service For</Text>
                                     </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                                    <View style={styles.dividerStyle} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
                                     <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.name}</Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={styles.rowContainer}>
                                     <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Type</Text>
+                                        <Text style={styles.detailTitle}>Service Type</Text>
                                     </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                                    <View style={styles.dividerStyle} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
                                     <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.service}</Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={styles.rowContainer}>
                                     <View>
-                                        <Text style={{ fontSize: 20, color: COLORS.primary, marginRight: 5, fontWeight: 5 }}>Service Status</Text>
+                                        <Text style={styles.detailTitle}>Payment Status</Text>
                                     </View>
-                                    <View style={{ flex: 1, height: 1, backgroundColor: COLORS.primary }} />
+                                    <View style={styles.dividerStyle} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
                                     <Text style={item.status === "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>

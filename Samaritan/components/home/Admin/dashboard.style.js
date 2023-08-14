@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     width: '95%',
     margin:5,
     padding:5,
-    backgroundColor:COLORS.primary, 
+    backgroundColor:COLORS.secondary, 
     opacity:0.8, 
     borderRadius:10,
     marginTop:40,

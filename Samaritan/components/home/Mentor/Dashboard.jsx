@@ -523,12 +523,12 @@ const Dashboard = (props) => {
                                     <View style={styles.dividerStyle} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
-                                    <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.name}</Text>
+                                    <Text style={{ fontSize: 20, color: COLORS.primary, margin: 5, fontWeight: 5 }}>{item.seeker.fname} {item.seeker.lname}</Text>
                                 </View>
 
                                 <View style={styles.rowContainer}>
                                     <View>
-                                        <Text style={styles.detailTitle}>Service Type</Text>
+                                        <Text style={styles.detailTitle}>Service Typejh</Text>
                                     </View>
                                     <View style={styles.dividerStyle} />
                                 </View>
@@ -543,7 +543,7 @@ const Dashboard = (props) => {
                                     <View style={styles.dividerStyle} />
                                 </View>
                                 <View style={{ marginBottom: 30 }}>
-                                    <Text style={item.status === "Completed" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
+                                    <Text style={item.status === "COMPLETED" ? styles.statusDoneStyle : styles.statusPendingStyle}>{item.status}</Text>
                                 </View>
 
                             </View>

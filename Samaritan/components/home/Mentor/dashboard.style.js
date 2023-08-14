@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   statusDoneStyle: {
     fontSize: SIZES.medium,
     fontWeight: 'bold',
-    color: COLORS.primary,
+    color: COLORS.primary ,
     paddingVertical: 5,
   },  
   statusPendingStyle: {

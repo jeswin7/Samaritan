@@ -345,10 +345,11 @@ const SeekerHome = (props) => {
         <View style={styles.mentorDetailsSubContainer}>
           <View style={styles.detailView}>
             <View style={styles.item}>
-            <Text style={styles.title}>"{item.customIntro}"</Text>
+            <Text style={styles.title}>{item.customIntro}</Text>
             </View>
 
           </View>
+          <View>
           <Text style={styles.title}>{ONTARIO_CITIES_MAP[item.currentLocation]}</Text>
               <Text style={styles.title}>{SERVICE_MAP[item.serviceOffered]}</Text>
               <Text style={styles.title}>{[...Array(5)].map((_, index) => (
@@ -356,6 +357,8 @@ const SeekerHome = (props) => {
                   {index < Math.floor(item.rating) ? '★' : '☆'}
                 </Text>
               ))}</Text>
+          </View>
+
         </View>
         {
           !requestSent &&
